@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import Link from "next/link"
-import { usePathname, useRouter } from "next/navigation"
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
   Package,
@@ -17,11 +17,11 @@ import {
   X,
   LogOut,
   MessageSquare,
-} from "lucide-react"
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { getAuthToken, logout } from "@/lib/auth"
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { getAuthToken, logout } from "@/lib/auth";
 
 const sidebarItems = [
   {
@@ -65,71 +65,71 @@ const sidebarItems = [
     href: "/admin/contact",
     icon: MessageCircle,
   },
-]
+];
 
 export default function AdminSidebar() {
-  const [isCollapsed, setIsCollapsed] = useState(false)
-  const [isMobileOpen, setIsMobileOpen] = useState(false)
-  const [openChats, setOpenChats] = useState(0)
-  const [isLoggingOut, setIsLoggingOut] = useState(false)
-  const pathname = usePathname()
-  const router = useRouter()
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [openChats, setOpenChats] = useState(0);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const pathname = usePathname();
+  const router = useRouter();
 
   // Fetch open chats count (active + waiting conversations)
   useEffect(() => {
     const fetchOpenChats = async () => {
       try {
-        const token = getAuthToken()
-        if (!token) return
+        const token = getAuthToken();
+        if (!token) return;
         const response = await fetch("/api/chatbot/chat?action=admin_stats", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        })
-        const data = await response.json()
+        });
+        const data = await response.json();
         if (data.success) {
           // Show open conversations (active + waiting) - this will be 0 when all chats are closed
-          setOpenChats(data.data.open_conversations || 0)
+          setOpenChats(data.data.open_conversations || 0);
         }
       } catch (error) {
-        console.error("Failed to fetch open chats:", error)
-        setOpenChats(0) // Reset to 0 on error
+        console.error("Failed to fetch open chats:", error);
+        setOpenChats(0); // Reset to 0 on error
       }
-    }
+    };
 
-    fetchOpenChats()
+    fetchOpenChats();
     // Poll every 15 seconds for more frequent updates
-    const interval = setInterval(fetchOpenChats, 15000)
-    return () => clearInterval(interval)
-  }, [])
+    const interval = setInterval(fetchOpenChats, 15000);
+    return () => clearInterval(interval);
+  }, []);
 
   // Close mobile menu when route changes
   useEffect(() => {
-    setIsMobileOpen(false)
-  }, [pathname])
+    setIsMobileOpen(false);
+  }, [pathname]);
 
   // Handle mobile menu toggle
   const toggleMobileMenu = () => {
-    setIsMobileOpen(!isMobileOpen)
-  }
+    setIsMobileOpen(!isMobileOpen);
+  };
 
   // Handle logout
   const handleLogout = async () => {
-    if (isLoggingOut) return // Prevent multiple logout attempts
+    if (isLoggingOut) return; // Prevent multiple logout attempts
 
-    setIsLoggingOut(true)
+    setIsLoggingOut(true);
     try {
-      await logout()
+      await logout();
       // Redirect to login page after successful logout
-      router.push("/login")
+      router.push("/login");
     } catch (error) {
-      console.error("Logout failed:", error)
+      console.error("Logout failed:", error);
       // Even if logout API fails, we should still redirect since session is cleared
-      router.push("/login")
+      router.push("/login");
     } finally {
-      setIsLoggingOut(false)
+      setIsLoggingOut(false);
     }
-  }
+  };
 
   return (
     <>
@@ -140,24 +140,35 @@ export default function AdminSidebar() {
         className="fixed top-4 left-4 z-50 lg:hidden bg-white shadow-md"
         onClick={toggleMobileMenu}
       >
-        {isMobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+        {isMobileOpen ? (
+          <X className="w-5 h-5" />
+        ) : (
+          <Menu className="w-5 h-5" />
+        )}
       </Button>
 
       {/* Mobile Overlay */}
       {isMobileOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden" onClick={() => setIsMobileOpen(false)} />
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+          onClick={() => setIsMobileOpen(false)}
+        />
       )}
+
+      {/* 
+        bg-card
+      */}
 
       {/* Sidebar */}
       <div
         className={cn(
-          "bg-gradient-to-b from-gray-900 to-gray-800 text-white transition-all duration-300 flex flex-col shadow-xl",
+          "bg-gradient-to-b from-gray-900 to-gray-800 text-white transition-all duration-300 flex flex-col shadow-xl gap-4",
           // Desktop styles
           "hidden lg:flex",
           isCollapsed ? "lg:w-16" : "lg:w-64",
           // Mobile styles
           "lg:relative fixed inset-y-0 left-0 z-50",
-          isMobileOpen ? "flex w-64" : "hidden lg:flex",
+          isMobileOpen ? "flex w-64" : "hidden lg:flex"
         )}
       >
         {/* Header */}
@@ -178,66 +189,84 @@ export default function AdminSidebar() {
               onClick={() => setIsCollapsed(!isCollapsed)}
               className="p-2 rounded-lg hover:bg-gray-700 transition-colors hidden lg:block"
             >
-              {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
+              {isCollapsed ? (
+                <ChevronRight className="w-4 h-4" />
+              ) : (
+                <ChevronLeft className="w-4 h-4" />
+              )}
             </button>
           </div>
         </div>
-
+        
         {/* Navigation */}
-        <nav className="flex-1 p-4">
-          <ul className="space-y-2">
+        <nav className="flex h-100vh px-2 py-2 my-2">
+          <ul className="justify-center items-center py-5 w-full">
             {sidebarItems.map((item) => {
-              const Icon = item.icon
-              const isActive = pathname === item.href
-              const showNotification = item.hasNotification && openChats > 0
+              const Icon = item.icon;
+              const isActive = pathname === item.href;
+              const showNotification = item.hasNotification && openChats > 0;
               return (
-                <li key={item.href}>
+                <li key={item.href} className="flex">
+                  {/* flex items-center gap-3 px-4 py-3 rounded-lg transition-all text-gray-700 hover:bg-gray-100 */}
                   <Link
                     href={item.href}
                     className={cn(
-                      "flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 group relative",
+                      "flex w-full items-center items-center gap-3 px-3 py-3 rounded-xl transition-all duration-200 group relative gap-3 mb-1 mx-1",
                       isActive
                         ? "bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg transform scale-105"
-                        : "text-gray-300 hover:bg-gray-700 hover:text-white hover:transform hover:scale-105",
+                        : "text-gray-300 hover:bg-gray-700 hover:text-fg-brand hover:transform hover:scale-105"
                     )}
                   >
-                    <div className="relative">
-                      <Icon className={cn("w-5 h-5", isActive && "animate-pulse")} />
+                    <div className="relative ">
+                      <Icon
+                        className={cn("w-5 h-5", isActive && "animate-pulse")}
+                      />
+
                       {showNotification && (
                         <Badge className="absolute -top-2 -right-2 bg-red-500 text-white text-xs min-w-[1.25rem] h-5 flex items-center justify-center p-0">
                           {openChats}
                         </Badge>
                       )}
                     </div>
+
                     {!isCollapsed && (
-                      <span className="font-medium group-hover:translate-x-1 transition-transform">{item.title}</span>
+                      <span className="pl-2 font-medium group-hover:translate-x-1 transition-transform">
+                        {item.title}
+                      </span>
                     )}
+
                     {isActive && !isCollapsed && (
-                      <div className="ml-auto w-2 h-2 bg-white rounded-full animate-pulse" />
+                      <div className="ml-auto w-2 h-2 justify-center bg-white rounded-full animate-pulse" />
                     )}
+
                     {showNotification && !isCollapsed && (
-                      <Badge className="ml-auto bg-red-500 text-white text-xs">{openChats}</Badge>
+                      // ml-auto w-2 h-2 rounded-full bg-white
+                      <Badge className="flex items-center justify-center text-center ml-auto p-2 w-2 h-5 bg-red-500 text-white text-xs">
+                        {openChats}
+                      </Badge>
                     )}
                   </Link>
                 </li>
-              )
+              );
             })}
           </ul>
         </nav>
 
         {/* Footer */}
-        <div className="p-4 border-t border-gray-700 space-y-2">
+        <div className="px-2 py-2 my-2 border-t border-gray-700 gap-9">
           <button
             onClick={handleLogout}
             disabled={isLoggingOut}
             className={cn(
               "flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 group w-full",
-              isLoggingOut ? "text-gray-500 cursor-not-allowed" : "text-gray-300 hover:bg-red-600 hover:text-white",
+              isLoggingOut
+                ? "text-gray-500 cursor-not-allowed"
+                : "text-gray-300 hover:bg-red-600 hover:text-white"
             )}
           >
             <LogOut className={cn("w-5 h-5", isLoggingOut && "animate-spin")} />
             {!isCollapsed && (
-              <span className="font-medium group-hover:translate-x-1 transition-transform">
+              <span className="block font-medium group-hover:translate-x-1 transition-transform">
                 {isLoggingOut ? "Logging out..." : "Logout"}
               </span>
             )}
@@ -245,5 +274,5 @@ export default function AdminSidebar() {
         </div>
       </div>
     </>
-  )
+  );
 }

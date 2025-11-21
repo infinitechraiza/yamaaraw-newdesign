@@ -111,29 +111,29 @@ export default function ProductTable({
 
       <div className="overflow-x-auto">
         <table className="w-full">
-          <thead className="bg-gradient-to-r from-orange-50 to-red-50 border-b border-orange-100">
+          <thead className="bg-gradient-to-r from-orange-50 to-red-50 border-b border-orange-100 justify-between items-center">
             <tr>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
+              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900 text-center justify-center items-center">
                 Product
               </th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
+              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900 text-center justify-center items-center">
                 Category
               </th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
+              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900 text-center justify-center items-center">
                 Price
               </th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
+              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900 text-center justify-center items-center">
                 Colors
               </th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
+              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900 text-center justify-center items-center">
                 Status
               </th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
+              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900 text-center justify-center items-center">
                 Actions
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100">
+          <tbody className="divide-y divide-gray-100 ">
             {currentProducts.map((product) => (
               <tr
                 key={product.id}
@@ -165,7 +165,7 @@ export default function ProductTable({
                     </div>
                   </div>
                 </td>
-                <td className="px-6 py-4">
+                <td className="px-6 py-4 items-center  text-center justify-center items-center">
                   <Badge className="bg-orange-100 text-orange-600 border-orange-200">
                     {product.category}
                   </Badge>
@@ -183,7 +183,7 @@ export default function ProductTable({
                   </div>
                 </td>
                 <td className="px-6 py-4">
-                  <div className="flex space-x-1">
+                  <div className="flex space-x-1  text-center justify-center items-center">
                     {product.colors
                       ?.slice(0, 4)
                       .map((color, index) => (
@@ -203,8 +203,8 @@ export default function ProductTable({
                     )}
                   </div>
                 </td>
-                <td className="px-6 py-4">
-                  <div className="flex flex-col space-y-1">
+                <td className="px-6 py-4  text-center ">
+                  <div className="flex flex-col space-y-1 text-center justify-center items-center">
                     <Badge
                       className={
                         product.in_stock
@@ -215,7 +215,7 @@ export default function ProductTable({
                       {product.in_stock ? "In Stock" : "Out of Stock"}
                     </Badge>
                     {product.featured && (
-                      <Badge className="bg-yellow-100 text-yellow-600 border-yellow-200 text-xs">
+                      <Badge className="bg-yellow-100 text-yellow-600 border-yellow-200 text-center text-xs">
                         Featured
                       </Badge>
                     )}

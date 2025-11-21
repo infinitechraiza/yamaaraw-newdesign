@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { useState, useEffect } from "react"
-import { useParams, useRouter } from "next/navigation"
-import Image from "next/image"
+import type React from "react";
+import { useState, useEffect } from "react";
+import { useParams, useRouter } from "next/navigation";
+import Image from "next/image";
 import {
   ShoppingCart,
   Heart,
@@ -16,126 +16,142 @@ import {
   ChevronRight,
   Award,
   Phone,
-} from "lucide-react"
-import Header from "@/components/layout/header"
-import Footer from "@/components/layout/footer"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import ETrikeLoader from "@/components/ui/etrike-loader"
-import { productApi, type ProductData } from "@/lib/api"
-import { addToCart } from "@/lib/cart"
-import { getCurrentUser } from "@/lib/auth"
-import { useETrikeToast } from "@/components/ui/toast-container"
-import { useCart } from "@/contexts/cart-context"
-import { useFlyingETrike } from "@/components/ui/flying-etrike-animation"
+} from "lucide-react";
+import Header from "@/components/layout/header";
+import Footer from "@/components/layout/footer";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import ETrikeLoader from "@/components/ui/etrike-loader";
+import { productApi, type ProductData } from "@/lib/api";
+import { addToCart } from "@/lib/cart";
+import { getCurrentUser } from "@/lib/auth";
+import { useETrikeToast } from "@/components/ui/toast-container";
+import { useCart } from "@/contexts/cart-context";
+import { useFlyingETrike } from "@/components/ui/flying-etrike-animation";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function ProductDetailPage() {
-  const params = useParams()
-  const router = useRouter()
-  const toast = useETrikeToast()
-  const { refreshCart } = useCart()
-  const { triggerAnimation, AnimationContainer } = useFlyingETrike()
+  const params = useParams();
+  const router = useRouter();
+  const toast = useETrikeToast();
+  const { refreshCart } = useCart();
+  const { triggerAnimation, AnimationContainer } = useFlyingETrike();
 
-  const [product, setProduct] = useState<ProductData | null>(null)
-  const [selectedColorIndex, setSelectedColorIndex] = useState(0)
-  const [selectedImageIndex, setSelectedImageIndex] = useState(0)
-  const [quantity, setQuantity] = useState(1)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [addingToCart, setAddingToCart] = useState(false)
+  const [product, setProduct] = useState<ProductData | null>(null);
+  const [selectedColorIndex, setSelectedColorIndex] = useState(0);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [quantity, setQuantity] = useState(1);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [addingToCart, setAddingToCart] = useState(false);
 
   useEffect(() => {
     if (params.id) {
-      fetchProduct()
+      fetchProduct();
     }
-  }, [params.id])
+  }, [params.id]);
 
   const fetchProduct = async () => {
     try {
-      setLoading(true)
-      setError(null)
-      const response = await productApi.getProduct(Number(params.id))
-      setProduct(response)
+      setLoading(true);
+      setError(null);
+      const response = await productApi.getProduct(Number(params.id));
+      setProduct(response);
     } catch (error) {
-      console.error("Error fetching product:", error)
-      setError("Failed to load product details")
-      toast.error("Failed to Load", "Could not load product details. Please try again.")
+      console.error("Error fetching product:", error);
+      setError("Failed to load product details");
+      toast.error(
+        "Failed to Load",
+        "Could not load product details. Please try again."
+      );
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
-  const handleAddToCart = async (event: React.MouseEvent<HTMLButtonElement>) => {
-    const user = getCurrentUser()
+  const handleAddToCart = async (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    const user = getCurrentUser();
 
     if (!user) {
-      toast.warning("Login Required", "Please log in to add items to your cart")
-      router.push("/login")
-      return
+      toast.warning(
+        "Login Required",
+        "Please log in to add items to your cart"
+      );
+      router.push("/login");
+      return;
     }
 
     try {
-      setAddingToCart(true)
+      setAddingToCart(true);
 
       // Get button and cart icon elements for animation
-      const button = event.currentTarget
-      const cartIcon = document.querySelector("[data-cart-icon]") as HTMLElement
+      const button = event.currentTarget;
+      const cartIcon = document.querySelector(
+        "[data-cart-icon]"
+      ) as HTMLElement;
 
       if (cartIcon) {
         // Trigger flying animation
-        triggerAnimation(button, cartIcon)
+        triggerAnimation(button, cartIcon);
       }
 
-      const selectedColor = product?.colors?.[selectedColorIndex]?.name
-      await addToCart(product!.id!, quantity, selectedColor)
+      const selectedColor = product?.colors?.[selectedColorIndex]?.name;
+      await addToCart(product!.id!, quantity, selectedColor);
 
       // Refresh cart count in header
-      await refreshCart()
+      await refreshCart();
 
       // Show success toast
       toast.cartAdded(product!.name, {
         label: "View Cart",
         onClick: () => router.push("/cart"),
-      })
+      });
     } catch (error) {
-      console.error("Error adding to cart:", error)
-      toast.error("Failed to Add", "Could not add item to cart. Please try again.")
+      console.error("Error adding to cart:", error);
+      toast.error(
+        "Failed to Add",
+        "Could not add item to cart. Please try again."
+      );
     } finally {
-      setAddingToCart(false)
+      setAddingToCart(false);
     }
-  }
+  };
 
   // Enhanced price formatting for large numbers
   const formatPrice = (price: number) => {
-    if (!price || isNaN(price)) return "₱0.00"
+    if (!price || isNaN(price)) return "₱0.00";
 
     return new Intl.NumberFormat("en-PH", {
       style: "currency",
       currency: "PHP",
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
-    }).format(price)
-  }
+    }).format(price);
+  };
 
   const calculateDiscount = (price: number, originalPrice?: number) => {
-    if (!originalPrice || originalPrice <= price || !price) return 0
-    return Math.round(((originalPrice - price) / originalPrice) * 100)
-  }
+    if (!originalPrice || originalPrice <= price || !price) return 0;
+    return Math.round(((originalPrice - price) / originalPrice) * 100);
+  };
 
   const nextImage = () => {
-    const images = product?.images ?? []
+    const images = product?.images ?? [];
     if (images.length > 1) {
-      setSelectedImageIndex((prev) => (prev + 1) % images.length)
+      setSelectedImageIndex((prev) => (prev + 1) % images.length);
     }
-  }
+  };
 
   const prevImage = () => {
-    const images = product?.images ?? []
+    const images = product?.images ?? [];
     if (images.length > 1) {
-      setSelectedImageIndex((prev) => (prev - 1 + images.length) % images.length)
+      setSelectedImageIndex(
+        (prev) => (prev - 1 + images.length) % images.length
+      );
     }
-  }
+  };
 
   if (loading) {
     return (
@@ -146,7 +162,7 @@ export default function ProductDetailPage() {
         </div>
         <Footer />
       </div>
-    )
+    );
   }
 
   if (error || !product) {
@@ -155,7 +171,9 @@ export default function ProductDetailPage() {
         <Header />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="text-center bg-white rounded-2xl p-12 shadow-lg">
-            <h1 className="text-3xl font-bold text-gray-900 mb-6">Product not found</h1>
+            <h1 className="text-3xl font-bold text-gray-900 mb-6">
+              Product not found
+            </h1>
             <p className="text-lg text-gray-600 mb-8">
               The product you're looking for doesn't exist or has been removed.
             </p>
@@ -170,13 +188,13 @@ export default function ProductDetailPage() {
         </div>
         <Footer />
       </div>
-    )
+    );
   }
 
-  const discount = calculateDiscount(product.price, product.original_price)
+  const discount = calculateDiscount(product.price, product.original_price);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-red-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-100">
       <Header />
 
       {/* Flying Animation Container */}
@@ -193,17 +211,336 @@ export default function ProductDetailPage() {
               Products
             </button>
             <span className="text-orange-300 text-xl">›</span>
-            <span className="text-gray-600 font-medium">{product.category}</span>
+            <span className="text-gray-600 font-medium">
+              {product.category}
+            </span>
             <span className="text-orange-300 text-xl">›</span>
             <span className="text-gray-900 font-bold">{product.name}</span>
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto py-8 sm:px-6 lg:px-8">
+        <div className="bg-white h-screen text-card-foreground shadow-sm hover:shadow-lg group cursor-pointer">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 space-y-4">
+            <div className="space-y-9">
+              {/* Main Image Container - Enhanced */}
+              <div className="relative w-full h-64 sm:h-80 lg:h-96 bg-white overflow-hidden shadow-xl m-5">
+                {/* text-card-foreground flex-col gap-6 border py-6 shadow-sm bg-gradient-to-br from-slate-100 to-slate-50 
+                aspect-square flex items-center justify-center overflow-hidden rounded-lg */}
+                <Image
+                  src={
+                    product.images?.[selectedImageIndex] || "/placeholder.svg"
+                  }
+                  alt={product.name}
+                  fill
+                  className="w-full w-[450px] text-card-foreground object-contain aspect-square shadow-sm bg-gradient-to-br from-slate-50 to-slate-50 
+                  p-6 flex items-center justify-center overflow-hidden rounded-lg"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  priority
+                />
+
+                {/* Navigation Arrows - Enhanced */}
+                {product.images && product.images.length > 1 && (
+                  <>
+                    <Button
+                      variant="ghost"
+                      size="lg"
+                      onClick={prevImage}
+                      className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/95 hover:bg-white shadow-lg border-2 border-orange-200 hover:border-orange-300 z-10 sm:left-4"
+                    >
+                      <ChevronLeft className="w-4 h-4 text-orange-600 sm:w-6 sm:h-6" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="lg"
+                      onClick={nextImage}
+                      className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/95 hover:bg-white shadow-lg border-2 border-orange-200 hover:border-orange-300 z-10 sm:right-4"
+                    >
+                      <ChevronRight className="w-4 h-4 text-orange-600 sm:w-6 sm:h-6" />
+                    </Button>
+                  </>
+                )}
+
+                {/* Enhanced Badges */}
+                {discount > 0 && (
+                  // bg-red-500 text-white text-sm px-3 py-1 font-bold border-yellow-600
+                  <div className="absolute top-4 left-4 bg-red-500 border-red-600 text-white text-sm px-3 py-1 rounded-full text-base font-bold shadow-lg z-20">
+                    -{discount}% OFF
+                  </div>
+                )}
+              </div>
+
+              {/* Thumbnail Images - Enhanced */}
+              {product.images && product.images.length > 1 && (
+                <div className="flex space-x-2 sm:space-x-4 overflow-x-auto pb-3">
+                  {product.images.map((image, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setSelectedImageIndex(index)}
+                      className={`relative w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 rounded-xl overflow-hidden border-3 transition-all duration-300 ${
+                        selectedImageIndex === index
+                          ? "border-orange-500 shadow-lg scale-105"
+                          : "border-gray-300 hover:border-orange-300 hover:shadow-md"
+                      }`}
+                    >
+                      <Image
+                        src={image || "/placeholder.svg"}
+                        alt={`${product.name} view ${index + 1}`}
+                        fill
+                        className="h-[550px] object-contain p-2"
+                        sizes="96px"
+                      />
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {/* Tabs for Description, Reviews, Perfect For, Usage Guide */}
+              <div className="relative w-full h-44 mx-5 px-5 h-screen text-card-foreground  group cursor-pointer">
+                <Tabs defaultValue="description" className="mx-2 my-5">
+                  <TabsList className="border-blue-200 text-blue-600 hover:bg-none border border-y border-y-blue-100 border-x-blue-200 bg-transparent">
+                    <TabsTrigger value="description">Description</TabsTrigger>
+                    <TabsTrigger value="reviews">Reviews</TabsTrigger>
+                    <TabsTrigger value="perfectFor">Perfect For</TabsTrigger>
+                    <TabsTrigger value="usageGuide">Usage Guide</TabsTrigger>
+                  </TabsList>
+
+                  {/* Description */}
+                  <TabsContent value="description">
+                    {product.description}
+                  </TabsContent>
+
+                  {/* Reviews */}
+                  <TabsContent value="reviews">
+                    Change your Reviews here.
+                  </TabsContent>
+
+                  {/* Perfect For */}
+                  <TabsContent value="perfectFor">
+
+                    {/* Ideal For - Enhanced */}
+                    {product.ideal_for && product.ideal_for.length > 0 && (
+                      <Card className="border-none shadow-none bg-transparent">
+                        <CardHeader className="pb-3">
+                          {/* <CardTitle className="text-xl font-bold text-gray-900">
+                            Perfect For
+                          </CardTitle> */}
+                        </CardHeader>
+                        <CardContent className="pt-0">
+                          <div className="flex flex-wrap gap-3">
+                            {product.ideal_for.map((use, index) => (
+                              <Badge
+                                key={index}
+                                className="bg-blue-400 text-white text-base font-semibold px-4 py-2"
+                              >
+                                {use}
+                              </Badge>
+                            ))}
+                          </div>
+                        </CardContent>
+                      </Card>
+                    )}
+                  </TabsContent>
+
+                  {/* Usage Guide */}
+                  <TabsContent value="usageGuide">
+                    Change your Usage Guide here.
+                  </TabsContent>
+                </Tabs>
+              </div>
+            </div>
+
+            {/* 1st Column */}
+            <div className="space-y-5">
+              {/* bg-white rounded-2xl p-4 sm:p-6 shadow-lg border-2 border-orange-200 */}
+              <div className="relative w-full h-full overflow-hidden p-2 sm:p-6">
+                <h1 className="text-3xl font-bold text-balance">
+                  {" "}
+                  {product.name}
+                </h1>
+
+                {/* Ratings */}
+                <div className="flex items-center gap-4 my-4">
+                  <div className="flex text-yellow-400">
+                    <span>★</span>
+                    <span>★</span>
+                    <span>★</span>
+                    <span>★</span>
+                    <span>★</span>
+                  </div>
+                  <span className="font-semibold">4.7</span>
+                  <span className="text-xs text-muted-foreground flex items-center gap-1">
+                    154 orders
+                  </span>
+                  <button className="text-xs text-destructive hover:underline">
+                    Report
+                  </button>
+                </div>
+
+                {/* Model, Location Manufacturer, Delivery Date */}
+                <div className="grid grid-rows items-center gap-1 my-2">
+                  <p className="text-xs text-muted-foreground flex items-center">
+                    Made In:
+                    <span className="flex items-center text-foreground mx-2 my-1">
+                      Country Name
+                    </span>
+                  </p>
+                  <p className="text-xs text-muted-foreground flex items-center">
+                    Brand:
+                    <span className="flex items-center text-foreground mx-2 my-1">
+                      Brand Name
+                    </span>
+                  </p>
+                  <p className="text-xs text-muted-foreground flex items-center">
+                    Ships From:
+                    <span className="flex items-center text-foreground mx-2 my-1">
+                      Location
+                    </span>
+                  </p>
+                  <p className="text-xs text-muted-foreground flex items-center">
+                    Delivery:
+                    <span className="flex items-center text-foreground mx-2 my-1">
+                      2 days delivery
+                    </span>
+                  </p>
+                </div>
+
+                {/* Title any events */}
+                {/* <div className="w-full bg-destructive text-destructive-foreground p-3 rounded font-semibold flex items-center gap-2">
+                  <span>🎁</span> Any Title Here
+                </div>  */}
+
+                <hr />
+                {/* Selected Category */}
+                <div className="space-y-3 sm:py-3 mb-2">
+                  <p className="font-semibold">Colors</p>
+                  <div className="grid grid-cols-5 gap-3">
+                    {/* Option 1 */}
+                    <button className="p-2 rounded border-2 transition border-primary bg-primary/10">
+                      <div className="w-8 h-8 bg-yellow-300 rounded mx-auto mb-1"></div>
+                      <p className="text-xs text-center truncate">Yellow</p>
+                    </button>
+                    {/* Option 2 */}
+                    <button className="p-2 rounded border-2 transition border-border hover:border-foreground">
+                      <div className="w-8 h-8 bg-green-300 rounded mx-auto mb-1"></div>
+                      <p className="text-xs text-center truncate">Green</p>
+                    </button>
+                    {/* Option 3 */}
+                    <button className="p-2 rounded border-2 transition border-border hover:border-foreground">
+                      <div className="w-8 h-8 bg-red-300 rounded mx-auto mb-1"></div>
+                      <p className="text-xs text-center truncate">Red</p>
+                    </button>
+                    {/* Option 4 */}
+                    <button className="p-2 rounded border-2 transition border-border hover:border-foreground">
+                      <div className="w-8 h-8 bg-blue-300 rounded mx-auto mb-1"></div>
+                      <p className="text-xs text-center truncate">Blue</p>
+                    </button>
+                    {/* Option 5 */}
+                    <button className="p-2 rounded border-2 transition border-border hover:border-foreground">
+                      <div className="w-8 h-8 bg-purple-300 rounded mx-auto mb-1"></div>
+                      <p className="text-xs text-center truncate">Purple</p>
+                    </button>
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <p className="font-semibold rounded-xl">Quantity</p>
+                  <div className="flex items-center gap-2 w-fit border-2 border-blue-300 focus:border-blue-500 rounded">
+                    <button className="w-8 h-8 bg-blue-200 text-blue-700 hover:text-white hover:bg-blue-300 transition">
+                      −
+                    </button>
+                    <span className="text-lg font-semibold w-8 text-center">
+                      1
+                    </span>
+                    <button className="w-8 h-8 bg-blue-200 text-blue-700 hover:text-white hover:bg-blue-300 transition">
+                      +
+                    </button>
+                  </div>
+                </div>
+
+                {/* Enhanced Price Section */}
+                <div className="space-y-2 sm:py-3 mb-2">
+                  <p className="text-xs text-muted-foreground flex items-center">
+                    Price:
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <span className="text-2xl font-bold">
+                      ₽{product.original_price}
+                    </span>
+                    <span className="text-md text-muted-foreground line-through">
+                      ₽ {product.price}
+                    </span>
+                    <span className="text-sm font-semibold text-destructive">
+                      {product.original_price &&
+                        product.original_price > product.price && (
+                          <div className="flex flex-wrap items-center gap-2">
+                            <Badge className="bg-red-100 text-red-600 border-red-600 text-xs font-bold px-2 py-1">
+                              Save{" "}
+                              {formatPrice(
+                                product.original_price - product.price
+                              )}
+                            </Badge>
+                            <Badge
+                              className={`text-xs font-bold px-2 ${
+                                product.in_stock
+                                  ? "bg-green-100 text-green-600 border-green-600"
+                                  : "bg-red-100 text-red-600 border-red-600"
+                              }`}
+                            >
+                              {product.in_stock
+                                ? "✓ In Stock"
+                                : "✗ Out of Stock"}
+                            </Badge>
+                            {product.featured && (
+                              <Badge className="bg-yellow-100 text-yellow-600 text-xs px-2 font-bold border-yellow-600">
+                                ⭐<span> Featured</span>
+                              </Badge>
+                            )}
+                          </div>
+                        )}
+
+                      {/* Stock Status and Featured Badge - Better positioning */}
+                      <div className="flex flex-col items-start sm:items-end space-y-2"></div>
+                    </span>
+                  </div>
+                </div>
+
+                {/* Add To Cart and Buy Now Button */}
+                <div className="space-y-6">
+                  <div className="grid grid-cols-3 gap-3 pt-2">
+                    <button
+                      data-slot="button"
+                      className="h-12 w-full inline-flex items-center text-white text-sm justify-center gap-2 whitespace-nowrap rounded-md bg-blue-600 px-2 font-bold border-blue-700"
+                    >
+                      <ShoppingCart className="w-4 h-4 mr-3" /> Add to Cart
+                    </button>
+                    <button
+                      data-slot="button"
+                      className="h-12 w-full inline-flex items-center text-white text-sm justify-center gap-2 whitespace-nowrap rounded-md bg-blue-200 px-2 font-bold border-blue-700"
+                    >
+                      Buy Now
+                    </button>
+
+                    <button
+                      data-slot="button"
+                      className="h-12 w-full inline-flex items-center text-white text-sm justify-center gap-2 whitespace-nowrap rounded-md bg-blue-200 px-2 font-bold border-blue-700"
+                    >
+                      Buy Now
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 pb-16 sm:px-6 lg:px-8">
+        {/* original */}
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 xl:gap-12">
           {/* Left Side - Images and Service Features */}
-          <div className="space-y-8">
+          <div className="space-y-6">
             {/* Main Image Container - Enhanced */}
             <div className="relative w-full h-64 sm:h-80 lg:h-96 bg-white rounded-3xl overflow-hidden shadow-xl border-2 border-orange-200">
               <Image
@@ -252,7 +589,6 @@ export default function ProductDetailPage() {
               )}
             </div>
 
-            {/* Thumbnail Images - Enhanced */}
             {product.images && product.images.length > 1 && (
               <div className="flex space-x-2 sm:space-x-4 overflow-x-auto pb-3">
                 {product.images.map((image, index) => (
@@ -276,40 +612,6 @@ export default function ProductDetailPage() {
                 ))}
               </div>
             )}
-
-            {/* Service Features - Enhanced */}
-            <Card className="bg-gradient-to-br from-orange-100 to-red-100 border-2 border-orange-200 shadow-lg">
-              <CardHeader className="pb-4">
-                <CardTitle className="text-xl text-orange-800 flex items-center font-bold">
-                  <Award className="w-6 h-6 mr-3" />
-                  Service Highlights
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="pt-0">
-                <div className="grid grid-cols-2 sm:grid-cols-2 gap-4">
-                  <div className="flex flex-col items-center text-center p-3 sm:p-4 bg-white rounded-xl shadow-md border border-orange-200">
-                    <Truck className="w-6 h-6 sm:w-8 sm:h-8 text-orange-500 mb-2" />
-                    <div className="text-xs sm:text-sm font-bold text-gray-900 mb-1">Free Delivery</div>
-                    <div className="text-xs text-gray-600">Metro Manila</div>
-                  </div>
-                  <div className="flex flex-col items-center text-center p-3 sm:p-4 bg-white rounded-xl shadow-md border border-orange-200">
-                    <Shield className="w-6 h-6 sm:w-8 sm:h-8 text-green-500 mb-2" />
-                    <div className="text-xs sm:text-sm font-bold text-gray-900 mb-1">2 Year Warranty</div>
-                    <div className="text-xs text-gray-600">Full Coverage</div>
-                  </div>
-                  <div className="flex flex-col items-center text-center p-3 sm:p-4 bg-white rounded-xl shadow-md border border-orange-200">
-                    <Zap className="w-6 h-6 sm:w-8 sm:h-8 text-blue-500 mb-2" />
-                    <div className="text-xs sm:text-sm font-bold text-gray-900 mb-1">Service Support</div>
-                    <div className="text-xs text-gray-600">Nationwide</div>
-                  </div>
-                  <div className="flex flex-col items-center text-center p-3 sm:p-4 bg-white rounded-xl shadow-md border border-orange-200">
-                    <Phone className="w-6 h-6 sm:w-8 sm:h-8 text-purple-500 mb-2" />
-                    <div className="text-xs sm:text-sm font-bold text-gray-900 mb-1">24/7 Support</div>
-                    <div className="text-xs text-gray-600">Customer Care</div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
           </div>
 
           {/* Right Side - Product Info - Enhanced */}
@@ -319,11 +621,13 @@ export default function ProductDetailPage() {
               <Badge className="bg-orange-500 text-white border-orange-600 mb-4 text-base font-semibold px-4 py-2">
                 {product.category}
               </Badge>
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4 leading-tight">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 text-foreground mb-4 leading-tight">
                 {product.name}
               </h1>
               <div className="flex items-center space-x-3 mb-6">
-                <span className="text-base text-gray-600 font-medium">Model:</span>
+                <span className="text-base text-gray-600 font-medium">
+                  Model:
+                </span>
                 <span className="text-lg font-bold text-orange-600 bg-orange-50 px-3 py-1 rounded-lg">
                   {product.model}
                 </span>
@@ -333,19 +637,23 @@ export default function ProductDetailPage() {
               <div className="bg-gradient-to-r from-orange-50 to-red-50 rounded-xl p-4 sm:p-6 border-2 border-orange-200 mb-6">
                 <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4 space-y-4 sm:space-y-0">
                   <div className="flex-1">
-                    <div className="text-2xl sm:text-3xl font-bold text-orange-600 mb-2">
+                    <div className="text-2xl sm:text-2xl font-bold text-orange-600 mb-2">
                       {formatPrice(product.price)}
                     </div>
-                    {product.original_price && product.original_price > product.price && (
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span className="text-lg text-gray-500 line-through font-medium">
-                          {formatPrice(product.original_price)}
-                        </span>
-                        <Badge className="bg-red-500 text-white text-sm font-bold px-3 py-1">
-                          Save {formatPrice(product.original_price - product.price)}
-                        </Badge>
-                      </div>
-                    )}
+                    {product.original_price &&
+                      product.original_price > product.price && (
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="text-lg text-gray-500 line-through font-medium">
+                            {formatPrice(product.original_price)}
+                          </span>
+                          <Badge className="bg-red-500 text-white text-sm font-bold px-3 py-1">
+                            Save{" "}
+                            {formatPrice(
+                              product.original_price - product.price
+                            )}
+                          </Badge>
+                        </div>
+                      )}
                   </div>
 
                   {/* Stock Status and Featured Badge - Better positioning */}
@@ -370,7 +678,10 @@ export default function ProductDetailPage() {
                 {/* Purchase Section - Enhanced */}
                 <div className="space-y-4">
                   <div className="flex items-center space-x-4">
-                    <label htmlFor="quantity" className="text-base font-bold text-gray-700">
+                    <label
+                      htmlFor="quantity"
+                      className="text-base font-bold text-gray-700"
+                    >
                       Quantity:
                     </label>
                     <select
@@ -396,28 +707,18 @@ export default function ProductDetailPage() {
                       <ShoppingCart className="w-6 h-6 mr-3" />
                       {addingToCart ? "Adding..." : "Add to Cart"}
                     </Button>
-
-                   
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Description - Enhanced */}
-            <Card className="shadow-lg border-2 border-orange-200">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-xl font-bold text-gray-900">Product Description</CardTitle>
-              </CardHeader>
-              <CardContent className="pt-0">
-                <p className="text-gray-700 leading-relaxed text-base font-medium">{product.description}</p>
-              </CardContent>
-            </Card>
-
             {/* Colors - Enhanced */}
             {product.colors && product.colors.length > 0 && (
               <Card className="shadow-lg border-2 border-orange-200">
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-xl font-bold text-gray-900">Available Colors</CardTitle>
+                  <CardTitle className="text-xl font-bold text-gray-900">
+                    Available Colors
+                  </CardTitle>
                 </CardHeader>
                 <CardContent className="pt-0">
                   <div className="space-y-4">
@@ -436,33 +737,19 @@ export default function ProductDetailPage() {
                             className="w-6 h-6 rounded-full border-2 border-white shadow-md"
                             style={{ backgroundColor: color.value }}
                           />
-                          <span className="text-base font-semibold text-gray-900">{color.name}</span>
+                          <span className="text-base font-semibold text-gray-900">
+                            {color.name}
+                          </span>
                         </button>
                       ))}
                     </div>
-                    {selectedColorIndex !== null && product.colors[selectedColorIndex] && (
-                      <div className="text-base text-gray-700 bg-orange-50 p-3 rounded-lg border border-orange-200">
-                        <span className="font-bold">Selected Color:</span> {product.colors[selectedColorIndex].name}
-                      </div>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-
-            {/* Ideal For - Enhanced */}
-            {product.ideal_for && product.ideal_for.length > 0 && (
-              <Card className="shadow-lg border-2 border-orange-200">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-xl font-bold text-gray-900">Perfect For</CardTitle>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <div className="flex flex-wrap gap-3">
-                    {product.ideal_for.map((use, index) => (
-                      <Badge key={index} className="bg-orange-500 text-white text-base font-semibold px-4 py-2">
-                        {use}
-                      </Badge>
-                    ))}
+                    {selectedColorIndex !== null &&
+                      product.colors[selectedColorIndex] && (
+                        <div className="text-base text-gray-700 bg-orange-50 p-3 rounded-lg border border-orange-200">
+                          <span className="font-bold">Selected Color:</span>{" "}
+                          {product.colors[selectedColorIndex].name}
+                        </div>
+                      )}
                   </div>
                 </CardContent>
               </Card>
@@ -573,5 +860,5 @@ export default function ProductDetailPage() {
 
       <Footer />
     </div>
-  )
+  );
 }
