@@ -4,6 +4,7 @@ import type React from "react";
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 import {
   ShoppingCart,
   Heart,
@@ -43,6 +44,8 @@ export default function ProductDetailPage() {
   const { refreshCart } = useCart();
   const { triggerAnimation, AnimationContainer } = useFlyingETrike();
 
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [filteredProducts, setFilteredProducts] = useState<ProductData[]>([]);
   const [product, setProduct] = useState<ProductData | null>(null);
   const [selectedColorIndex, setSelectedColorIndex] = useState(0);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
@@ -226,8 +229,8 @@ export default function ProductDetailPage() {
       </div>
 
       <div className="max-w-7xl mx-auto">
-        <div className="min-h-full bg-background text-card-foreground h-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 mx-2 my-5">
+        <div className="min-h-full text-card-foreground h-auto">
+          <div className="bg-background grid grid-cols-1 lg:grid-cols-3 gap-3 mx-2 my-5">
             {/* 1st Column */}
             <div className="space-y-6 col-span-2">
               {/* Main Image Container - Enhanced */}
@@ -1065,6 +1068,167 @@ export default function ProductDetailPage() {
         </div>
       </div>
 
+      <div className="max-w-7xl mx-auto my-8">
+        <div className="min-h-full text-card-foreground h-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-1 gap-3 mx-2 my-5">
+            {/* From The Same Shop Section */}
+            <p className="text-xs text-muted-foreground flex items-center uppercase">
+              From The Same Shop
+            </p>
+            <div className="space-y-6">
+              <div className="grid lg:grid-cols-6 gap-4 my-4">
+                <Card className="bg-white flex justify-center w-auto h-auto m-auto border border-border border-gray-200 rounded-none shadow-lg transition-all duration-300 hover:border-gray-200 hover:-translate-y-1">
+                  <Link href="/products/${product.id}" className="list ">
+                    <button
+                      className="relative overflow-hidden transition"
+                      aria-label="View Angle 1"
+                    >
+                      <Badge className="absolute bg-red-300 text-white text-xs text-red-700 text-center w-12 px-2 py-1 top-0 right-0 rounded-tl-lg rounded-r-none border-l-red-200 shadow-sm group-hover:border-5 hover:bg-orange-300 hover:text-orange-900">
+                        -10%
+                      </Badge>
+                      <img
+                        src="https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg"
+                        alt="Shoe Angle 1"
+                        className="flex h-56 w-full aspect-[4/3] object-cover transition"
+                      />
+                      <div className="mx-3 my-2">
+                        <p className="line-clamp-2 text-sm text-gray-900 max-w-[320px] text-sm text-start text-foreground">
+                          Nike Air Force
+                        </p>
+                      </div>
+                      <div className="flex flex-cols gap-2 mx-3 my-3">
+                        <Badge className="w-12 h-5 px-0.2 bg-blue-200 text-xs text-center border border-border border-blue-600 text-blue-600 rounded-none border border-border border-blue-600  hover:border-blue-600 shadow-sm">
+                          ₽5 OFF
+                        </Badge>
+                        <Badge className="w-12 h-5 px-0.2 bg-blue-300 text-xs text-center border border-none rounded-none border border-border hover:border-blue-600 shadow-sm">
+                          ₽5 OFF
+                        </Badge>
+                        <Badge className="w-12 h-5 px-0.2 bg-yellow-200 text-xs text-center text-blackborder border-border border-orange-500 rounded-none border border-border shadow-sm hover:text-yellow-200">
+                          <span className="text-xs text-yellow-500 m-2">★</span>{" "}
+                          4.8
+                        </Badge>
+                      </div>
+                      <div className="flex flex-cols gap-2 mx-3 my-2">
+                        <p className="text-start text-xs font-bold text-blue-600">
+                          ₽ 100{" "}
+                          <span className="text-xs text-gray-400 line-through">
+                            ₽ 100
+                          </span>
+                        </p>
+                        <p className="text-end text-xs font-foreground">
+                          10.6K Sold
+                        </p>
+                      </div>
+                    </button>
+                  </Link>
+                </Card>
+                <Card className="bg-white flex justify-center w-auto h-auto m-auto border border-border border-gray-200 rounded-none shadow-lg transition-all duration-300 hover:border-gray-200 hover:-translate-y-1">
+                  <button
+                    className="relative overflow-hidden transition"
+                    aria-label="View Angle 1"
+                  >
+                    <Badge className="absolute bg-red-300 text-white text-xs text-red-700 text-center w-12 px-2 py-1 top-0 right-0 rounded-tl-lg rounded-r-none border-l-red-200 shadow-sm hover:bg-orange-300">
+                      -10%
+                    </Badge>
+                    <img
+                      src="https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg"
+                      alt="Shoe Angle 1"
+                      className="flex h-56 w-full aspect-[4/3] object-cover transition group-hover:scale-[1.02]"
+                    />
+                    <div className="mx-3 my-2">
+                      <p className="line-clamp-2 text-sm text-gray-900 max-w-[320px] text-sm text-start text-foreground">
+                        Nike Air Force
+                      </p>
+                    </div>
+                    <div className="flex flex-cols gap-2 mx-3 my-3">
+                      <Badge className="w-auto h-5 px-0.5 bg-transparent text-xs text-center border border-border rounded  border-blue-600 text-blue-600 rounded-none border border-border border-blue-600 hover:text-white hover:bg-blue-300 hover:border-none shadow-sm">
+                        New User Exlusive
+                      </Badge>
+                    </div>
+                    <div className="flex flex-cols gap-2 mx-3 my-3">
+                      <p className="text-start text-xs font-bold text-blue-600">
+                        ₽ 100
+                      </p>
+                      <p className="text-end text-xs font-foreground">
+                        10.6K Sold
+                      </p>
+                    </div>
+                  </button>
+                </Card>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto my-8">
+        <div className="min-h-full text-card-foreground h-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-1 gap-3 mx-2 my-5">
+            {/* You May Also Like Section */}
+            <p className="text-xs text-muted-foreground flex items-center uppercase">
+              You May Also Like
+            </p>
+            <div className="space-y-6">
+              <div className="grid lg:grid-cols-6 gap-4 my-4">
+                <Card className="bg-white flex justify-center w-auto h-auto m-auto border border-border border-gray-200 rounded-none shadow-lg transition-all duration-300 hover:border-gray-200 hover:-translate-y-1">
+                  <button
+                    className="relative overflow-hidden transition"
+                    aria-label="View Angle 1"
+                  >
+                    <Badge className="absolute bg-red-300 text-white text-xs text-red-700 text-center w-12 px-2 py-1 top-0 right-0 rounded-tl-lg rounded-r-none border-l-red-200 shadow-sm hover:bg-orange-300">
+                      -10%
+                    </Badge>
+                    <img
+                      src="https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg"
+                      alt="Shoe Angle 1"
+                      className="flex h-56 w-full aspect-[4/3] object-cover transition group-hover:scale-[1.02]"
+                    />
+                    <div className="mx-3 my-2">
+                      <p className="line-clamp-2 text-sm text-gray-900 max-w-[320px] text-sm text-start text-foreground">
+                        Nike Air Force
+                      </p>
+                    </div>
+                    <div className="flex flex-cols gap-2 mx-3 my-3">
+                      <Badge className="w-12 h-5 px-0.2 bg-blue-200 text-xs text-center border border-border border-blue-600 text-blue-600 rounded-none border border-border border-blue-600  hover:border-blue-600 shadow-sm">
+                        ₽5 OFF
+                      </Badge>
+                      <Badge className="w-12 h-5 px-0.2 bg-blue-300 text-xs text-center border border-none rounded-none border border-border hover:border-blue-600 shadow-sm">
+                        ₽5 OFF
+                      </Badge>
+                      <Badge className="w-12 h-5 px-0.2 bg-yellow-200 text-xs text-center text-blackborder border-border border-orange-500 rounded-none border border-border shadow-sm hover:text-yellow-200">
+                        <span className="tet-xs text-yellow-500 m-2">★</span>{" "}
+                        4.8
+                      </Badge>
+                    </div>
+                    <div className="flex flex-cols gap-2 mx-3 my-3">
+                      <p className="text-start text-xs font-bold text-blue-600">
+                        ₽ 100
+                      </p>
+                      <p className="text-end text-xs font-foreground">
+                        10.6K Sold
+                      </p>
+                    </div>
+                  </button>
+                </Card>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto my-8">
+        <div className="min-h-full text-card-foreground h-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-1 gap-3 mx-2 my-5">
+            <div className="mx-auto space-y-6">
+              <Card className="bg-gray-100 w-auto h-14 pt-5 m-2 border border-border border-gray-300 rounded-none shadow-lg transition-all duration-300 hover:bg-gray-200">
+                <p className="flex justify-center  justify-center text-xs w-56 text-gray-400 mx-96 text-center">
+                  Login To See More/See More Products
+                </p>
+              </Card>
+            </div>
+          </div>
+        </div>
+      </div>
       <Footer />
     </div>
   );

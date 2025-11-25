@@ -274,9 +274,9 @@ export default function ProductsPage() {
         </div>
       </section>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
+      <div className="max-w-7xl mx-auto">
         {/* Search and Filters */}
-        <div className="mb-6 md:mb-8 bg-white rounded-2xl shadow-sm p-4 md:p-6">
+        <div className="mb-6 md:mb-8 bg-background rounded-2xl shadow-sm p-4 md:p-6">
           {/* Top Row - Search and View Controls */}
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
             {/* Search */}
@@ -297,16 +297,34 @@ export default function ProductsPage() {
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-
                 className="block apearance-none w-full h-full min-w-[200px] px-5 py-3 bg-transparent border-2 rounded-lg border-orange-200 text-sm focus:border-orange-500 focus:outline-none hover:border-orange-500 bg-white min-w-[180px]"
               >
                 {/* className="block py-2.5 ps-0 w-full text-sm text-body bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer" */}
-                <option value="name" className="p-2 hover:bg-blue-100 cursor-pointer">Sort by Name</option>
-                <option value="price-low" className="p-2 hover:bg-blue-100 cursor-pointer">Price: Low to High</option>
-                <option value="price-high" className="p-2 hover:bg-blue-100 cursor-pointer">Price: High to Low</option>
-                <option value="featured" className="p-2 hover:bg-blue-100 cursor-pointer">Featured First</option>
+                <option
+                  value="name"
+                  className="p-2 hover:bg-blue-100 cursor-pointer"
+                >
+                  Sort by Name
+                </option>
+                <option
+                  value="price-low"
+                  className="p-2 hover:bg-blue-100 cursor-pointer"
+                >
+                  Price: Low to High
+                </option>
+                <option
+                  value="price-high"
+                  className="p-2 hover:bg-blue-100 cursor-pointer"
+                >
+                  Price: High to Low
+                </option>
+                <option
+                  value="featured"
+                  className="p-2 hover:bg-blue-100 cursor-pointer"
+                >
+                  Featured First
+                </option>
               </select>
-
             </div>
 
             {/* Mobile Filter Toggle */}
@@ -341,7 +359,6 @@ export default function ProductsPage() {
                 </Button>
               ))}
             </div>
-
 
             {/* Mobile Sort Options */}
             <div className="lg:hidden">
@@ -387,158 +404,138 @@ export default function ProductsPage() {
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Results Summary */}
-        <div className="mb-4 text-sm text-gray-600">
-          Showing {filteredProducts.length} product
-          {filteredProducts.length !== 1 ? "s" : ""}
-          {selectedCategory !== "All Products" && ` in ${selectedCategory}`}
-          {searchTerm && ` matching "${searchTerm}"`}
-        </div>
-
-        {/* Product Grid/List */}
-        <div
-          className={`grid gap-4 md:gap-6 ${viewMode === "grid" ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" : "grid-cols-1"}`}
-        >
-          {filteredProducts.map((product) => (
-            <Card
-              key={product.id}
-              className={`border-2 border-orange-200 hover:border-orange-500 transition-all duration-300 hover:shadow-lg ${viewMode === "list" ? "flex flex-col sm:flex-row" : ""}`}
-            >
-              <CardContent
-                className={`p-4 ${viewMode === "list" ? "flex flex-col sm:flex-row w-full gap-4" : ""}`}
-              >
-                <Link
-                  href={`/products/${product.id}`}
-                  className={viewMode === "list" ? "flex-shrink-0" : ""}
-                >
-                  <div
-                    className={`relative overflow-hidden group ${viewMode === "list" ? "w-full sm:w-48 h-64 sm:h-48" : "w-full h-64"}`}
+      <div className="max-w-7xl mx-auto my-8">
+        <div className="min-h-full text-card-foreground h-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-1 gap-3 mx-2 my-5">
+            {/* Product Section */}
+            <div className="space-y-6">
+              <div className="grid lg:grid-cols-6 gap-4 my-4">
+                <Card className="group relative bg-white flex justify-center w-auto h-auto m-auto border border-border border-gray-200 rounded-none shadow-lg transition-all duration-300 group-hover:border-5 group-hover:border-blue-400">
+                  <button
+                    className="relative overflow-hidden transition"
+                    aria-label="View Angle 1"
                   >
-                    <Image
-                      src={product.images?.[0] || "/placeholder.svg"}
-                      alt={product.name}
-                      fill
-                      className="w-full h-full pb-8 object-scale-down rounded-lg object-contain p-4 group-hover:scale-150 transition-transform duration-400 "
-                      sizes={
-                        viewMode === "list"
-                          ? "(max-width: 640px) 100vw, 128px"
-                          : "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      }
+                    <Badge className="absolute bg-red-300 text-white text-xs text-red-700 text-center w-12 px-2 py-1 top-0 right-0 rounded-tl-lg rounded-r-none border-l-red-200 shadow-sm group-hover:border-5 hover:bg-orange-300 hover:text-orange-900">
+                      -10%
+                    </Badge>
+                    <img
+                      src="https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg"
+                      alt="Shoe Angle 1"
+                      className="flex h-56 w-full aspect-[4/3] object-cover transition"
                     />
-
-                    {/* Fixed Badge Positioning */}
-                    <div className="absolute bottom-0 flex flex-wrap gap-0 justify-between">
-                      <div className="flex flex-wrap gap-1">
-                        {product.featured && (
-                          <Badge className="left-2 right-2 bg-yellow-500 text-white text-xs mr-1 px-2 py-1 shadow-sm">
-                            Featured
-                          </Badge>
-                        )}
-                      </div>
-                      <div className="flex flex-wrap gap-1">
-                        {product.in_stock ? (
-                          <Badge className="left-2 right-2 bg-green-500 text-white text-xs px-2 py-1 shadow-sm">
-                            In Stock
-                          </Badge>
-                        ) : (
-                          <Badge className="left-2 right-2 bg-green-500 text-white text-xs px-2 py-1 shadow-sm">
-                            Out of Stock
-                          </Badge>
-                        )}
-                      </div>
-                    </div>
-                    {/* Discount Badge - Bottom Right */}
-                    <div className="absolute bottom-0 right-0 flex flex-wrap gap-1 justify-between">
-                      {" "}
-                      {product.original_price &&
-                        calculateDiscount(
-                          product.price,
-                          product.original_price
-                        ) > 0 && (
-                          <Badge className="bg-orange-500 text-white text-xs px-2 py-1 shadow-sm">
-                            {calculateDiscount(
-                              product.price,
-                              product.original_price
-                            )}
-                            % Off
-                          </Badge>
-                        )}
-                    </div>
-                  </div>
-                </Link>
-
-                <div
-                  className={`${viewMode === "list" ? "flex-1 flex flex-col justify-between" : "mt-2"}`}
-                >
-                  <div>
-                    <Link href={`/products/${product.id}`}>
-                      <h2
-                        className={`font-bold hover:text-orange-600 transition-colors line-clamp-2 ${viewMode === "list" ? "text-lg" : "text-md lg:text-xl"}`}
-                      >
-                        {product.name}
-                      </h2>
-                    </Link>
-                  </div>
-
-                  <div className={`${viewMode === "list" ? "mt-2" : "mt-3"}`}>
-                    <div className="flex gap-1 justify-between mb-5">
-                      <p className="text-md font-bold text-orange-600">
-                        {formatPrice(product.price)}
+                    <div className="mx-3 my-2">
+                      <p className="line-clamp-2 text-sm text-gray-900 max-w-[320px] text-sm text-start text-foreground">
+                        Nike Air Force
                       </p>
-                      {product.original_price && (
-                        <p className="text-xs text-gray-400 line-through mt-1">
-                          {formatPrice(product.original_price)}
-                        </p>
-                      )}
                     </div>
+                    <div className="flex flex-cols gap-2 mx-3 my-3">
+                      <Badge className="w-12 h-5 px-0.2 bg-blue-200 text-xs text-center border border-border border-blue-600 text-blue-600 rounded-none border border-border border-blue-600  hover:border-blue-600 shadow-sm">
+                        ₽5 OFF
+                      </Badge>
+                      <Badge className="w-12 h-5 px-0.2 bg-blue-300 text-xs text-center border border-none rounded-none border border-border hover:border-blue-600 shadow-sm">
+                        ₽5 OFF
+                      </Badge>
+                      <Badge className="w-12 h-5 px-0.2 bg-yellow-200 text-xs text-center text-blackborder border-border border-orange-500 rounded-none border border-border shadow-sm hover:text-yellow-200">
+                        <span className="text-xs text-yellow-500 m-2">★</span>{" "}
+                        4.8
+                      </Badge>
+                    </div>
+                    <div className="flex flex-cols gap-2 mx-3 my-2">
+                      <p className="text-start text-xs font-bold text-blue-600">
+                        ₽ 100
+                      </p>
+                      <p className="text-end text-xs font-foreground">
+                        10.6K Sold
+                      </p>
+                    </div>
+                  </button>
 
-                    <Button
-                      variant="default"
-                      size="sm"
-                      onClick={(e) => handleAddToCart(product, e)}
-                      disabled={
-                        !product.in_stock || animatingProduct === product.id
-                      }
-                      className={`${viewMode === "list" ? "w-full sm:w-auto sm:max-w-[200px]" : "w-full sm:max-w-[650px] lg:max-w-[650px]"} bg-gradient-to-r 
-                      from-orange-500 to-orange-400 hover:from-orange-600 hover:to-red-700 disabled:opacity-50 text-xs md:text-sm h-10`}
+                  <Button className="hidden group-hover:block absolute bottom-0 right-0 w-full h-auto text-white rounded-none border border-border shadow-sm group-hover:bg-blue-300 group-hover:text-blue-900">
+                    <span className="text-xs text-center text-blue-500">
+                      Find Similar
+                    </span>
+                  </Button>
+                </Card>{" "}
+                {filteredProducts.map((product) => (
+                  <Card className="group relative bg-white flex justify-center w-auto h-auto m-auto border border-border border-gray-200 rounded-none shadow-lg transition-all duration-300 group-hover:border-5 group-hover:border-blue-400">
+                    <Link
+                      href={`/products/${product.id}`}
+                      className={viewMode === "list" ? "flex-shrink-0" : ""}
                     >
-                      <ShoppingCart className="w-3 md:w-4 h-3 md:h-4 mr-1 md:mr-2" />
-                      {animatingProduct === product.id
-                        ? "Adding..."
-                        : "Add to Cart"}
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+                      <button
+                        className="relative overflow-hidden transition"
+                        aria-label="View Angle 1"
+                      >
+                        <Badge className="absolute bg-red-300 text-white text-xs text-red-700 text-center w-12 px-2 py-1 top-0 right-0 rounded-tl-lg rounded-r-none border-l-red-200 shadow-sm hover:bg-orange-300">
+                          -10%
+                        </Badge>    
+                        <img
+                          src="https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg"
+                          alt="Shoe Angle 1"
+                          className="flex h-56 w-full aspect-[4/3] object-cover transition"
+                        />
+                        <div className="mx-3 my-2">
+                          <p className="line-clamp-2 text-sm text-gray-900 max-w-[320px] text-sm text-start text-foreground">
+                            Nike Air Force
+                          </p>
+                        </div>
+                        <div className="flex flex-cols gap-2 mx-3 my-3">
+                          <Badge className="w-12 h-5 px-0.2 bg-blue-200 text-xs text-center border border-border border-blue-600 text-blue-600 rounded-none border border-border border-blue-600  hover:border-blue-600 shadow-sm">
+                            ₽5 OFF
+                          </Badge>
+                          <Badge className="w-12 h-5 px-0.2 bg-blue-300 text-xs text-center border border-none rounded-none border border-border hover:border-blue-600 shadow-sm">
+                            ₽5 OFF
+                          </Badge>
+                          <Badge className="w-12 h-5 px-0.2 bg-yellow-200 text-xs text-center text-blackborder border-border border-orange-500 rounded-none border border-border shadow-sm hover:text-yellow-200">
+                            <span className="text-xs text-yellow-500 m-2">
+                              ★
+                            </span>{" "}
+                            4.8
+                          </Badge>
+                        </div>
+                        <div className="flex flex-cols gap-2 mx-3 my-3">
+                          <p className="text-start text-xs font-bold text-blue-600">
+                            ₽ 100{" "}
+                            <span className="text-xs text-gray-400 line-through">
+                              {" "}
+                              ₽ 100
+                            </span>
+                          </p>
+                        </div>
+                      </button>
+                    </Link>
 
-        {filteredProducts.length === 0 && !loading && (
-          <div className="text-center py-12 md:py-16">
-            <div className="w-24 md:w-32 h-24 md:h-32 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Search className="w-12 md:w-16 h-12 md:h-16 text-orange-500" />
+                    <Button className="hidden group-hover:block absolute bottom-0 right-0 w-full h-auto text-white rounded-none border border-border shadow-sm group-hover:bg-blue-300 group-hover:text-blue-900">
+                      <span className="text-xs text-center text-blue-500">
+                        Find Similar
+                      </span>
+                    </Button>
+                  </Card>
+                ))}
+              </div>
             </div>
-            <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">
-              No products found
-            </h3>
-            <p className="text-gray-600 mb-6 md:mb-8">
-              {selectedCategory !== "All Products"
-                ? `No products found in ${selectedCategory} category.`
-                : "Try adjusting your search or filter criteria."}
-            </p>
-            <Button
-              onClick={() => {
-                setSearchTerm("");
-                handleCategoryChange("All Products");
-              }}
-              className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700"
-            >
-              Clear Filters
-            </Button>
           </div>
-        )}
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto my-8">
+        <div className="min-h-full text-card-foreground h-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-1 gap-3 mx-2 my-5">
+            {/* You May Also Like Section */}
+            <p className="text-xs text-muted-foreground flex items-center uppercase">
+              You May Also Like
+            </p>
+            <div className="mx-auto space-y-6">
+              <Card className="bg-gray-100 w-auto h-14 pt-5 m-2 border border-border border-gray-300 rounded-none shadow-lg transition-all duration-300 hover:bg-gray-200">
+                <p className="flex justify-center  justify-center text-xs w-56 text-gray-400 mx-96 text-center">
+                  Login To See More/See More Products
+                </p>
+              </Card>
+            </div>
+          </div>
+        </div>
       </div>
 
       <Footer />

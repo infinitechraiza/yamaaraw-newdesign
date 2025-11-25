@@ -1,104 +1,126 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import Link from "next/link"
-import { ArrowRight, Zap, Shield, Truck, Play, Gift, MessageSquare } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import Header from "@/components/layout/header"
-import Footer from "@/components/layout/footer"
-import ProductGrid from "@/components/product/product-grid"
-import HeroImageSlider from "@/components/ui/hero-image-slider"
-import TestimonialForm from "@/components/testimonial/testimonial-form"
-import ETrikeLoader from "@/components/ui/etrike-loader"
-import TestimonialCarousel from "@/components/testimonial/testimonial-carousel"
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import {
+  ArrowRight,
+  Zap,
+  Shield,
+  Truck,
+  Play,
+  Gift,
+  MessageSquare,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import Header from "@/components/layout/header";
+import Footer from "@/components/layout/footer";
+import ProductGrid from "@/components/product/product-grid";
+import HeroImageSlider from "@/components/ui/hero-image-slider";
+import TestimonialForm from "@/components/testimonial/testimonial-form";
+import ETrikeLoader from "@/components/ui/etrike-loader";
+import TestimonialCarousel from "@/components/testimonial/testimonial-carousel";
+
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 
 interface FeaturedProduct {
-  id: number
-  name: string
-  model: string
-  category: string
-  price: number
-  original_price?: number
-  images: string[]
-  featured: boolean
-  in_stock: boolean
-  description: string
+  id: number;
+  name: string;
+  model: string;
+  category: string;
+  price: number;
+  original_price?: number;
+  images: string[];
+  featured: boolean;
+  in_stock: boolean;
+  description: string;
 }
 
 interface Testimonial {
-  id: number
-  name: string
-  location: string
-  rating: number
-  title: string
-  message: string
-  created_at: string
+  id: number;
+  name: string;
+  location: string;
+  rating: number;
+  title: string;
+  message: string;
+  created_at: string;
   product?: {
-    name: string
-    model: string
-  }
+    name: string;
+    model: string;
+  };
 }
 
 export default function HomePage() {
-  const [featuredProducts, setFeaturedProducts] = useState<FeaturedProduct[]>([])
-  const [testimonials, setTestimonials] = useState<Testimonial[]>([])
-  const [loading, setLoading] = useState(true)
-  const [showTestimonialForm, setShowTestimonialForm] = useState(false)
+  const [featuredProducts, setFeaturedProducts] = useState<FeaturedProduct[]>(
+    []
+  );
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [showTestimonialForm, setShowTestimonialForm] = useState(false);
 
   useEffect(() => {
-    fetchData()
-  }, [])
+    fetchData();
+  }, []);
 
   const fetchData = async () => {
     try {
-      setLoading(true)
+      setLoading(true);
 
       // Fetch featured products and testimonials in parallel
       const [productsResponse, testimonialsResponse] = await Promise.all([
         fetch("/api/getfeatured"),
-        fetch(`${process.env.NEXT_PUBLIC_LARAVEL_API_URL}/testimonials?featured=true`),
-      ])
+        fetch(
+          `${process.env.NEXT_PUBLIC_LARAVEL_API_URL}/testimonials?featured=true`
+        ),
+      ]);
 
-      console.log("Products response status:", productsResponse.status)
-      console.log("Testimonials response status:", testimonialsResponse.status)
+      console.log("Products response status:", productsResponse.status);
+      console.log("Testimonials response status:", testimonialsResponse.status);
 
       if (productsResponse.ok) {
-        const productsResult = await productsResponse.json()
-        console.log("Products result:", productsResult)
+        const productsResult = await productsResponse.json();
+        console.log("Products result:", productsResult);
 
         if (productsResult.success) {
-          setFeaturedProducts(productsResult.data || [])
+          setFeaturedProducts(productsResult.data || []);
         }
       } else {
-        console.error("Failed to fetch products:", productsResponse.status)
+        console.error("Failed to fetch products:", productsResponse.status);
       }
 
       if (testimonialsResponse.ok) {
-        const testimonialsResult = await testimonialsResponse.json()
-        console.log("Testimonials result:", testimonialsResult)
+        const testimonialsResult = await testimonialsResponse.json();
+        console.log("Testimonials result:", testimonialsResult);
 
         if (testimonialsResult.success) {
           // Get the first 3 testimonials for homepage display
-          setTestimonials(testimonialsResult.data?.data?.slice(0, 3) || [])
+          setTestimonials(testimonialsResult.data?.data?.slice(0, 3) || []);
         }
       } else {
-        console.error("Failed to fetch testimonials:", testimonialsResponse.status)
+        console.error(
+          "Failed to fetch testimonials:",
+          testimonialsResponse.status
+        );
       }
     } catch (error) {
-      console.error("Error fetching homepage data:", error)
+      console.error("Error fetching homepage data:", error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",
       month: "long",
       day: "numeric",
-    })
-  }
+    });
+  };
 
   if (loading) {
     return (
@@ -109,13 +131,12 @@ export default function HomePage() {
         </div>
         <Footer />
       </div>
-    )
+    );
   }
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
-
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-slate-900 via-orange-900 to-red-900 text-white overflow-hidden">
         <div className="absolute inset-0 bg-black/10"></div>
@@ -134,8 +155,8 @@ export default function HomePage() {
                   </span>
                 </h1>
                 <p className="text-xl text-slate-300 max-w-lg leading-relaxed">
-                  Experience premium electric vehicles designed for modern urban transport, eco-conscious commuting, and
-                  sustainable living.
+                  Experience premium electric vehicles designed for modern urban
+                  transport, eco-conscious commuting, and sustainable living.
                 </p>
               </div>
 
@@ -148,7 +169,6 @@ export default function HomePage() {
                     Shop Now <ArrowRight className="ml-2 w-5 h-5" />
                   </Link>
                 </Button>
-                
               </div>
 
               {/* Stats */}
@@ -162,7 +182,9 @@ export default function HomePage() {
                   <div className="text-sm text-slate-300">Service Centers</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-orange-400">2 Years</div>
+                  <div className="text-2xl font-bold text-orange-400">
+                    2 Years
+                  </div>
                   <div className="text-sm text-slate-300">Warranty</div>
                 </div>
               </div>
@@ -192,13 +214,127 @@ export default function HomePage() {
 
       {/* Features Section */}
       <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto my-8">
+          <div className="min-h-full text-card-foreground h-auto">
+            <div className="relative grid grid-cols-1 lg:grid-cols-1 gap-3 mx-2 my-5">
+              <Swiper
+                loop={true}
+                autoplay={{
+                  delay: 3000,
+                  disableOnInteraction: false,
+                }}
+                navigation={{
+                  prevEl: ".custom-prev",
+                  nextEl: ".custom-next",
+                }}
+                pagination={{ clickable: true }}
+                modules={[Autoplay, Navigation, Pagination]}
+                className="w-full h-64"
+              >
+                <SwiperSlide>
+                  <div className="bg-blue-300 flex items-center justify-center h-full">
+                    Banner 1
+                  </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div className="bg-blue-300 flex items-center justify-center h-full">
+                    Banner 2
+                  </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div className="bg-blue-300 flex items-center justify-center h-full">
+                    Banner 3
+                  </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div className="bg-blue-300 flex items-center justify-center h-full">
+                    Banner 4
+                  </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div className="bg-blue-300 flex items-center justify-center h-full">
+                    Banner 5
+                  </div>
+                </SwiperSlide>
+              </Swiper>
+              <style jsx>{`
+                :global(.swiper-pagination-bullet) {
+                  @apply w-3 h-3 mx-5 bg-white rounded-full opacity-70;
+                }
+                :global(.swiper-pagination-bullet-active) {
+                  @apply bg-red-500 opacity-100 scale-110;
+                }
+              `}</style>
+
+              {/* Overlay chevrons */}
+              <button
+                className="group custom-prev absolute top-1/2 left-1 -translate-y-1/2 p-2 bg-gray/70 shadow z-20 hover:bg-gray-200"
+                aria-label="Previous slide"
+              >
+                <ChevronLeftIcon className="h-6 w-6 text-white group-hover:text-black" />
+              </button>
+
+              <button
+                className="group custom-next absolute top-1/2 right-1 -translate-y-1/2 p-2 bg-gray/70 shadow z-20 hover:bg-gray-200"
+                aria-label="Next slide"
+              >
+                <ChevronRightIcon className="h-6 w-6 text-white group-hover:text-black" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Banner */}
+      {/* <section className="py-10 bg-white">
+        <h2 className="text-xl font-semibold text-center mb-6">CATEGORIES</h2>
+        <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4 px-4">
+          {[
+            { label: "Sweatshirt", img: "/images/sweatshirt.png" },
+            { label: "Tripod", img: "/images/tripod.png" },
+            { label: "Beach", img: "/images/beach.png" },
+            { label: "Sippy Cup", img: "/images/sippy-cup.png" },
+            { label: "Power Drill", img: "/images/drill.png" },
+            { label: "Toy", img: "/images/toy.png" },
+            { label: "Backpack", img: "/images/backpack.png" },
+            { label: "Sunglasses", img: "/images/sunglasses.png" },
+            { label: "Dress", img: "/images/dress.png" },
+            { label: "Vase", img: "/images/vase.png" },
+            { label: "Lipstick", img: "/images/lipstick.png" },
+            { label: "Green Dress", img: "/images/green-dress.png" },
+            { label: "Laptop", img: "/images/laptop.png" },
+            { label: "Camera", img: "/images/camera.png" },
+            { label: "Watch", img: "/images/watch.png" },
+            { label: "Shoe", img: "/images/shoe.png" },
+            { label: "Beanie", img: "/images/beanie.png" },
+          ].map((item, index) => (
+            <div key={index} className="flex flex-col items-center text-center">
+              <div className="w-16 h-16 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center">
+                <img
+                  src={item.img}
+                  alt={item.label}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <span className="mt-2 text-sm">{item.label}</span>
+            </div>
+          ))}
+        </div>
+      </section> */}
+      {/* Features Section */}
+      <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <Badge className="mb-4 px-2 py-1.5 bg-orange-100 text-orange-600 border-orange-200">Why Choose YAMAARAW</Badge>
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">Built for Excellence</h2>
+            <Badge className="mb-4 px-2 py-1.5 bg-orange-100 text-orange-600 border-orange-200">
+              Why Choose YAMAARAW
+            </Badge>
+            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+              Built for Excellence
+            </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              We're committed to delivering smart, sustainable, and high-performance electric mobility solutions that
-              exceed expectations.
+              We're committed to delivering smart, sustainable, and
+              high-performance electric mobility solutions that exceed
+              expectations.
             </p>
           </div>
 
@@ -207,10 +343,12 @@ export default function HomePage() {
               <div className="w-16 h-16 bg-gradient-to-br from-orange-600 to-red-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 <Zap className="w-8 h-8 text-white" />
               </div>
-              <h3 className="text-xl font-semibold mb-3 text-gray-900">High Performance</h3>
+              <h3 className="text-xl font-semibold mb-3 text-gray-900">
+                High Performance
+              </h3>
               <p className="text-gray-600 leading-relaxed">
-                Ultra-silent motors with impressive range up to 100km per charge. Advanced battery technology for
-                reliable performance.
+                Ultra-silent motors with impressive range up to 100km per
+                charge. Advanced battery technology for reliable performance.
               </p>
             </div>
 
@@ -218,10 +356,12 @@ export default function HomePage() {
               <div className="w-16 h-16 bg-gradient-to-br from-orange-600 to-yellow-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 <Shield className="w-8 h-8 text-white" />
               </div>
-              <h3 className="text-xl font-semibold mb-3 text-gray-900">Reliable & Safe</h3>
+              <h3 className="text-xl font-semibold mb-3 text-gray-900">
+                Reliable & Safe
+              </h3>
               <p className="text-gray-600 leading-relaxed">
-                Built with premium materials and advanced safety features. Rigorous testing ensures maximum reliability
-                and durability.
+                Built with premium materials and advanced safety features.
+                Rigorous testing ensures maximum reliability and durability.
               </p>
             </div>
 
@@ -229,10 +369,12 @@ export default function HomePage() {
               <div className="w-16 h-16 bg-gradient-to-br from-red-600 to-orange-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 <Truck className="w-8 h-8 text-white" />
               </div>
-              <h3 className="text-xl font-semibold mb-3 text-gray-900">Nationwide Service</h3>
+              <h3 className="text-xl font-semibold mb-3 text-gray-900">
+                Nationwide Service
+              </h3>
               <p className="text-gray-600 leading-relaxed">
-                Comprehensive after-sales support and service centers across the Philippines. 24/7 customer assistance
-                available.
+                Comprehensive after-sales support and service centers across the
+                Philippines. 24/7 customer assistance available.
               </p>
             </div>
           </div>
@@ -243,9 +385,15 @@ export default function HomePage() {
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <Badge className="mb-4 px-2.5 py-2 bg-orange-100 text-orange-600 border-orange-200">Featured Collection</Badge>
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">Most Popular Vehicles</h2>
-            <p className="text-lg text-gray-600">Discover our best-selling electric vehicles loved by thousands</p>
+            <Badge className="mb-4 px-2.5 py-2 bg-orange-100 text-orange-600 border-orange-200">
+              Featured Collection
+            </Badge>
+            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+              Most Popular Vehicles
+            </h2>
+            <p className="text-lg text-gray-600">
+              Discover our best-selling electric vehicles loved by thousands
+            </p>
           </div>
 
           {featuredProducts.length > 0 ? (
@@ -264,7 +412,9 @@ export default function HomePage() {
             </>
           ) : (
             <div className="text-center py-12">
-              <p className="text-gray-500 text-lg">No featured products available at the moment.</p>
+              <p className="text-gray-500 text-lg">
+                No featured products available at the moment.
+              </p>
               <Button
                 asChild
                 className="mt-4 bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700"
@@ -280,9 +430,15 @@ export default function HomePage() {
       <section className="py-20 bg-gradient-to-br from-gray-50 via-white to-orange-50/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <Badge className="mb-4 bg-orange-100 text-orange-600 border-orange-200">Customer Reviews</Badge>
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">What Our Customers Say</h2>
-            <p className="text-lg text-gray-600">Real experiences from our satisfied customers</p>
+            <Badge className="mb-4 bg-orange-100 text-orange-600 border-orange-200">
+              Customer Reviews
+            </Badge>
+            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+              What Our Customers Say
+            </h2>
+            <p className="text-lg text-gray-600">
+              Real experiences from our satisfied customers
+            </p>
           </div>
 
           {/* Toggle between testimonials and form */}
@@ -303,8 +459,8 @@ export default function HomePage() {
               <TestimonialForm
                 products={featuredProducts}
                 onSuccess={() => {
-                  setShowTestimonialForm(false)
-                  fetchData() // Refresh testimonials
+                  setShowTestimonialForm(false);
+                  fetchData(); // Refresh testimonials
                 }}
               />
             </div>
@@ -389,9 +545,7 @@ export default function HomePage() {
                       ]
                 }
                 speed={40}
-              />
-
-             
+              />{" "}
             </div>
           )}
         </div>
@@ -400,9 +554,12 @@ export default function HomePage() {
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-slate-900 via-orange-900 to-red-900">
         <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl lg:text-4xl font-bold text-white mb-6">Ready to Go Electric?</h2>
+          <h2 className="text-3xl lg:text-4xl font-bold text-white mb-6">
+            Ready to Go Electric?
+          </h2>
           <p className="text-xl text-slate-300 mb-8 max-w-2xl mx-auto">
-            Join thousands of satisfied customers who have made the switch to sustainable transportation.
+            Join thousands of satisfied customers who have made the switch to
+            sustainable transportation.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
@@ -423,5 +580,5 @@ export default function HomePage() {
 
       <Footer />
     </div>
-  )
+  );
 }
