@@ -39,7 +39,7 @@ export default function SortBar({ currentSort, onSortChange, currentPage = 1, to
           onClick={() => onSortChange('popular')}
           className={`px-4 py-2 text-sm font-medium rounded transition ${
             currentSort === 'popular'
-              ? 'bg-orange-500 text-white'
+              ? 'bg-blue-500 text-white'
               : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
           }`}
         >
@@ -51,7 +51,7 @@ export default function SortBar({ currentSort, onSortChange, currentPage = 1, to
           onClick={() => onSortChange('latest')}
           className={`px-4 py-2 text-sm font-medium rounded transition ${
             currentSort === 'latest'
-              ? 'bg-orange-500 text-white'
+              ? 'bg-blue-500 text-white'
               : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
           }`}
         >
@@ -63,7 +63,7 @@ export default function SortBar({ currentSort, onSortChange, currentPage = 1, to
           onClick={() => onSortChange('rating')}
           className={`px-4 py-2 text-sm font-medium rounded transition ${
             currentSort === 'rating'
-              ? 'bg-orange-500 text-white'
+              ? 'bg-blue-500 text-white'
               : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
           }`}
         >
@@ -76,7 +76,7 @@ export default function SortBar({ currentSort, onSortChange, currentPage = 1, to
             onClick={() => setIsPriceDropdownOpen(!isPriceDropdownOpen)}
             className={`px-4 py-2 text-sm font-medium rounded transition flex items-center gap-2 ${
               isPriceSort(currentSort)
-                ? 'bg-orange-500 text-white'
+                ? 'bg-blue-500 text-white'
                 : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
             }`}
           >
@@ -109,6 +109,7 @@ export default function SortBar({ currentSort, onSortChange, currentPage = 1, to
                 Price: High to Low
               </button>
             </div>
+            
           )}
         </div>
       </div>
@@ -117,7 +118,7 @@ export default function SortBar({ currentSort, onSortChange, currentPage = 1, to
       {/* Pagination */}
       {totalPages > 1 && (
         <div className="flex items-center gap-2">
-          <span className="text-sm text-orange-500 font-medium mr-2">
+          <span className="text-sm text-blue-500 font-medium mr-2">
             {currentPage}/{totalPages}
           </span>
           
@@ -160,7 +161,7 @@ export default function SortBar({ currentSort, onSortChange, currentPage = 1, to
                   onClick={() => onPageChange?.(page)}
                   className={`flex items-center justify-center w-8 h-8 rounded text-sm font-medium transition ${
                     currentPage === page
-                      ? 'bg-orange-500 text-white'
+                      ? 'bg-blue-500 text-white'
                       : 'border border-gray-300 hover:bg-gray-100 text-gray-700'
                   }`}
                   aria-label={`Go to page ${page}`}

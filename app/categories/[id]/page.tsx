@@ -471,13 +471,6 @@ export default function HomePage() {
 
       {/* Category Products Section with Filters */}
       <div className="max-w-7xl mx-auto p-4" ref={productsRef}>
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-bold text-gray-900">All Products</h2>
-          <p className="text-sm text-gray-600">
-            {filteredAndSortedProducts.length} items
-          </p>
-        </div>
-
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Filter Sidebar */}
           <div className="lg:col-span-1">
@@ -494,7 +487,6 @@ export default function HomePage() {
               totalPages={totalPages}
               onPageChange={handlePageChange}
             />
-
             {paginatedProducts.length > 0 ? (
               <>
                 <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-5 gap-4">

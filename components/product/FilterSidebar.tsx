@@ -66,7 +66,7 @@ export default function FilterSidebar({ onFilterChange }: FilterSidebarProps) {
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <SlidersHorizontal className="w-5 h-5 text-gray-700" />
-          <h2 className="text-lg font-semibold text-gray-900">Filters</h2>
+          <h2 className="text-lg font-semibold text-gray-900">All Categories</h2>
         </div>
         <button
           onClick={resetFilters}
