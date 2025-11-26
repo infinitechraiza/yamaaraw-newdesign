@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
+  Grid,
   Package,
   Users,
   ShoppingCart,
@@ -28,6 +29,11 @@ const sidebarItems = [
     title: "Dashboard",
     href: "/admin",
     icon: LayoutDashboard,
+  },
+  {
+    title: "Categories",
+    href: "/admin/categories",
+    icon: Grid ,
   },
   {
     title: "Products",

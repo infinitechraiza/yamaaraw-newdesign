@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -20,6 +20,16 @@ import HeroImageSlider from "@/components/ui/hero-image-slider";
 import TestimonialForm from "@/components/testimonial/testimonial-form";
 import ETrikeLoader from "@/components/ui/etrike-loader";
 import TestimonialCarousel from "@/components/testimonial/testimonial-carousel";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+} from "@/components/product/Tabs";
+import TopProductCard from "@/components/product/TopProductCard";
+import Carousel from "@/components/product/Carousel";
+import CategoryCard from "@/components/product/CategoryCard";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
@@ -27,6 +37,9 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
+import FilterBar from '@/components/product/FilterBar';
+import FilterSidebar, { FilterState } from '@/components/product/FilterSidebar';
+import ProductCard, { Product } from '@/components/product/ProductCard';
 
 interface FeaturedProduct {
   id: number;
@@ -56,6 +69,106 @@ interface Testimonial {
 }
 
 export default function HomePage() {
+  const [quantity, setQuantity] = useState(1);
+  const [selectedColor, setSelectedColor] = useState('White');
+  const [currentSort, setCurrentSort] = useState('relevance');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [filters, setFilters] = useState<FilterState>({
+    priceRange: [0, 10000],
+    rating: 0,
+    inStock: false,
+    categories: [],
+  });
+  
+  const itemsPerPage = 12;
+
+  const colors = [
+    { name: 'White', class: 'bg-white' },
+    { name: 'Black', class: 'bg-black' },
+    { name: 'Red', class: 'bg-red-700' },
+    { name: 'Blue', class: 'bg-blue-700' },
+  ];
+
+// Mock products for filtering demo
+const mockProducts: Product[] = [
+  { id: 1, name: 'Nike Air Force 1 Low White', price: 4500, original_price: 5000, rating: 4.8, sold: 12400, image: 'https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg', in_stock: true },
+  { id: 2, name: 'Nike Air Force 1 Mid Black', price: 5200, original_price: 6000, rating: 4.9, sold: 8900, image: 'https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg', in_stock: true },
+  { id: 3, name: 'Nike Air Force 1 High Triple White', price: 3800, rating: 4.6, sold: 15200, image: 'https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg', in_stock: true },
+  { id: 4, name: 'Nike Air Force 1 Shadow Pale Ivory', price: 6500, original_price: 7500, rating: 4.7, sold: 6300, image: 'https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg', in_stock: false },
+  { id: 5, name: 'Nike Air Force 1 Low University Blue', price: 4200, rating: 4.5, sold: 9800, image: 'https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg', in_stock: true },
+  { id: 6, name: 'Nike Air Force 1 07 LX UV Reactive', price: 7200, original_price: 8500, rating: 4.9, sold: 4100, image: 'https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg', in_stock: true },
+  { id: 7, name: 'Nike Air Force 1 Low Cactus Jack', price: 2800, rating: 4.3, sold: 18700, image: 'https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg', in_stock: true },
+  { id: 8, name: 'Nike Air Force 1 React White Ice', price: 5800, original_price: 6800, rating: 4.8, sold: 7200, image: 'https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg', in_stock: true },
+  { id: 9, name: 'Nike Air Force 1 Low Off-White', price: 8900, original_price: 10000, rating: 5.0, sold: 3400, image: 'https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg', in_stock: false },
+  { id: 10, name: 'Nike Air Force 1 Low Pink Foam', price: 3900, rating: 4.6, sold: 11200, image: 'https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg', in_stock: true },
+  { id: 11, name: 'Nike Air Force 1 Sage Low Triple White', price: 4600, original_price: 5200, rating: 4.7, sold: 8600, image: 'https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg', in_stock: true },
+  { id: 12, name: 'Nike Air Force 1 Low Wheat Mocha', price: 5400, rating: 4.8, sold: 6900, image: 'https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg', in_stock: true },
+];
+
+  // Filter and sort products
+  const filteredAndSortedProducts = useMemo(() => {
+    let result = [...mockProducts];
+
+    // Apply filters
+    result = result.filter((product) => {
+      // Price range filter
+      if (product.price < filters.priceRange[0] || product.price > filters.priceRange[1]) {
+        return false;
+      }
+
+      // Rating filter
+      if (filters.rating > 0 && product.rating < filters.rating) {
+        return false;
+      }
+
+      // Stock filter
+      if (filters.inStock && !product.in_stock) {
+        return false;
+      }
+
+      return true;
+    });
+
+    // Apply sorting
+    switch (currentSort) {
+      case 'price_asc':
+        result.sort((a, b) => a.price - b.price);
+        break;
+      case 'price_desc':
+        result.sort((a, b) => b.price - a.price);
+        break;
+      case 'rating':
+        result.sort((a, b) => b.rating - a.rating);
+        break;
+      case 'popular':
+        result.sort((a, b) => b.sold - a.sold);
+        break;
+      case 'latest':
+        result.sort((a, b) => b.id - a.id);
+        break;
+      default:
+        // relevance - keep original order
+        break;
+    }
+
+    return result;
+  }, [filters, currentSort]);
+
+  // Pagination
+  const totalPages = Math.ceil(filteredAndSortedProducts.length / itemsPerPage);
+  const paginatedProducts = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return filteredAndSortedProducts.slice(startIndex, endIndex);
+  }, [filteredAndSortedProducts, currentPage]);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    productsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+
+
   const [featuredProducts, setFeaturedProducts] = useState<FeaturedProduct[]>(
     []
   );
@@ -113,6 +226,7 @@ export default function HomePage() {
       setLoading(false);
     }
   };
+  const productsRef = useRef<HTMLDivElement>(null);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -120,6 +234,10 @@ export default function HomePage() {
       month: "long",
       day: "numeric",
     });
+  };
+
+  const handleCategoryClick = () => {
+    productsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   if (loading) {
@@ -134,446 +252,700 @@ export default function HomePage() {
     );
   }
 
+  // Top Products data by category
+  const topProductsByCategory = {
+    cctv: [
+      {
+        id: 101,
+        name: "1080P Camera Hidden Super Mini CCTV Wireless 140 Degree Wide",
+        price: 142,
+        monthly_sales: "Sold 8259",
+        image:
+          "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      },
+      {
+        id: 102,
+        name: "V380 Pro BULB 2.4G/5G PTZ Camera Auto Tracking Night",
+        price: 299,
+        monthly_sales: "Sold 6721",
+        image:
+          "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      },
+      {
+        id: 103,
+        name: "Bulb Dual Lens CCTV Camera 8MP+8MP V380 NO Wifi Neede",
+        price: 365,
+        monthly_sales: "Sold 5526",
+        image:
+          "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      },
+      {
+        id: 104,
+        name: "TP-Link Tapo C200C Pan/Tilt Home Security Wi-Fi",
+        price: 809,
+        monthly_sales: "Sold 4360",
+        image:
+          "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      },
+      {
+        id: 105,
+        name: "TP-Link Official Store | Tapo C200C | Indoor | Security CCTV",
+        price: 840,
+        monthly_sales: "Sold 3910",
+        image:
+          "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      },
+      {
+        id: 106,
+        name: "V380 Pro CCTV Camera 8MP 5G",
+        price: 380,
+        monthly_sales: "Sold 8259",
+        image:
+          "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      },
+    ],
+    flipflop: [
+      {
+        id: 201,
+        name: "Comfortable Rubber Flipflop Sandals",
+        price: 450,
+        monthly_sales: "Sold 15K+",
+        image:
+          "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      },
+      {
+        id: 202,
+        name: "Beach Style Summer Flipflop",
+        price: 320,
+        monthly_sales: "Sold 22K+",
+        image:
+          "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      },
+      {
+        id: 203,
+        name: "Anti-Slip Home Flipflop Slippers",
+        price: 280,
+        monthly_sales: "Sold 18K+",
+        image:
+          "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      },
+      {
+        id: 204,
+        name: "Outdoor Walking Flipflop Sandals",
+        price: 520,
+        monthly_sales: "Sold 12K+",
+        image:
+          "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      },
+      {
+        id: 205,
+        name: "Stylish Colorful Flipflop Collection",
+        price: 390,
+        monthly_sales: "Sold 25K+",
+        image:
+          "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      },
+      {
+        id: 206,
+        name: "Premium Leather Flipflop Sandals",
+        price: 780,
+        monthly_sales: "Sold 8K+",
+        image:
+          "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      },
+    ],
+    perfume: [
+      {
+        id: 301,
+        name: "Oil Based Inspired Perfume Long Lasting",
+        price: 890,
+        monthly_sales: "Monthly Sales 145K+",
+        image:
+          "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      },
+      {
+        id: 302,
+        name: "Premium Designer Perfume Collection",
+        price: 1200,
+        monthly_sales: "Monthly Sales 98K+",
+        image:
+          "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      },
+      {
+        id: 303,
+        name: "Luxury Fragrance Oil Based Perfume",
+        price: 950,
+        monthly_sales: "Monthly Sales 112K+",
+        image:
+          "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      },
+      {
+        id: 304,
+        name: "Floral Scent Long Lasting Perfume",
+        price: 750,
+        monthly_sales: "Monthly Sales 87K+",
+        image:
+          "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      },
+      {
+        id: 305,
+        name: "Masculine Woody Perfume Inspired",
+        price: 1100,
+        monthly_sales: "Monthly Sales 65K+",
+        image:
+          "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      },
+      {
+        id: 306,
+        name: "Fresh Citrus Perfume Oil Based",
+        price: 820,
+        monthly_sales: "Monthly Sales 73K+",
+        image:
+          "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      },
+    ],
+    powerbank: [
+      {
+        id: 401,
+        name: "20000mAh Fast Charging Powerbank",
+        price: 1450,
+        monthly_sales: "Sold 45K+",
+        image:
+          "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      },
+      {
+        id: 402,
+        name: "Slim Portable 10000mAh Powerbank",
+        price: 890,
+        monthly_sales: "Sold 62K+",
+        image:
+          "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      },
+      {
+        id: 403,
+        name: "Solar Wireless Charging Powerbank",
+        price: 2100,
+        monthly_sales: "Sold 28K+",
+        image:
+          "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      },
+      {
+        id: 404,
+        name: "Mini Compact 5000mAh Powerbank",
+        price: 650,
+        monthly_sales: "Sold 78K+",
+        image:
+          "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      },
+      {
+        id: 405,
+        name: "Ultra Fast 30000mAh Powerbank",
+        price: 1890,
+        monthly_sales: "Sold 35K+",
+        image:
+          "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      },
+      {
+        id: 406,
+        name: "LED Display Powerbank 15000mAh",
+        price: 1250,
+        monthly_sales: "Sold 41K+",
+        image:
+          "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      },
+    ],
+    sandals: [
+      {
+        id: 501,
+        name: "Fashionable Sandals For Women",
+        price: 680,
+        monthly_sales: "Sold 52K+",
+        image:
+          "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      },
+      {
+        id: 502,
+        name: "Elegant Heel Sandals Designer",
+        price: 1200,
+        monthly_sales: "Sold 38K+",
+        image:
+          "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      },
+      {
+        id: 503,
+        name: "Casual Flat Sandals Comfortable",
+        price: 450,
+        monthly_sales: "Sold 67K+",
+        image:
+          "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      },
+      {
+        id: 504,
+        name: "Platform Sandals Trendy Style",
+        price: 890,
+        monthly_sales: "Sold 44K+",
+        image:
+          "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      },
+      {
+        id: 505,
+        name: "Strappy High Heel Sandals",
+        price: 1350,
+        monthly_sales: "Sold 29K+",
+        image:
+          "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      },
+      {
+        id: 506,
+        name: "Wedge Sandals Comfortable Walk",
+        price: 950,
+        monthly_sales: "Sold 48K+",
+        image:
+          "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      },
+    ],
+    solar: [
+      {
+        id: 601,
+        name: "Outdoor Solar Light Waterproof",
+        price: 3200,
+        monthly_sales: "Monthly Sales 70K+",
+        image:
+          "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      },
+      {
+        id: 602,
+        name: "Garden Solar LED Light Set",
+        price: 2800,
+        monthly_sales: "Sold 55K+",
+        image:
+          "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      },
+      {
+        id: 603,
+        name: "Motion Sensor Solar Light Security",
+        price: 3500,
+        monthly_sales: "Sold 42K+",
+        image:
+          "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      },
+      {
+        id: 604,
+        name: "Decorative Solar String Lights",
+        price: 1900,
+        monthly_sales: "Sold 88K+",
+        image:
+          "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      },
+      {
+        id: 605,
+        name: "Pathway Solar Stake Lights",
+        price: 2400,
+        monthly_sales: "Sold 61K+",
+        image:
+          "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      },
+      {
+        id: 606,
+        name: "Bright Solar Flood Light Outdoor",
+        price: 4200,
+        monthly_sales: "Sold 33K+",
+        image:
+          "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      },
+    ],
+  };
+
+  // Categories data
+  const categories = [
+    {
+      name: "Home Entertainment",
+      icon: "https://cdn-icons-png.flaticon.com/512/3659/3659898.png",
+    },
+    {
+      name: "Babies & Kids",
+      icon: "https://cdn-icons-png.flaticon.com/512/2917/2917995.png",
+    },
+    {
+      name: "Home & Living",
+      icon: "https://cdn-icons-png.flaticon.com/512/2917/2917242.png",
+    },
+    {
+      name: "Groceries",
+      icon: "https://cdn-icons-png.flaticon.com/512/3050/3050464.png",
+    },
+    {
+      name: "Toys, Games & Collectibles",
+      icon: "https://cdn-icons-png.flaticon.com/512/2917/2917995.png",
+    },
+    {
+      name: "Women's Bags",
+      icon: "https://cdn-icons-png.flaticon.com/512/2609/2609358.png",
+    },
+    {
+      name: "Women Accessories",
+      icon: "https://cdn-icons-png.flaticon.com/512/3050/3050155.png",
+    },
+    {
+      name: "Women's Shoes",
+      icon: "https://cdn-icons-png.flaticon.com/512/2329/2329876.png",
+    },
+    {
+      name: "Pet Care",
+      icon: "https://cdn-icons-png.flaticon.com/512/2138/2138440.png",
+    },
+    {
+      name: "Audio",
+      icon: "https://cdn-icons-png.flaticon.com/512/2941/2941885.png",
+    },
+    {
+      name: "Home Appliances",
+      icon: "https://cdn-icons-png.flaticon.com/512/2917/2917180.png",
+    },
+    {
+      name: "Laptops & Computers",
+      icon: "https://cdn-icons-png.flaticon.com/512/3659/3659898.png",
+    },
+    {
+      name: "Cameras",
+      icon: "https://cdn-icons-png.flaticon.com/512/3342/3342137.png",
+    },
+    {
+      name: "Sports & Travel",
+      icon: "https://cdn-icons-png.flaticon.com/512/2917/2917995.png",
+    },
+    {
+      name: "Men's Bags & Accessories",
+      icon: "https://cdn-icons-png.flaticon.com/512/2913/2913133.png",
+    },
+    {
+      name: "Men's Shoes",
+      icon: "https://cdn-icons-png.flaticon.com/512/2589/2589903.png",
+    },
+    {
+      name: "Motors",
+      icon: "https://cdn-icons-png.flaticon.com/512/3097/3097039.png",
+    },
+    {
+      name: "Hobbies & Stationery",
+      icon: "https://cdn-icons-png.flaticon.com/512/2917/2917995.png",
+    },
+    {
+      name: "Gaming",
+      icon: "https://cdn-icons-png.flaticon.com/512/686/686589.png",
+    },
+    {
+      name: "Home Entertainment",
+      icon: "https://cdn-icons-png.flaticon.com/512/3659/3659898.png",
+    },
+    {
+      name: "Babies & Kids",
+      icon: "https://cdn-icons-png.flaticon.com/512/2917/2917995.png",
+    },
+    {
+      name: "Home & Living",
+      icon: "https://cdn-icons-png.flaticon.com/512/2917/2917242.png",
+    },
+    {
+      name: "Groceries",
+      icon: "https://cdn-icons-png.flaticon.com/512/3050/3050464.png",
+    },
+    {
+      name: "Toys, Games & Collectibles",
+      icon: "https://cdn-icons-png.flaticon.com/512/2917/2917995.png",
+    },
+    {
+      name: "Women's Bags",
+      icon: "https://cdn-icons-png.flaticon.com/512/2609/2609358.png",
+    },
+    {
+      name: "Women Accessories",
+      icon: "https://cdn-icons-png.flaticon.com/512/3050/3050155.png",
+    },
+    {
+      name: "Women's Shoes",
+      icon: "https://cdn-icons-png.flaticon.com/512/2329/2329876.png",
+    },
+    {
+      name: "Pet Care",
+      icon: "https://cdn-icons-png.flaticon.com/512/2138/2138440.png",
+    },
+    {
+      name: "Audio",
+      icon: "https://cdn-icons-png.flaticon.com/512/2941/2941885.png",
+    },
+    {
+      name: "Home Appliances",
+      icon: "https://cdn-icons-png.flaticon.com/512/2917/2917180.png",
+    },
+    {
+      name: "Laptops & Computers",
+      icon: "https://cdn-icons-png.flaticon.com/512/3659/3659898.png",
+    },
+    {
+      name: "Cameras",
+      icon: "https://cdn-icons-png.flaticon.com/512/3342/3342137.png",
+    },
+    {
+      name: "Sports & Travel",
+      icon: "https://cdn-icons-png.flaticon.com/512/2917/2917995.png",
+    },
+    {
+      name: "Men's Bags & Accessories",
+      icon: "https://cdn-icons-png.flaticon.com/512/2913/2913133.png",
+    },
+  ];
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-slate-900 via-orange-900 to-red-900 text-white overflow-hidden">
         <div className="absolute inset-0 bg-black/10"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            {/* Mobile: Image First, Desktop: Text First */}
-            <div className="order-2 lg:order-1 space-y-8">
-              <div className="space-y-4">
-                <Badge className="bg-white/20 text-white border-white/30 hover:bg-white/30 backdrop-blur-sm">
-                  🔥 Flash Sale - Up to 50% OFF
-                </Badge>
-                <h1 className="text-4xl md:text-6xl font-bold leading-tight">
-                  The Future of
-                  <span className="block bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent">
-                    Electric Mobility
-                  </span>
-                </h1>
-                <p className="text-xl text-slate-300 max-w-lg leading-relaxed">
-                  Experience premium electric vehicles designed for modern urban
-                  transport, eco-conscious commuting, and sustainable living.
+      </section>
+
+      {/* Features Section */}
+      <div className="max-w-7xl mx-auto p-4">
+        <div className="min-h-full text-card-foreground h-auto">
+          <div className="relative grid grid-cols-1 lg:grid-cols-1 gap-3">
+            <Swiper
+              loop={true}
+              autoplay={{
+                delay: 3000,
+                disableOnInteraction: false,
+              }}
+              navigation={{
+                prevEl: ".custom-prev",
+                nextEl: ".custom-next",
+              }}
+              pagination={{ clickable: true }}
+              modules={[Autoplay, Navigation, Pagination]}
+              className="w-full h-64"
+            >
+              <SwiperSlide>
+                <div className="bg-blue-300 flex items-center justify-center h-full">
+                  Banner 1
+                </div>
+              </SwiperSlide>
+              <SwiperSlide>
+                <div className="bg-blue-300 flex items-center justify-center h-full">
+                  Banner 2
+                </div>
+              </SwiperSlide>
+              <SwiperSlide>
+                <div className="bg-blue-300 flex items-center justify-center h-full">
+                  Banner 3
+                </div>
+              </SwiperSlide>
+              <SwiperSlide>
+                <div className="bg-blue-300 flex items-center justify-center h-full">
+                  Banner 4
+                </div>
+              </SwiperSlide>
+              <SwiperSlide>
+                <div className="bg-blue-300 flex items-center justify-center h-full">
+                  Banner 5
+                </div>
+              </SwiperSlide>
+            </Swiper>
+            <style jsx>{`
+              :global(.swiper-pagination-bullet) {
+                @apply w-3 h-3 mx-5 bg-white rounded-full opacity-70;
+              }
+              :global(.swiper-pagination-bullet-active) {
+                @apply bg-red-500 opacity-100 scale-110;
+              }
+            `}</style>
+
+            {/* Overlay chevrons */}
+            <button
+              className="group custom-prev absolute top-1/2 left-1 -translate-y-1/2 p-2 bg-gray/70 shadow z-20 hover:bg-gray-200"
+              aria-label="Previous slide"
+            >
+              <ChevronLeftIcon className="h-6 w-6 text-white group-hover:text-black" />
+            </button>
+
+            <button
+              className="group custom-next absolute top-1/2 right-1 -translate-y-1/2 p-2 bg-gray/70 shadow z-20 hover:bg-gray-200"
+              aria-label="Next slide"
+            >
+              <ChevronRightIcon className="h-6 w-6 text-white group-hover:text-black" />
+            </button>
+          </div>
+        </div>{" "}
+        <div className="bg-gradient-to-r from-orange-600 to-red-600 flex items-center justify-center space-x-4 text-white py-4">
+          <Gift className="w-6 h-6 animate-bounce" />
+          <span className="font-bold text-lg">MEGA SALE</span>
+          <span className="text-orange-200">•</span>
+          <span>Free Shipping on Orders Over ₱50,000</span>
+          <span className="text-orange-200">•</span>
+          <span>2-Year Warranty Included</span>
+        </div>
+      </div>
+
+      {/* Categories Section */}
+      <div className="max-w-7xl mx-auto p-4">
+        <div className="bg-white border-b border-gray-200">
+          <h2 className="text-lg font-bold text-blue-400 uppercase p-5 mb-2 border-b-2 border-blue-500">
+            Categories
+          </h2>
+
+          <Carousel itemsPerPage={10} rows={1}>
+            {categories.map((category, index) => (
+              <CategoryCard
+                key={index}
+                name={category.name}
+                icon={category.icon}
+                onClick={handleCategoryClick}
+              />
+            ))}
+          </Carousel>
+        </div>
+      </div>
+
+
+      {/* Category Products Section with Filters */}
+      <div className="max-w-7xl mx-auto p-4" ref={productsRef}>
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-xl font-bold text-gray-900">All Products</h2>
+          <p className="text-sm text-gray-600">
+            {filteredAndSortedProducts.length} items
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          {/* Filter Sidebar */}
+          <div className="lg:col-span-1">
+            <FilterSidebar onFilterChange={setFilters} />
+          </div>
+
+          {/* Products Grid */}
+          <div className="lg:col-span-3">
+            {/* Sort Bar with Pagination */}
+            <FilterBar
+              currentSort={currentSort}
+              onSortChange={setCurrentSort}
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+
+            {paginatedProducts.length > 0 ? (
+              <>
+                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-5 gap-4">
+                  {paginatedProducts.map((product) => (
+                    <ProductCard
+                      key={product.id}
+                      product={product}
+                      // onClick={() => navigate(`/product/similar/${product.id}`)}
+                    />
+                  ))}
+                </div>
+              </>
+            ) : (
+              <div className="text-center py-12">
+                <p className="text-gray-500 text-lg mb-2">No products found</p>
+                <p className="text-gray-400 text-sm">
+                  Try adjusting your filters
                 </p>
               </div>
+            )}
+          </div>
+        </div>
+      </div>
 
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Button
-                  size="lg"
-                  className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 shadow-lg font-semibold"
-                >
-                  <Link href="/products" className="flex items-center">
-                    Shop Now <ArrowRight className="ml-2 w-5 h-5" />
-                  </Link>
-                </Button>
-              </div>
-
-              {/* Stats */}
-              <div className="grid grid-cols-3 gap-6 pt-8">
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-orange-400">50K+</div>
-                  <div className="text-sm text-slate-300">Happy Customers</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-orange-400">100+</div>
-                  <div className="text-sm text-slate-300">Service Centers</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-orange-400">
-                    2 Years
+      {/* Top Products Section */}
+      <div className="max-w-7xl mx-auto p-4">
+        <div className="bg-white border-b border-gray-200">
+          <h2 className="text-lg font-bold text-blue-400 uppercase p-5 mb-2 border-b-2 border-blue-500">
+            Top Products
+          </h2>
+          <Carousel itemsPerPage={1} rows={1}>
+            {Object.entries(topProductsByCategory).map(
+              ([categoryName, products]) => (
+                <div key={categoryName} className="space-y-4">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                    {products.map((product) => (
+                      <TopProductCard
+                        key={product.id}
+                        product={product}
+                        // onClick={() => navigate(`/product/${product.id}`)}
+                      />
+                    ))}
                   </div>
-                  <div className="text-sm text-slate-300">Warranty</div>
                 </div>
-              </div>
-            </div>
+              )
+            )}
+          </Carousel>
+        </div>
+      </div>
 
-            {/* Mobile: Image First, Desktop: Image Second */}
-            <div className="relative h-80 lg:h-96 order-1 lg:order-2">
-              <HeroImageSlider />
+      {/* Daily Discover Section */}
+
+      <div className="max-w-7xl mx-auto p-4">
+        <div className="bg-white">
+          <h2 className="text-lg text-center font-bold text-blue-400 uppercase p-5 mb-2 border-b-2 border-blue-500 uppercase">
+            Daily Discover
+          </h2>
+        </div>
+
+        <div className="min-h-full text-card-foreground h-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-1 gap-3 mx-2 my-5">
+            {/* You May Also Like Section */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+              {[1, 2, 3, 4, 5, 6].map((i) => (
+                <Card
+                  key={i}
+                  className="group cursor-pointer border border-gray-200 shadow hover:shadow-lg transition-all hover:-translate-y-1"
+                >
+                  <div className="relative">
+                    <Badge className="absolute bg-red-300 text-white text-xs text-red-700 text-center w-12 px-2 py-1 top-0 right-0 rounded-tl-lg rounded-r-none border-l-red-200 shadow-sm hover:bg-orange-300">
+                      -10%
+                    </Badge>
+                    <img
+                      src="https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg"
+                      alt="Product"
+                      className="w-full aspect-square object-cover rounded-t-lg"
+                    />
+                  </div>
+                  <div className="p-3">
+                    <p className="text-sm text-gray-900 line-clamp-2 mb-2">
+                      Nike Air Force
+                    </p>
+                    <div className="flex flex-wrap gap-1 mb-2">
+                      <Badge className="bg-blue-100 text-blue-600 rounded-none border border-border border-blue-600 text-xs">
+                        ₽5 OFF
+                      </Badge>
+                      <Badge className="bg-yellow-100 text-yellow-600 rounded-none border border-border border-orange-500 text-xs">
+                        ★ 4.8
+                      </Badge>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <p className="text-sm font-bold text-blue-600">₽100</p>
+                      <p className="text-xs text-gray-500">10k Sold</p>
+                    </div>
+                  </div>
+                </Card>
+              ))}
             </div>
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* Flash Sale Banner */}
-      <section className="bg-gradient-to-r from-orange-600 to-red-600 py-4">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-center space-x-4 text-white">
-            <Gift className="w-6 h-6 animate-bounce" />
-            <span className="font-bold text-lg">MEGA SALE</span>
-            <span className="text-orange-200">•</span>
-            <span>Free Shipping on Orders Over ₱50,000</span>
-            <span className="text-orange-200">•</span>
-            <span>2-Year Warranty Included</span>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="py-20 bg-white">
+      <section className="py-10 bg-white">
         <div className="max-w-7xl mx-auto my-8">
           <div className="min-h-full text-card-foreground h-auto">
-            <div className="relative grid grid-cols-1 lg:grid-cols-1 gap-3 mx-2 my-5">
-              <Swiper
-                loop={true}
-                autoplay={{
-                  delay: 3000,
-                  disableOnInteraction: false,
-                }}
-                navigation={{
-                  prevEl: ".custom-prev",
-                  nextEl: ".custom-next",
-                }}
-                pagination={{ clickable: true }}
-                modules={[Autoplay, Navigation, Pagination]}
-                className="w-full h-64"
-              >
-                <SwiperSlide>
-                  <div className="bg-blue-300 flex items-center justify-center h-full">
-                    Banner 1
+            <div className="grid grid-cols-1 lg:grid-cols-1 gap-3 mx-2 my-5">
+              {/* Load More */}
+              <div className="mt-8 flex justify-center">
+                <Card className="bg-gray-100 border border-gray-300 rounded-lg shadow hover:bg-gray-200 transition cursor-pointer">
+                  <div className="px-12 py-4">
+                    <p className="text-sm text-gray-600 text-center">
+                      See More
+                    </p>
                   </div>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <div className="bg-blue-300 flex items-center justify-center h-full">
-                    Banner 2
-                  </div>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <div className="bg-blue-300 flex items-center justify-center h-full">
-                    Banner 3
-                  </div>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <div className="bg-blue-300 flex items-center justify-center h-full">
-                    Banner 4
-                  </div>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <div className="bg-blue-300 flex items-center justify-center h-full">
-                    Banner 5
-                  </div>
-                </SwiperSlide>
-              </Swiper>
-              <style jsx>{`
-                :global(.swiper-pagination-bullet) {
-                  @apply w-3 h-3 mx-5 bg-white rounded-full opacity-70;
-                }
-                :global(.swiper-pagination-bullet-active) {
-                  @apply bg-red-500 opacity-100 scale-110;
-                }
-              `}</style>
-
-              {/* Overlay chevrons */}
-              <button
-                className="group custom-prev absolute top-1/2 left-1 -translate-y-1/2 p-2 bg-gray/70 shadow z-20 hover:bg-gray-200"
-                aria-label="Previous slide"
-              >
-                <ChevronLeftIcon className="h-6 w-6 text-white group-hover:text-black" />
-              </button>
-
-              <button
-                className="group custom-next absolute top-1/2 right-1 -translate-y-1/2 p-2 bg-gray/70 shadow z-20 hover:bg-gray-200"
-                aria-label="Next slide"
-              >
-                <ChevronRightIcon className="h-6 w-6 text-white group-hover:text-black" />
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Banner */}
-      {/* <section className="py-10 bg-white">
-        <h2 className="text-xl font-semibold text-center mb-6">CATEGORIES</h2>
-        <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4 px-4">
-          {[
-            { label: "Sweatshirt", img: "/images/sweatshirt.png" },
-            { label: "Tripod", img: "/images/tripod.png" },
-            { label: "Beach", img: "/images/beach.png" },
-            { label: "Sippy Cup", img: "/images/sippy-cup.png" },
-            { label: "Power Drill", img: "/images/drill.png" },
-            { label: "Toy", img: "/images/toy.png" },
-            { label: "Backpack", img: "/images/backpack.png" },
-            { label: "Sunglasses", img: "/images/sunglasses.png" },
-            { label: "Dress", img: "/images/dress.png" },
-            { label: "Vase", img: "/images/vase.png" },
-            { label: "Lipstick", img: "/images/lipstick.png" },
-            { label: "Green Dress", img: "/images/green-dress.png" },
-            { label: "Laptop", img: "/images/laptop.png" },
-            { label: "Camera", img: "/images/camera.png" },
-            { label: "Watch", img: "/images/watch.png" },
-            { label: "Shoe", img: "/images/shoe.png" },
-            { label: "Beanie", img: "/images/beanie.png" },
-          ].map((item, index) => (
-            <div key={index} className="flex flex-col items-center text-center">
-              <div className="w-16 h-16 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center">
-                <img
-                  src={item.img}
-                  alt={item.label}
-                  className="w-full h-full object-cover"
-                />
+                </Card>
               </div>
-              <span className="mt-2 text-sm">{item.label}</span>
             </div>
-          ))}
-        </div>
-      </section> */}
-      {/* Features Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <Badge className="mb-4 px-2 py-1.5 bg-orange-100 text-orange-600 border-orange-200">
-              Why Choose YAMAARAW
-            </Badge>
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-              Built for Excellence
-            </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              We're committed to delivering smart, sustainable, and
-              high-performance electric mobility solutions that exceed
-              expectations.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="group p-8 rounded-2xl bg-gradient-to-br from-orange-50 to-red-50 hover:shadow-xl transition-all duration-300 border border-orange-100">
-              <div className="w-16 h-16 bg-gradient-to-br from-orange-600 to-red-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <Zap className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-xl font-semibold mb-3 text-gray-900">
-                High Performance
-              </h3>
-              <p className="text-gray-600 leading-relaxed">
-                Ultra-silent motors with impressive range up to 100km per
-                charge. Advanced battery technology for reliable performance.
-              </p>
-            </div>
-
-            <div className="group p-8 rounded-2xl bg-gradient-to-br from-orange-50 to-yellow-50 hover:shadow-xl transition-all duration-300 border border-orange-100">
-              <div className="w-16 h-16 bg-gradient-to-br from-orange-600 to-yellow-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <Shield className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-xl font-semibold mb-3 text-gray-900">
-                Reliable & Safe
-              </h3>
-              <p className="text-gray-600 leading-relaxed">
-                Built with premium materials and advanced safety features.
-                Rigorous testing ensures maximum reliability and durability.
-              </p>
-            </div>
-
-            <div className="group p-8 rounded-2xl bg-gradient-to-br from-red-50 to-orange-50 hover:shadow-xl transition-all duration-300 border border-red-100">
-              <div className="w-16 h-16 bg-gradient-to-br from-red-600 to-orange-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <Truck className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-xl font-semibold mb-3 text-gray-900">
-                Nationwide Service
-              </h3>
-              <p className="text-gray-600 leading-relaxed">
-                Comprehensive after-sales support and service centers across the
-                Philippines. 24/7 customer assistance available.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Products */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <Badge className="mb-4 px-2.5 py-2 bg-orange-100 text-orange-600 border-orange-200">
-              Featured Collection
-            </Badge>
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-              Most Popular Vehicles
-            </h2>
-            <p className="text-lg text-gray-600">
-              Discover our best-selling electric vehicles loved by thousands
-            </p>
-          </div>
-
-          {featuredProducts.length > 0 ? (
-            <>
-              <ProductGrid products={featuredProducts} />
-              <div className="text-center mt-12">
-                <Button
-                  size="lg"
-                  className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 shadow-lg font-semibold"
-                >
-                  <Link href="/products" className="flex items-center">
-                    View All Products <ArrowRight className="ml-2 w-5 h-5" />
-                  </Link>
-                </Button>
-              </div>
-            </>
-          ) : (
-            <div className="text-center py-12">
-              <p className="text-gray-500 text-lg">
-                No featured products available at the moment.
-              </p>
-              <Button
-                asChild
-                className="mt-4 bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700"
-              >
-                <Link href="/products">Browse All Products</Link>
-              </Button>
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* Testimonials Section */}
-      <section className="py-20 bg-gradient-to-br from-gray-50 via-white to-orange-50/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <Badge className="mb-4 bg-orange-100 text-orange-600 border-orange-200">
-              Customer Reviews
-            </Badge>
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-              What Our Customers Say
-            </h2>
-            <p className="text-lg text-gray-600">
-              Real experiences from our satisfied customers
-            </p>
-          </div>
-
-          {/* Toggle between testimonials and form */}
-          <div className="text-center mb-12">
-            <Button
-              onClick={() => setShowTestimonialForm(!showTestimonialForm)}
-              className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 font-semibold"
-              size="lg"
-            >
-              <MessageSquare className="mr-2 w-5 h-5" />
-              {showTestimonialForm ? "View Reviews" : "Write a Review"}
-            </Button>
-          </div>
-
-          {showTestimonialForm ? (
-            /* Testimonial Form */
-            <div className="max-w-4xl mx-auto">
-              <TestimonialForm
-                products={featuredProducts}
-                onSuccess={() => {
-                  setShowTestimonialForm(false);
-                  fetchData(); // Refresh testimonials
-                }}
-              />
-            </div>
-          ) : (
-            /* Display Testimonials Carousel */
-            <div>
-              <TestimonialCarousel
-                testimonials={
-                  testimonials.length > 0
-                    ? testimonials
-                    : [
-                        {
-                          id: 1,
-                          name: "Maria Santos",
-                          location: "Manila",
-                          rating: 5,
-                          title: "Absolutely thrilled with my new e-trike",
-                          message:
-                            "I chose the e-trike for its unmatched stability and comfort—especially living in a hilly area and it has exceeded all expectations. Riding uphill used to be a struggle, but now I easily zip up inclines with pedal assist, and the spacious basket handles my groceries with zero hassle.",
-                          created_at: "2025-06-26T00:00:00Z",
-                          product: {
-                            name: "V9 E-trike",
-                            model: "V9",
-                          },
-                        },
-                        {
-                          id: 2,
-                          name: "Juan Dela Cruz",
-                          location: "ABIC Realty and Consultancy Corporation",
-                          rating: 5,
-                          title: "Good Service",
-                          message:
-                            "The Service they have is good, employees are very approachable and helpful. Would definitely recommend to others looking for quality products.",
-                          created_at: "2025-06-26T00:00:00Z",
-                          product: {
-                            name: "V9 E-trike",
-                            model: "V9",
-                          },
-                        },
-                        {
-                          id: 3,
-                          name: "Emily Rodriguez",
-                          location: "Downtown District",
-                          rating: 5,
-                          title: "Perfect for daily commuting",
-                          message:
-                            "This e-trike has completely transformed my daily commute. The battery life is excellent, and the ride is so smooth. I love how stable it feels even when carrying heavy loads.",
-                          created_at: "2025-06-25T00:00:00Z",
-                          product: {
-                            name: "V9 E-trike",
-                            model: "V9",
-                          },
-                        },
-                        {
-                          id: 4,
-                          name: "Carlos Mendoza",
-                          location: "Davao City",
-                          rating: 5,
-                          title: "Excellent build quality",
-                          message:
-                            "The build quality is outstanding. Very sturdy and reliable for daily use. The customer service team was also very helpful throughout the purchase process.",
-                          created_at: "2025-06-22T00:00:00Z",
-                          product: {
-                            name: "V9 E-trike",
-                            model: "V9",
-                          },
-                        },
-                        {
-                          id: 5,
-                          name: "Lisa Chen",
-                          location: "Makati City",
-                          rating: 5,
-                          title: "Great investment for the environment",
-                          message:
-                            "Love that I'm contributing to a cleaner environment while saving on fuel costs. The e-trike is whisper quiet and very comfortable to ride.",
-                          created_at: "2025-06-20T00:00:00Z",
-                          product: {
-                            name: "V9 E-trike",
-                            model: "V9",
-                          },
-                        },
-                      ]
-                }
-                speed={40}
-              />{" "}
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-slate-900 via-orange-900 to-red-900">
-        <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl lg:text-4xl font-bold text-white mb-6">
-            Ready to Go Electric?
-          </h2>
-          <p className="text-xl text-slate-300 mb-8 max-w-2xl mx-auto">
-            Join thousands of satisfied customers who have made the switch to
-            sustainable transportation.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              size="lg"
-              className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 font-semibold"
-            >
-              <Link href="/products">Browse Products</Link>
-            </Button>
-            <Button
-              size="lg"
-              className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 font-semibold"
-            >
-              <Link href="/contact">Contact Sales</Link>
-            </Button>
           </div>
         </div>
       </section>

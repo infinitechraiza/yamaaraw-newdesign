@@ -470,7 +470,7 @@ export default function ProductsPage() {
                       >
                         <Badge className="absolute bg-red-300 text-white text-xs text-red-700 text-center w-12 px-2 py-1 top-0 right-0 rounded-tl-lg rounded-r-none border-l-red-200 shadow-sm hover:bg-orange-300">
                           -10%
-                        </Badge>    
+                        </Badge>
                         <img
                           src="https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg"
                           alt="Shoe Angle 1"
@@ -523,15 +523,14 @@ export default function ProductsPage() {
       <div className="max-w-7xl mx-auto my-8">
         <div className="min-h-full text-card-foreground h-auto">
           <div className="grid grid-cols-1 lg:grid-cols-1 gap-3 mx-2 my-5">
-            {/* You May Also Like Section */}
-            <p className="text-xs text-muted-foreground flex items-center uppercase">
-              You May Also Like
-            </p>
-            <div className="mx-auto space-y-6">
-              <Card className="bg-gray-100 w-auto h-14 pt-5 m-2 border border-border border-gray-300 rounded-none shadow-lg transition-all duration-300 hover:bg-gray-200">
-                <p className="flex justify-center  justify-center text-xs w-56 text-gray-400 mx-96 text-center">
-                  Login To See More/See More Products
-                </p>
+            {/* Load More */}
+            <div className="mt-8 flex justify-center">
+              <Card className="bg-gray-100 border border-gray-300 rounded-lg shadow hover:bg-gray-200 transition cursor-pointer">
+                <div className="px-12 py-4">
+                  <p className="text-sm text-gray-600 text-center">
+                    Login To See More Products
+                  </p>
+                </div>
               </Card>
             </div>
           </div>

@@ -31,6 +31,7 @@ import { useETrikeToast } from "@/components/ui/toast-container";
 import { useCart } from "@/contexts/cart-context";
 import { useFlyingETrike } from "@/components/ui/flying-etrike-animation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Facebook, Twitter, Copy } from "lucide-react";
 import {
   HoverCard,
   HoverCardContent,
@@ -53,6 +54,17 @@ export default function ProductDetailPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [addingToCart, setAddingToCart] = useState(false);
+  const [selectedColor, setSelectedColor] = useState("White");
+
+  const colors = [
+    { name: "White", class: "bg-white" },
+    { name: "Black", class: "bg-black" },
+    { name: "Red", class: "bg-red-700" },
+    { name: "Blue", class: "bg-blue-700" },
+  ];
+
+  const sizes = ["6", "7", "8", "9", "10", "11", "12"];
+  const [selectedSize, setSelectedSize] = useState("8");
 
   useEffect(() => {
     if (params.id) {
@@ -233,173 +245,100 @@ export default function ProductDetailPage() {
           <div className="bg-background grid grid-cols-1 lg:grid-cols-3 gap-3 mx-2 my-5">
             {/* 1st Column */}
             <div className="space-y-6 col-span-2">
-              {/* Main Image Container - Enhanced */}
-              <div className="relative overflow-hidden mx-5 my-8">
-                <div className="grid grid-cols-2 gap-6 lg:grid-cols-12 h-full">
-                  {/* Thumbnails */}
-                  <aside className="order-2 lg:order-1 lg:col-span-2 h-full">
-                    <div className="grid grid-cols-7 gap-5 lg:grid-cols-1 h-full">
-                      {/* Repeated Thumbnails */}
-                      <button
-                        className="group overflow-hidden rounded-md border border-gray-200 transition hover:shadow-sm"
-                        aria-label="View Angle 1"
-                      >
-                        <img
-                          src="https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg"
-                          alt="Shoe Angle 1"
-                          className="aspect-[4/3] w-full object-cover transition group-hover:scale-[1.02]"
-                        />
-                      </button>
-                      <button
-                        className="group overflow-hidden rounded-md border border-gray-200 transition hover:shadow-sm"
-                        aria-label="View Angle 2"
-                      >
-                        <img
-                          src="https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg"
-                          alt="Shoe Angle 2"
-                          className="aspect-[4/3] w-full object-cover transition group-hover:scale-[1.02]"
-                        />
-                      </button>
-                      <button
-                        className="group overflow-hidden rounded-md border border-gray-200 transition hover:shadow-sm"
-                        aria-label="View Angle 3"
-                      >
-                        <img
-                          src="https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg"
-                          alt="Shoe Angle 3"
-                          className="aspect-[4/3] w-full object-cover transition group-hover:scale-[1.02]"
-                        />
-                      </button>
-                      <button
-                        className="group overflow-hidden rounded-md border border-gray-200 transition hover:shadow-sm"
-                        aria-label="View Angle 4"
-                      >
-                        <img
-                          src="https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg"
-                          alt="Shoe Angle 4"
-                          className="aspect-[4/3] w-full object-cover transition group-hover:scale-[1.02]"
-                        />
-                      </button>
-                      <button
-                        className="group overflow-hidden rounded-md border border-gray-200 transition hover:shadow-sm"
-                        aria-label="View Angle 5"
-                      >
-                        <img
-                          src="https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg"
-                          alt="Shoe Angle 5"
-                          className="aspect-[4/3] w-full object-cover transition group-hover:scale-[1.02]"
-                        />
-                      </button>
-                      <button
-                        className="group overflow-hidden rounded-md border border-gray-200 transition hover:shadow-sm"
-                        aria-label="View Angle 6"
-                      >
-                        <img
-                          src="https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg"
-                          alt="Shoe Angle 6"
-                          className="aspect-[4/3] w-full object-cover transition group-hover:scale-[1.02]"
-                        />
-                      </button>
-                    </div>
-                  </aside>
-
-                  {/* Hero image */}
-                  <div className="order-1 lg:order-2 lg:col-span-10 group cursor-pointer">
-                    <div className="overflow-hidden lg:h-full w-auto rounded-xl border border-gray-200">
-                      <div className="bg-gray-50 p-3 text-xs text-gray-500">
-                        Top-down view
+              {/* Left Column - Images */}
+              <div className="lg:col-span-2 space-y-6">
+                {/* Main Image Container */}
+                <div className="bg-white rounded-lg p-4">
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 h-full">
+                    {/* Thumbnails - Hidden on mobile, shown on lg+ */}
+                    <aside className="hidden lg:block lg:col-span-2">
+                      <div className="grid grid-cols-1 gap-4">
+                        {[1, 2, 3, 4, 5, 6].map((i) => (
+                          <button
+                            key={i}
+                            className="group overflow-hidden rounded-md border border-gray-200 transition hover:shadow-sm"
+                            aria-label={`View Angle ${i}`}
+                          >
+                            <img
+                              src="https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg"
+                              alt={`Shoe Angle ${i}`}
+                              className="aspect-[4/3] w-full object-cover transition group-hover:scale-[1.02]"
+                            />
+                          </button>
+                        ))}
                       </div>
-                      <img
-                        src="https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg"
-                        alt="Nike Air Force shoe top-down view"
-                        className="overflow-hidden h-full w-auto aspect-[4/3] object-cover transition group-hover:scale-[1.52]"
-                        sizes="(max-width: 1250px) 100vw, 50vw"
-                      />
+                    </aside>
+
+                    {/* Hero image */}
+                    <div className="lg:col-span-10">
+                      <div className="overflow-hidden h-full w-auto rounded-xl border border-gray-200">
+                        <div className="bg-gray-50 px-4 py-2 text-sm text-gray-500">
+                          Top-down view
+                        </div>
+                        <img
+                          src="https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg"
+                          alt="Nike Air Force shoe top-down view"
+                          className="overflow-hidden h-full w-auto aspect-[4/3] object-cover transition group-hover:scale-[1.52]"
+                          sizes="(max-width: 1250px) 100vw, 50vw"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Mobile Thumbnails - Horizontal scroll */}
+                    <div className="lg:hidden col-span-1 overflow-x-auto">
+                      <div className="flex gap-2 pb-2">
+                        {[1, 2, 3, 4, 5, 6].map((i) => (
+                          <button
+                            key={i}
+                            className="flex-shrink-0 w-16 h-16 overflow-hidden rounded-md border-2 border-gray-200 hover:border-blue-500"
+                          >
+                            <img
+                              src="https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg"
+                              alt={`Thumbnail ${i}`}
+                              className="w-full h-full object-cover"
+                            />
+                          </button>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="space-y-2 flex items-center justify-between my-3">
-                  <div className="flex items-center gap-3">
-                    <span className="text-sm text-muted-foreground">
-                      Share:
-                    </span>
-                    <div className="flex gap-2">
-                      <button className="p-2 hover:bg-muted rounded-full transition">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          stroke-width="2"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          className="lucide lucide-facebook w-5 h-5 text-blue-600"
-                        >
-                          <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
-                        </svg>
-                      </button>
-                      <button className="p-2 hover:bg-muted rounded-full transition">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          stroke-width="2"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          className="lucide lucide-twitter w-5 h-5 text-sky-500"
-                        >
-                          <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
-                        </svg>
-                      </button>
-                      <button className="p-2 hover:bg-muted rounded-full transition">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          stroke-width="2"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          className="lucide lucide-copy w-5 h-5"
-                        >
-                          <rect
-                            width="14"
-                            height="14"
-                            x="8"
-                            y="8"
-                            rx="2"
-                            ry="2"
-                          ></rect>
-                          <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path>
-                        </svg>
-                      </button>
+
+                  {/* Share and Favorite */}
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4  pt-6 border-t">
+                    <div className="flex items-center gap-3">
+                      <span className="text-sm text-gray-600">Share:</span>
+                      <div className="flex gap-2">
+                        <button className="p-2 hover:bg-gray-100 rounded-full transition">
+                          <Facebook className="w-5 h-5 text-blue-600" />
+                        </button>
+                        <button className="p-2 hover:bg-gray-100 rounded-full transition">
+                          <Twitter className="w-5 h-5 text-sky-500" />
+                        </button>
+                        <button className="p-2 hover:bg-gray-100 rounded-full transition">
+                          <Copy className="w-5 h-5 text-gray-600" />
+                        </button>
+                      </div>
                     </div>
+                    <button className="flex items-center gap-2 text-sm hover:text-red-600 transition">
+                      <Heart className="w-5 h-5" />
+                      <span className="hidden sm:inline">Favorite (44.1K)</span>
+                      <span className="sm:hidden">(44.1K)</span>
+                    </button>
                   </div>
-                  <button className="flex items-center gap-2 text-sm hover:text-destructive transition">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      className="lucide lucide-heart w-5 h-5"
-                    >
-                      <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
-                    </svg>
-                    <span>Favorite (44.1K)</span>
-                  </button>
                 </div>
+
+                {/* Badges */}
+                {/* <div className="flex flex-wrap gap-2">
+                  <Badge className="bg-red-100 text-red-600 border border-red-300">
+                    Save ₽1000
+                  </Badge>
+                  <Badge className="bg-green-100 text-green-600 border border-green-300">
+                    ✓ In Stock
+                  </Badge>
+                  <Badge className="bg-yellow-100 text-yellow-600 border border-yellow-300">
+                    ⭐ Featured
+                  </Badge>
+                </div> */}
               </div>
 
               {/* Thumbnail Images - Enhanced */}
@@ -440,48 +379,28 @@ export default function ProductDetailPage() {
             {/* 2nd Column */}
             <div className="space-y-3 mt-5 lg:mt-5 col-span-1">
               <div className="relative w-auto h-auto overflow-hidden sm:p-2 mx-3 my-3">
-                <h1 className="text-2xl font-bold text-balance">
+                <h1 className="text-2xl lg:text-3xl font-bold text-balance mb-4">
                   {" "}
                   {product.name}
                 </h1>
 
-                <div className="flex items-center justify-between w-full max-w-xl py-3">
-                  <div className="flex items-center gap-3">
-                    {/* Rating and Stats */}
-                    <div className="flex items-center mr-5">
-                      {/* Stars and Score */}
-                      <p className="font-medium underline"> 5.0 </p>
-                      {/* Ratings */}
-                      <div className="flex text-yellow-400">
-                        <span>★</span>
-                        <span>★</span>
-                        <span>★</span>
-                        <span>★</span>
-                        <span>★</span>
-                      </div>
-                    </div>
-
-                    {/* Ratings */}
-                    <div className="flex items-center mr-5">
-                      <div className="flex justify-between gap-2 text-sm text-gray-600">
-                        <p className="font-medium underline">4.2k</p>
-
-                        <span> Ratings </span>
-                      </div>
-                    </div>
-
-                    {/* Sold */}
-                    <div className="flex items-center mr-5">
-                      <div className="flex justify-between gap-2 text-sm text-gray-600">
-                        <p className="font-medium underline">10k+</p>
-
-                        <span> Sold </span>
-                      </div>
+                <div className="flex flex-wrap items-center gap-4 pb-4 border-b mb-4">
+                  <div className="flex items-center gap-1">
+                    <span className="font-medium underline">5.0</span>
+                    <div className="flex text-yellow-400 text-sm">
+                      {"★".repeat(5)}
                     </div>
                   </div>
-
-                  {/* Report Link */}
-                  <a href="#" className="text-sm text-blue-600 hover:underline">
+                  <div className="text-sm text-gray-600">
+                    <span className="font-medium underline">4.2k</span> Ratings
+                  </div>
+                  <div className="text-sm text-gray-600">
+                    <span className="font-medium underline">10k+</span> Sold
+                  </div>
+                  <a
+                    href="#"
+                    className="text-sm text-blue-600 hover:underline ml-auto"
+                  >
                     Report
                   </a>
                 </div>
@@ -659,16 +578,8 @@ export default function ProductDetailPage() {
                     <HoverCardTrigger className="flex flex-row items-center text-xs text-muted-foreground">
                       <p className="font-medium">Shopping Guarantee:</p>
                       <div className="flex items-start gap-2 ml-2">
-                        {/* safety/security logo */}
-                        <svg
-                          className="w-4 h-4 text-blue-600 mr-2"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <path d="M10 2a1 1 0 01.894.553l7 14A1 1 0 0117 18H3a1 1 0 01-.894-1.447l7-14A1 1 0 0110 2z" />
-                        </svg>
-                        <span>
-                          Free & Easy Returns · Merchandise Protection
+                        <span className="text-gray-600">
+                          Free Returns • Protection
                         </span>
                       </div>
                     </HoverCardTrigger>
@@ -694,8 +605,7 @@ export default function ProductDetailPage() {
                         <div className="text-sm text-gray-700">
                           <p className="font-medium">Free & Easy Returns</p>
                           <p>
-                            Returns are completely free, with no need to contact
-                            sellers.{" "}
+                            Free Returns • Protection{" "}
                             <span className="italic text-gray-500">
                               Terms and conditions apply.
                             </span>
@@ -729,37 +639,59 @@ export default function ProductDetailPage() {
                   </HoverCard>
                 </div>
 
-                {/* Select Category */}
-                <div className="space-y-2 my-3 text-xs text-muted-foreground">
+                {/* Color Selection */}
+                <div className="text-xs text-muted-foreground mb-5">
                   <div className="grid grid-cols-5 gap-2">
-                    <p className="font-medium">Colors</p>
-
-                    {/* Option 1 */}
-                    <button className="p-2 rounded border-2 transition border-primary bg-primary/10">
-                      <div className="w-5 h-5 bg-white rounded mx-auto mb-1"></div>
-                      <p className="text-xs text-center truncate">White</p>
-                    </button>
-                    {/* Option 2 */}
-                    <button className="p-2 rounded border-2 transition border-border hover:border-foreground">
-                      <div className="w-5 h-5 bg-black rounded mx-auto mb-1"></div>
-                      <p className="text-xs text-center truncate">Black</p>
-                    </button>
-                    {/* Option 3 */}
-                    <button className="p-2 rounded border-2 transition border-border hover:border-foreground">
-                      <div className="w-5 h-5 bg-red-700 rounded mx-auto mb-1"></div>
-                      <p className="text-xs text-center truncate">Red</p>
-                    </button>
-                    {/* Option 4 */}
-                    <button className="p-2 rounded border-2 transition border-border hover:border-foreground">
-                      <div className="w-5 h-5 bg-blue-700 rounded mx-auto mb-1"></div>
-                      <p className="text-xs text-center truncate">Blue</p>
-                    </button>
+                    <p className="font-medium text-sm mb-2">Colors</p>
+                    {colors.map((color) => (
+                      <button
+                        key={color.name}
+                        onClick={() => setSelectedColor(color.name)}
+                        className={`p-1 rounded border-2 transition ${
+                          selectedColor === color.name
+                            ? "border-blue-600 bg-blue-50"
+                            : "border-gray-300 hover:border-gray-400"
+                        }`}
+                      >
+                        <div
+                          className={`w-6 h-6 ${color.class} rounded border border-gray-300 mx-auto mb-1`}
+                        ></div>
+                        <p className="text-xs text-center truncate">
+                          {color.name}
+                        </p>
+                      </button>
+                    ))}
                   </div>
-                  <div className="text-base text-gray-700 bg-blue-50 p-2 border border-blue-200">
-                    <span className="text-sm font-bold">Selected Color:</span>
-                    <span className="text-xs text-foreground mx-2 my-1">
-                      White
-                    </span>
+                  <div className="bg-blue-50 border border-blue-200 rounded p-2 mt-2">
+                    <span className="text-xs font-semibold">Selected: </span>
+                    <span className="text-xs">{selectedColor}</span>
+                  </div>
+                </div>
+
+                {/* Sizes Selection */}
+                <div className="text-muted-foreground mb-5">
+                  <div className="grid grid-cols-5 gap-2">
+                    <p className="text-sm mb-2">Sizes</p>
+                    {sizes.map((size) => (
+                      <button
+                        key={size}
+                        onClick={() => setSelectedSize(size)}
+                        className={`px-2 py-1 rounded border-2 transition ${
+                          selectedSize === size
+                            ? "border-blue-600 bg-blue-50"
+                            : "border-gray-300 hover:border-gray-400"
+                        }`}
+                      >
+                        <div className="w-3 h-3 flex items-center justify-center mx-auto mb-1 text-sm font-semibold">
+                          {size}
+                        </div>
+                        <p className="text-xs text-center truncate">{`US ${size}`}</p>
+                      </button>
+                    ))}
+                  </div>
+                  <div className="bg-blue-50 border border-blue-200 rounded p-2 mt-2">
+                    <span className="text-xs font-semibold">Selected: </span>
+                    <span className="text-xs">US {selectedSize}</span>
                   </div>
                 </div>
 
@@ -781,22 +713,14 @@ export default function ProductDetailPage() {
                   </div>
                 </div>
 
-                {/* Add To Cart and Buy Now Button */}
-                <div className="space-y-2 my-5">
-                  <div className="grid grid-cols-2">
-                    <button
-                      data-slot="button"
-                      className="h-10 w-44 inline-flex items-center text-white text-xs justify-center gap-2 whitespace-nowrap rounded-md bg-blue-200 font-bold border-2 border-blue-300 focus:border-blue-500"
-                    >
-                      <ShoppingCart className="w-4 h-4" /> Add to Cart
-                    </button>
-                    <button
-                      data-slot="button"
-                      className="h-10 w-44 inline-flex items-center text-white text-xs justify-center gap-2 whitespace-nowrap rounded-md bg-blue-600 border-2 border-blue-300 focus:border-blue-700"
-                    >
-                      Buy Now
-                    </button>
-                  </div>
+                {/* Action Buttons */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <button className="h-11 flex items-center justify-center gap-2 text-sm font-semibold text-blue-600 bg-blue-100 border-2 border-blue-300 rounded hover:bg-blue-200 transition">
+                    <ShoppingCart className="w-4 h-4" /> Add to Cart
+                  </button>
+                  <button className="h-11 flex items-center justify-center gap-2 text-sm font-semibold text-white bg-blue-600 border-2 border-blue-700 rounded hover:bg-blue-700 transition">
+                    Buy Now
+                  </button>
                 </div>
               </div>
             </div>
@@ -806,99 +730,92 @@ export default function ProductDetailPage() {
 
       <div className="max-w-7xl mx-auto">
         <div className="min-h-full text-card-foreground h-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 mx-2 my-5">
-            {/* 1st Column */}
-            <div className="bg-background space-y-6 col-span-2">
-              {/* Tabs */}
-              <div className="relative w-auto h-auto sm:h-80 lg:h-96 overflow-hidden  h-auto col-span-2">
-                {/* Tabs for Description, Reviews, Perfect For, Usage Guide */}
-                <Tabs
-                  defaultValue="productSpecification"
-                  className="h-full w-full space-y-2 my-3"
-                >
-                  <TabsList className="flex flex-start border-blue-200 text-blue-600 hover:bg-none border border-top border-y-blue-100 border-x-blue-200 bg-transparent mb-3">
+          {/* Product Details Tabs */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
+            <div className="lg:col-span-2">
+              <div className="bg-white rounded-lg shadow-sm p-6">
+                <Tabs defaultValue="productSpecification">
+                  <TabsList className="flex flex-wrap gap-2 border-b pb-2 mb-6">
                     <TabsTrigger value="productSpecification">
-                      Product Specification
-                    </TabsTrigger>{" "}
+                      Specifications
+                    </TabsTrigger>
                     <TabsTrigger value="description">Description</TabsTrigger>
-                    <TabsTrigger value="reviews">Product Reviews</TabsTrigger>
+                    <TabsTrigger value="reviews">Reviews</TabsTrigger>
                     <TabsTrigger value="perfectFor">Perfect For</TabsTrigger>
                     <TabsTrigger value="usageGuide">Usage Guide</TabsTrigger>
                   </TabsList>
 
-                  {/* Product Specification */}
-                  <TabsContent
-                    value="productSpecification"
-                    className="flex border-border"
-                  >
-                    <Card className="border-none">
+                  <TabsContent value="productSpecification">
+                    <Card className="border-none shadow-none">
                       <CardHeader>
-                        <CardTitle className="text-sm flex items-center font-bold text-gray-900">
+                        <CardTitle className="text-base">
                           Product Specifications
                         </CardTitle>
                       </CardHeader>
                       <CardContent>
-                        {/* Model, Location Manufacturer, Delivery Date */}
-
-                        <div className="flex f-full grid grid-rows items-center gap-5 my-2">
-                          <p className="text-xs text-muted-foreground flex items-center">
-                            Stock:
-                            <span className="flex items-center text-foreground mx-2">
+                        <div className="space-y-3 text-sm">
+                          <div className="flex gap-5 my-2">
+                            <span className="text-xs text-muted-foreground text-gray-600 w-32">
+                              Stock:
+                            </span>
+                            <span className="font-medium text-foreground">
                               IN STOCK
                             </span>
-                          </p>
-                          <p className="text-xs text-muted-foreground flex items-center">
-                            Made In:
-                            <span className="flex items-center text-foreground mx-2">
-                              Country Name
+                          </div>
+                          <div className="flex gap-5 my-5">
+                            <span className="text-xs text-muted-foreground text-gray-600 w-32">
+                              Made In:
                             </span>
-                          </p>
-                          <p className="text-xs text-muted-foreground flex items-center">
-                            Brand:
-                            <span className="flex items-center text-foreground mx-2">
-                              Brand Name
+                            <span className="font-medium text-foreground">
+                              Vietnam
                             </span>
-                          </p>
-                          <p className="text-xs text-muted-foreground flex items-center">
-                            Weight
-                            <span className="flex items-center text-foreground mx-2">
-                              1kl
+                          </div>
+                          <div className="flex gap-5 my-5">
+                            <span className="text-xs text-muted-foreground text-gray-600 w-32">
+                              Brand:
                             </span>
-                          </p>
-                          <p className="text-xs text-muted-foreground flex items-center">
-                            Height
-                            <span className="flex items-center text-foreground mx-2">
+                            <span className="font-medium text-foreground">
+                              Nike
+                            </span>
+                          </div>
+                          <div className="flex gap-5 my-5">
+                            <span className="text-xs text-muted-foreground text-gray-600 w-32">
+                              Weight:
+                            </span>
+                            <span className="font-medium text-foreground">
+                              1kg
+                            </span>
+                          </div>
+                          <div className="flex gap-5 my-5">
+                            <span className="text-xs text-muted-foreground text-gray-600 w-32">
+                              Height:
+                            </span>
+                            <span className="font-medium text-foreground">
                               23cm
                             </span>
-                          </p>
-                          <p className="text-xs text-muted-foreground flex items-center">
-                            Feature
-                            <span className="flex items-center text-foreground mx-2">
+                          </div>
+                          <div className="flex gap-5 my-5">
+                            <span className="text-xs text-muted-foreground text-gray-600 w-32">
+                              Features:
+                            </span>
+                            <span className="font-medium text-foreground">
                               Breathable, Flexible, Slip Resistant
                             </span>
-                          </p>
-                          <p className="text-xs text-muted-foreground flex items-center">
-                            Country of Origin
-                            <span className="flex items-center text-foreground mx-2">
-                              Location
-                            </span>
-                          </p>
+                          </div>
                         </div>
                       </CardContent>
                     </Card>
                   </TabsContent>
 
-                  {/* Description */}
                   <TabsContent value="description">
                     <Card className="border-none shadow-none">
                       <CardHeader>
-                        <CardTitle className="text-sm flex items-center font-bold text-gray-900">
+                        <CardTitle className="text-base">
                           Product Description
                         </CardTitle>
                       </CardHeader>
                       <CardContent>
-                        {/* Model, Location Manufacturer, Delivery Date */}
-                        <p className="flex items-center text-foreground mx-2 text-sm py-3">
+                        <p className="text-sm text-gray-700 leading-relaxed">
                           The Nike Air Force 1 is a timeless sneaker first
                           released in 1982, known for its clean design,
                           versatile style, and groundbreaking Nike Air
@@ -910,157 +827,110 @@ export default function ProductDetailPage() {
                     </Card>
                   </TabsContent>
 
-                  {/* Reviews */}
                   <TabsContent value="reviews">
                     <Card className="border-none shadow-none">
                       <CardHeader>
-                        <CardTitle className="text-sm flex items-center font-bold text-gray-900">
+                        <CardTitle className="text-base">
                           Product Reviews
                         </CardTitle>
                       </CardHeader>
                       <CardContent>
-                        {/* Model, Location Manufacturer, Delivery Date */}
-                        <p className="flex items-center text-foreground mx-2 text-sm py-3">
-                          The Nike Air Force 1 is a timeless sneaker first
-                          released in 1982, known for its clean design,
-                          versatile style, and groundbreaking Nike Air
-                          cushioning technology. It remains one of the most
-                          iconic shoes in both basketball and streetwear
-                          culture.
+                        <p className="text-sm text-gray-700">
+                          Customer reviews coming soon...
                         </p>
                       </CardContent>
                     </Card>
                   </TabsContent>
 
-                  {/* Perfect For */}
                   <TabsContent value="perfectFor">
-                    {/* Ideal For - Enhanced */}
                     {product.ideal_for && product.ideal_for.length > 0 && (
                       <Card className="border-none shadow-none">
                         <CardHeader>
-                          <CardTitle className="text-sm flex items-center font-bold text-gray-900">
-                            Product Reviews
+                          <CardTitle className="text-base">
+                            Perfect For
                           </CardTitle>
                         </CardHeader>
                         <CardContent>
-                          <div className="flex flex-wrap gap-3">
-                            {product.ideal_for.map((use, index) => (
-                              <Badge
-                                key={index}
-                                className="h-8 w-auto bg-blue-400 text-white text-base font-semibold px-2 py-2"
-                              >
-                                {use}
-                              </Badge>
-                            ))}
+                          <div className="flex flex-wrap gap-2">
+                              {product.ideal_for.map((use, index) => (
+                                <Badge
+                                  key={index}
+                                  className="h-8 w-auto bg-blue-400 text-white text-base font-semibold px-2 py-2"
+                                >
+                                  {use}
+                                </Badge>
+                              ))}
                           </div>
                         </CardContent>
                       </Card>
                     )}
                   </TabsContent>
 
-                  {/* Usage Guide */}
                   <TabsContent value="usageGuide">
-                    {/* Ideal For - Enhanced */}
-                    {product.ideal_for && product.ideal_for.length > 0 && (
-                      <Card className="border-none shadow-none">
-                        <CardHeader>
-                          <CardTitle className="text-sm flex items-center font-bold text-gray-900">
-                            Usage Guide
-                          </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                          {/* Model, Location Manufacturer, Delivery Date */}
-                          <p className="flex items-center text-foreground mx-2 text-sm py-3">
-                            The Nike Air Force 1 is a timeless sneaker first
-                            released in 1982, known for its clean design,
-                            versatile style, and groundbreaking Nike Air
-                            cushioning technology. It remains one of the most
-                            iconic shoes in both basketball and streetwear
-                            culture.
-                          </p>
-                        </CardContent>
-                      </Card>
-                    )}
+                    <Card className="border-none shadow-none">
+                      <CardHeader>
+                        <CardTitle className="text-base">Usage Guide</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-sm text-gray-700 leading-relaxed">
+                          Care instructions: Clean with a soft damp cloth. Avoid
+                          harsh chemicals. Store in a cool, dry place.
+                        </p>
+                      </CardContent>
+                    </Card>
                   </TabsContent>
                 </Tabs>
               </div>
             </div>
 
-            {/* 2nd Column */}
-            <div className="space-y-6 col-span-1">
-              <div className="bg-background relative w-auto h-auto overflow-hidden">
-                <div className="flex flex-col items-center justify-between w-full h-auto max-w-md bg-white rounded-lg px-5 py-5 shadow-sm">
-                  {/* Seller Info */}
-                  <div className="flex items-center gap-3">
-                    {/* Logo */}
-                    <div className="w-20 h-20 rounded-full bg-black flex items-center justify-center text-white text-xs font-bold">
-                      SHOP
-                    </div>
-                    {/* Seller Name */}
-                    <span className="text-sm font-medium text-gray-800">
-                      caq_mall
-                    </span>
+            {/* Seller Info */}
+            <div className="lg:col-span-1 space-y-6">
+              <div className="bg-white rounded-lg shadow-sm p-6">
+                <div className="flex flex-col items-center gap-4">
+                  <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center text-white text-xl font-bold">
+                    SHOP
                   </div>
-
-                  {/* Action Buttons */}
-                  <div className="flex items-center gap-3 m-5">
-                    <button className="w-32 h-10 mb-4 px-2 py-1.5 bg-blue-100 text-blue-600 border-2 border-blue-700 rounded-sm">
+                  <span className="text-sm font-semibold text-gray-900">
+                    caq_mall
+                  </span>
+                  <div className="flex flex-col sm:flex-row gap-3 w-full">
+                    <button className="flex-1 px-4 py-2 bg-blue-100 text-blue-600 border-2 border-blue-600 rounded font-semibold hover:bg-blue-200 transition">
                       Chat Now
                     </button>
-
-                    <button className="w-32 h-10 mb-4 px-2 py-2.5 text-sm font-medium text-gray-700 border border-gray-300  rounded-sm hover:bg-gray-100 flex">
-                      More Sellers
-                      <svg
-                        className="w-3 h-3 text-gray-500"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path d="M5.25 7.5L10 12.25L14.75 7.5H5.25Z" />
-                      </svg>
+                    <button className="flex-1 px-4 py-2 text-gray-700 border-2 border-gray-300 rounded font-semibold hover:bg-gray-50 transition">
+                      View Shop
                     </button>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-background relative w-auto h-auto overflow-hidden">
-                <div className="max-w-xl w-full bg-white border border-gray-200 rounded-lg p-4 space-y-4 shadow-sm">
-                  <h3 className="text-sm font-semibold text-gray-800 mb-2">
-                    Shop Vouchers
-                  </h3>
-
-                  {/* Voucher Card */}
-                  <div className="grid grid-cols-[1fr_auto] items-center border border-blue-500 rounded-lg bg-blue-50 px-4 py-3">
-                    <div className="text-sm text-gray-800">
-                      <p className="text-blue-600 font-bold text-lg">₱5 OFF</p>
-                      <p className="text-xs text-gray-600">Min. Spend ₱200</p>
-                      <p className="text-xs text-gray-600 truncate">
-                        Second Order Voucher
-                      </p>
-                      <p className="text-[11px] text-gray-500 mt-1">
-                        Valid Till: 24.01.2026
-                      </p>
+              {/* Vouchers */}
+              <div className="bg-white rounded-lg shadow-sm p-5">
+                <h3 className="text-sm font-semibold mb-4">Shop Vouchers</h3>
+                <div className="space-y-3">
+                  {[1, 2].map((i) => (
+                    <div
+                      key={i}
+                      className="border border-blue-300 rounded-lg bg-blue-50 p-3"
+                    >
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="flex-1">
+                          <p className="text-blue-600 font-bold text-base">
+                            ₽5 OFF
+                          </p>
+                          <p className="text-xs text-gray-600">
+                            Min. Spend ₽200
+                          </p>
+                          <p className="text-xs text-gray-500 mt-1">
+                            Valid: 24.01.2026
+                          </p>
+                        </div>
+                        <button className="px-3 py-1 text-xs font-medium text-white bg-blue-600 rounded hover:bg-blue-700 transition">
+                          Claim
+                        </button>
+                      </div>
                     </div>
-                    <button className="ml-4 px-3 py-1 text-xs font-medium text-white bg-blue-600 rounded hover:bg-blue-700">
-                      Claim
-                    </button>
-                  </div>
-
-                  {/* Voucher Card */}
-                  <div className="grid grid-cols-[1fr_auto] items-center border border-blue-500 rounded-lg bg-blue-50 px-4 py-3">
-                    <div className="text-sm text-gray-800">
-                      <p className="text-blue-600 font-bold text-lg">₱5 OFF</p>
-                      <p className="text-xs text-gray-600">Min. Spend ₱200</p>
-                      <p className="text-xs text-gray-600 truncate">
-                        Shop Welcome Voucher
-                      </p>
-                      <p className="text-[11px] text-gray-500 mt-1">
-                        Valid Till: 24.01.2026
-                      </p>
-                    </div>
-                    <button className="ml-4 px-3 py-1 text-xs font-medium text-white bg-blue-600 rounded hover:bg-blue-700">
-                      Claim
-                    </button>
-                  </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -1068,148 +938,100 @@ export default function ProductDetailPage() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto my-8">
+      {/* From The Same Shope */}
+      <div className="max-w-7xl mx-auto">
         <div className="min-h-full text-card-foreground h-auto">
           <div className="grid grid-cols-1 lg:grid-cols-1 gap-3 mx-2 my-5">
             {/* From The Same Shop Section */}
-            <p className="text-xs text-muted-foreground flex items-center uppercase">
-              From The Same Shop
-            </p>
-            <div className="space-y-6">
-              <div className="grid lg:grid-cols-6 gap-4 my-4">
-                <Card className="bg-white flex justify-center w-auto h-auto m-auto border border-border border-gray-200 rounded-none shadow-lg transition-all duration-300 hover:border-gray-200 hover:-translate-y-1">
-                  <Link href="/products/${product.id}" className="list ">
-                    <button
-                      className="relative overflow-hidden transition"
-                      aria-label="View Angle 1"
-                    >
-                      <Badge className="absolute bg-red-300 text-white text-xs text-red-700 text-center w-12 px-2 py-1 top-0 right-0 rounded-tl-lg rounded-r-none border-l-red-200 shadow-sm group-hover:border-5 hover:bg-orange-300 hover:text-orange-900">
+            <div className="mt-8">
+              <p className="text-xs text-muted-foreground flex items-center uppercase mb-5">
+                From The Same Shop
+              </p>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                {[1, 2, 3, 4, 5, 6].map((i) => (
+                  <Card
+                    key={i}
+                    className="group cursor-pointer border border-gray-200 shadow hover:shadow-lg transition-all hover:-translate-y-1"
+                  >
+                    <div className="relative">
+                      <Badge className="absolute bg-red-300 text-white text-xs text-red-700 text-center w-12 px-2 py-1 top-0 right-0 rounded-tl-lg rounded-r-none border-l-red-200 shadow-sm hover:bg-orange-300">
                         -10%
                       </Badge>
                       <img
                         src="https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg"
-                        alt="Shoe Angle 1"
-                        className="flex h-56 w-full aspect-[4/3] object-cover transition"
+                        alt="Product"
+                        className="w-full aspect-square object-cover rounded-t-lg"
                       />
-                      <div className="mx-3 my-2">
-                        <p className="line-clamp-2 text-sm text-gray-900 max-w-[320px] text-sm text-start text-foreground">
-                          Nike Air Force
-                        </p>
-                      </div>
-                      <div className="flex flex-cols gap-2 mx-3 my-3">
-                        <Badge className="w-12 h-5 px-0.2 bg-blue-200 text-xs text-center border border-border border-blue-600 text-blue-600 rounded-none border border-border border-blue-600  hover:border-blue-600 shadow-sm">
-                          ₽5 OFF
-                        </Badge>
-                        <Badge className="w-12 h-5 px-0.2 bg-blue-300 text-xs text-center border border-none rounded-none border border-border hover:border-blue-600 shadow-sm">
-                          ₽5 OFF
-                        </Badge>
-                        <Badge className="w-12 h-5 px-0.2 bg-yellow-200 text-xs text-center text-blackborder border-border border-orange-500 rounded-none border border-border shadow-sm hover:text-yellow-200">
-                          <span className="text-xs text-yellow-500 m-2">★</span>{" "}
-                          4.8
-                        </Badge>
-                      </div>
-                      <div className="flex flex-cols gap-2 mx-3 my-2">
-                        <p className="text-start text-xs font-bold text-blue-600">
-                          ₽ 100{" "}
-                          <span className="text-xs text-gray-400 line-through">
-                            ₽ 100
-                          </span>
-                        </p>
-                        <p className="text-end text-xs font-foreground">
-                          10.6K Sold
-                        </p>
-                      </div>
-                    </button>
-                  </Link>
-                </Card>
-                <Card className="bg-white flex justify-center w-auto h-auto m-auto border border-border border-gray-200 rounded-none shadow-lg transition-all duration-300 hover:border-gray-200 hover:-translate-y-1">
-                  <button
-                    className="relative overflow-hidden transition"
-                    aria-label="View Angle 1"
-                  >
-                    <Badge className="absolute bg-red-300 text-white text-xs text-red-700 text-center w-12 px-2 py-1 top-0 right-0 rounded-tl-lg rounded-r-none border-l-red-200 shadow-sm hover:bg-orange-300">
-                      -10%
-                    </Badge>
-                    <img
-                      src="https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg"
-                      alt="Shoe Angle 1"
-                      className="flex h-56 w-full aspect-[4/3] object-cover transition group-hover:scale-[1.02]"
-                    />
-                    <div className="mx-3 my-2">
-                      <p className="line-clamp-2 text-sm text-gray-900 max-w-[320px] text-sm text-start text-foreground">
+                    </div>
+                    <div className="p-3">
+                      <p className="text-sm text-gray-900 line-clamp-2 mb-2">
                         Nike Air Force
                       </p>
+                      <div className="flex flex-wrap gap-1 mb-2">
+                        <Badge className="bg-blue-100 text-blue-600 rounded-none border border-border border-blue-600 text-xs">
+                          ₽5 OFF
+                        </Badge>
+                        <Badge className="bg-yellow-100 text-yellow-600 rounded-none border border-border border-orange-500 text-xs">
+                          ★ 4.8
+                        </Badge>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <p className="text-sm font-bold text-blue-600">₽100</p>
+                        <p className="text-xs text-gray-500">10k Sold</p>
+                      </div>
                     </div>
-                    <div className="flex flex-cols gap-2 mx-3 my-3">
-                      <Badge className="w-auto h-5 px-0.5 bg-transparent text-xs text-center border border-border rounded  border-blue-600 text-blue-600 rounded-none border border-border border-blue-600 hover:text-white hover:bg-blue-300 hover:border-none shadow-sm">
-                        New User Exlusive
-                      </Badge>
-                    </div>
-                    <div className="flex flex-cols gap-2 mx-3 my-3">
-                      <p className="text-start text-xs font-bold text-blue-600">
-                        ₽ 100
-                      </p>
-                      <p className="text-end text-xs font-foreground">
-                        10.6K Sold
-                      </p>
-                    </div>
-                  </button>
-                </Card>
+                  </Card>
+                ))}
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto my-8">
+      {/* You May Also Like */}
+      <div className="max-w-7xl mx-auto">
         <div className="min-h-full text-card-foreground h-auto">
           <div className="grid grid-cols-1 lg:grid-cols-1 gap-3 mx-2 my-5">
             {/* You May Also Like Section */}
-            <p className="text-xs text-muted-foreground flex items-center uppercase">
-              You May Also Like
-            </p>
-            <div className="space-y-6">
-              <div className="grid lg:grid-cols-6 gap-4 my-4">
-                <Card className="bg-white flex justify-center w-auto h-auto m-auto border border-border border-gray-200 rounded-none shadow-lg transition-all duration-300 hover:border-gray-200 hover:-translate-y-1">
-                  <button
-                    className="relative overflow-hidden transition"
-                    aria-label="View Angle 1"
+            <div className="mt-8">
+              <p className="text-xs text-muted-foreground flex items-center uppercase mb-5">
+                You May Also Like
+              </p>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                {[1, 2, 3, 4, 5, 6].map((i) => (
+                  <Card
+                    key={i}
+                    className="group cursor-pointer border border-gray-200 shadow hover:shadow-lg transition-all hover:-translate-y-1"
                   >
-                    <Badge className="absolute bg-red-300 text-white text-xs text-red-700 text-center w-12 px-2 py-1 top-0 right-0 rounded-tl-lg rounded-r-none border-l-red-200 shadow-sm hover:bg-orange-300">
-                      -10%
-                    </Badge>
-                    <img
-                      src="https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg"
-                      alt="Shoe Angle 1"
-                      className="flex h-56 w-full aspect-[4/3] object-cover transition group-hover:scale-[1.02]"
-                    />
-                    <div className="mx-3 my-2">
-                      <p className="line-clamp-2 text-sm text-gray-900 max-w-[320px] text-sm text-start text-foreground">
+                    <div className="relative">
+                      <Badge className="absolute bg-red-300 text-white text-xs text-red-700 text-center w-12 px-2 py-1 top-0 right-0 rounded-tl-lg rounded-r-none border-l-red-200 shadow-sm hover:bg-orange-300">
+                        -10%
+                      </Badge>
+                      <img
+                        src="https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg"
+                        alt="Product"
+                        className="w-full aspect-square object-cover rounded-t-lg"
+                      />
+                    </div>
+                    <div className="p-3">
+                      <p className="text-sm text-gray-900 line-clamp-2 mb-2">
                         Nike Air Force
                       </p>
+                      <div className="flex flex-wrap gap-1 mb-2">
+                        <Badge className="bg-blue-100 text-blue-600 rounded-none border border-border border-blue-600 text-xs">
+                          ₽5 OFF
+                        </Badge>
+                        <Badge className="bg-yellow-100 text-yellow-600 rounded-none border border-border border-orange-500 text-xs">
+                          ★ 4.8
+                        </Badge>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <p className="text-sm font-bold text-blue-600">₽100</p>
+                        <p className="text-xs text-gray-500">10k Sold</p>
+                      </div>
                     </div>
-                    <div className="flex flex-cols gap-2 mx-3 my-3">
-                      <Badge className="w-12 h-5 px-0.2 bg-blue-200 text-xs text-center border border-border border-blue-600 text-blue-600 rounded-none border border-border border-blue-600  hover:border-blue-600 shadow-sm">
-                        ₽5 OFF
-                      </Badge>
-                      <Badge className="w-12 h-5 px-0.2 bg-blue-300 text-xs text-center border border-none rounded-none border border-border hover:border-blue-600 shadow-sm">
-                        ₽5 OFF
-                      </Badge>
-                      <Badge className="w-12 h-5 px-0.2 bg-yellow-200 text-xs text-center text-blackborder border-border border-orange-500 rounded-none border border-border shadow-sm hover:text-yellow-200">
-                        <span className="tet-xs text-yellow-500 m-2">★</span>{" "}
-                        4.8
-                      </Badge>
-                    </div>
-                    <div className="flex flex-cols gap-2 mx-3 my-3">
-                      <p className="text-start text-xs font-bold text-blue-600">
-                        ₽ 100
-                      </p>
-                      <p className="text-end text-xs font-foreground">
-                        10.6K Sold
-                      </p>
-                    </div>
-                  </button>
-                </Card>
+                  </Card>
+                ))}
               </div>
             </div>
           </div>
@@ -1219,11 +1041,14 @@ export default function ProductDetailPage() {
       <div className="max-w-7xl mx-auto my-8">
         <div className="min-h-full text-card-foreground h-auto">
           <div className="grid grid-cols-1 lg:grid-cols-1 gap-3 mx-2 my-5">
-            <div className="mx-auto space-y-6">
-              <Card className="bg-gray-100 w-auto h-14 pt-5 m-2 border border-border border-gray-300 rounded-none shadow-lg transition-all duration-300 hover:bg-gray-200">
-                <p className="flex justify-center  justify-center text-xs w-56 text-gray-400 mx-96 text-center">
-                  Login To See More/See More Products
-                </p>
+            {/* Load More */}
+            <div className="mt-8 flex justify-center">
+              <Card className="bg-gray-100 border border-gray-300 rounded-lg shadow hover:bg-gray-200 transition cursor-pointer">
+                <div className="px-12 py-4">
+                  <p className="text-sm text-gray-600 text-center">
+                    Login To See More Products
+                  </p>
+                </div>
               </Card>
             </div>
           </div>

@@ -425,9 +425,10 @@ export default function Header() {
   return (
     <>
       <ToastIntegration />
-      <header className="bg-white shadow-sm border-b sticky top-0 z-50 backdrop-blur-md">
+      {/* <header className="bg-white shadow-sm border-b sticky top-0 z-50 backdrop-blur-md"> */}
+      <header className="bg-gradient-to-br from-slate-900 via-orange-900 to-red-900 shadow-sm border-b sticky top-0 z-50 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-3 sm:px-5 lg:px-7">
-          <div className="flex flex-row justify-between items-center h-16 sm:h-20">
+          <div className="flex flex-row justify-between items-center h-24 sm:h-32">
             {/* Enhanced Logo */}
             <Link href="/" className="flex items-center space-x-2 sm:space-x-4 group">
               <div className="relative w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 transition-transform duration-300 group-hover:scale-105">
@@ -443,7 +444,7 @@ export default function Header() {
                 <span className="font-bold text-lg sm:text-2xl lg:text-3xl bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent leading-tight">
                   YAMAARAW
                 </span>
-                <span className="text-xs sm:text-sm text-gray-500 font-medium tracking-wide hidden sm:block">
+                <span className="text-xs sm:text-sm text-white font-medium tracking-wide hidden sm:block">
                   Electric Vehicles
                 </span>
               </div>
@@ -751,21 +752,21 @@ export default function Header() {
             <nav className="hidden lg:flex items-center space-x-6 xl:space-x-8 mx-5" role="navigation" aria-label="Main navigation">
               <Link
                 href="/products"
-                className="text-gray-700 hover:text-orange-600 font-medium transition-colors relative group"
+                className="text-white hover:text-orange-600 font-medium transition-colors relative group"
               >
                 Products
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-orange-600 to-red-600 group-hover:w-full transition-all duration-300"></span>
               </Link>
               <Link
                 href="/about"
-                className="text-gray-700 hover:text-orange-600 font-medium transition-colors relative group"
+                className="text-white hover:text-orange-600 font-medium transition-colors relative group"
               >
                 About Us
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-orange-600 to-red-600 group-hover:w-full transition-all duration-300"></span>
               </Link>
               <Link
                 href="/contact"
-                className="text-gray-700 hover:text-orange-600 font-medium transition-colors relative group"
+                className="text-white hover:text-orange-600 font-medium transition-colors relative group"
               >
                 Contact
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-orange-600 to-red-600 group-hover:w-full transition-all duration-300"></span>
@@ -783,9 +784,9 @@ export default function Header() {
                   aria-label={`Shopping cart with ${cartCount} ${cartCount === 1 ? 'item' : 'items'}`}
                 >
                   <div className="relative">
-                    <ShoppingCart className="w-5 h-5 text-orange-600 group-hover:text-orange-700 transition-colors" />
+                    <ShoppingCart className="w-5 h-5 text-yellow-300 group-hover:text-yellow-700 transition-colors" />
                     <div className="absolute inset-0 opacity-0 transition-opacity duration-300">
-                      <Zap className="w-5 h-5 text-orange-500" />
+                      <Zap className="w-5 h-5 text-yellow-500" />
                     </div>
                   </div>
                   {mounted && cartCount > 0 && (
@@ -810,7 +811,7 @@ export default function Header() {
                   title="Install YAMAARAW App"
                   aria-label="Install YAMAARAW mobile app"
                 >
-                  <Download className="w-5 h-5 text-purple-600 group-hover:text-purple-700 group-hover:scale-110 transition-all" />
+                  <Download className="w-5 h-5 text-green-600 group-hover:text-purple-700 group-hover:scale-110 transition-all" />
                   <span className="sr-only">Install App</span>
                 </Button>
               )}
