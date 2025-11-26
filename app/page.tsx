@@ -37,9 +37,9 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
-import FilterBar from '@/components/product/FilterBar';
-import FilterSidebar, { FilterState } from '@/components/product/FilterSidebar';
-import ProductCard, { Product } from '@/components/product/ProductCard';
+import FilterBar from "@/components/product/FilterBar";
+import FilterSidebar, { FilterState } from "@/components/product/FilterSidebar";
+import ProductCard, { Product } from "@/components/product/ProductCard";
 
 interface FeaturedProduct {
   id: number;
@@ -70,8 +70,8 @@ interface Testimonial {
 
 export default function HomePage() {
   const [quantity, setQuantity] = useState(1);
-  const [selectedColor, setSelectedColor] = useState('White');
-  const [currentSort, setCurrentSort] = useState('relevance');
+  const [selectedColor, setSelectedColor] = useState("White");
+  const [currentSort, setCurrentSort] = useState("relevance");
   const [currentPage, setCurrentPage] = useState(1);
   const [filters, setFilters] = useState<FilterState>({
     priceRange: [0, 10000],
@@ -79,31 +79,146 @@ export default function HomePage() {
     inStock: false,
     categories: [],
   });
-  
+
   const itemsPerPage = 12;
 
   const colors = [
-    { name: 'White', class: 'bg-white' },
-    { name: 'Black', class: 'bg-black' },
-    { name: 'Red', class: 'bg-red-700' },
-    { name: 'Blue', class: 'bg-blue-700' },
+    { name: "White", class: "bg-white" },
+    { name: "Black", class: "bg-black" },
+    { name: "Red", class: "bg-red-700" },
+    { name: "Blue", class: "bg-blue-700" },
   ];
 
-// Mock products for filtering demo
-const mockProducts: Product[] = [
-  { id: 1, name: 'Nike Air Force 1 Low White', price: 4500, original_price: 5000, rating: 4.8, sold: 12400, image: 'https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg', in_stock: true },
-  { id: 2, name: 'Nike Air Force 1 Mid Black', price: 5200, original_price: 6000, rating: 4.9, sold: 8900, image: 'https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg', in_stock: true },
-  { id: 3, name: 'Nike Air Force 1 High Triple White', price: 3800, rating: 4.6, sold: 15200, image: 'https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg', in_stock: true },
-  { id: 4, name: 'Nike Air Force 1 Shadow Pale Ivory', price: 6500, original_price: 7500, rating: 4.7, sold: 6300, image: 'https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg', in_stock: false },
-  { id: 5, name: 'Nike Air Force 1 Low University Blue', price: 4200, rating: 4.5, sold: 9800, image: 'https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg', in_stock: true },
-  { id: 6, name: 'Nike Air Force 1 07 LX UV Reactive', price: 7200, original_price: 8500, rating: 4.9, sold: 4100, image: 'https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg', in_stock: true },
-  { id: 7, name: 'Nike Air Force 1 Low Cactus Jack', price: 2800, rating: 4.3, sold: 18700, image: 'https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg', in_stock: true },
-  { id: 8, name: 'Nike Air Force 1 React White Ice', price: 5800, original_price: 6800, rating: 4.8, sold: 7200, image: 'https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg', in_stock: true },
-  { id: 9, name: 'Nike Air Force 1 Low Off-White', price: 8900, original_price: 10000, rating: 5.0, sold: 3400, image: 'https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg', in_stock: false },
-  { id: 10, name: 'Nike Air Force 1 Low Pink Foam', price: 3900, rating: 4.6, sold: 11200, image: 'https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg', in_stock: true },
-  { id: 11, name: 'Nike Air Force 1 Sage Low Triple White', price: 4600, original_price: 5200, rating: 4.7, sold: 8600, image: 'https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg', in_stock: true },
-  { id: 12, name: 'Nike Air Force 1 Low Wheat Mocha', price: 5400, rating: 4.8, sold: 6900, image: 'https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg', in_stock: true },
-];
+  // Mock products for filtering demo
+  const mockProducts: Product[] = [
+    {
+      id: 1,
+      name: "Nike Air Force 1 Low White",
+      price: 4500,
+      original_price: 5000,
+      rating: 4.8,
+      sold: 12400,
+      image:
+        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      in_stock: true,
+    },
+    {
+      id: 2,
+      name: "Nike Air Force 1 Mid Black",
+      price: 5200,
+      original_price: 6000,
+      rating: 4.9,
+      sold: 8900,
+      image:
+        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      in_stock: true,
+    },
+    {
+      id: 3,
+      name: "Nike Air Force 1 High Triple White",
+      price: 3800,
+      rating: 4.6,
+      sold: 15200,
+      image:
+        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      in_stock: true,
+    },
+    {
+      id: 4,
+      name: "Nike Air Force 1 Shadow Pale Ivory",
+      price: 6500,
+      original_price: 7500,
+      rating: 4.7,
+      sold: 6300,
+      image:
+        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      in_stock: false,
+    },
+    {
+      id: 5,
+      name: "Nike Air Force 1 Low University Blue",
+      price: 4200,
+      rating: 4.5,
+      sold: 9800,
+      image:
+        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      in_stock: true,
+    },
+    {
+      id: 6,
+      name: "Nike Air Force 1 07 LX UV Reactive",
+      price: 7200,
+      original_price: 8500,
+      rating: 4.9,
+      sold: 4100,
+      image:
+        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      in_stock: true,
+    },
+    {
+      id: 7,
+      name: "Nike Air Force 1 Low Cactus Jack",
+      price: 2800,
+      rating: 4.3,
+      sold: 18700,
+      image:
+        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      in_stock: true,
+    },
+    {
+      id: 8,
+      name: "Nike Air Force 1 React White Ice",
+      price: 5800,
+      original_price: 6800,
+      rating: 4.8,
+      sold: 7200,
+      image:
+        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      in_stock: true,
+    },
+    {
+      id: 9,
+      name: "Nike Air Force 1 Low Off-White",
+      price: 8900,
+      original_price: 10000,
+      rating: 5.0,
+      sold: 3400,
+      image:
+        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      in_stock: false,
+    },
+    {
+      id: 10,
+      name: "Nike Air Force 1 Low Pink Foam",
+      price: 3900,
+      rating: 4.6,
+      sold: 11200,
+      image:
+        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      in_stock: true,
+    },
+    {
+      id: 11,
+      name: "Nike Air Force 1 Sage Low Triple White",
+      price: 4600,
+      original_price: 5200,
+      rating: 4.7,
+      sold: 8600,
+      image:
+        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      in_stock: true,
+    },
+    {
+      id: 12,
+      name: "Nike Air Force 1 Low Wheat Mocha",
+      price: 5400,
+      rating: 4.8,
+      sold: 6900,
+      image:
+        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      in_stock: true,
+    },
+  ];
 
   // Filter and sort products
   const filteredAndSortedProducts = useMemo(() => {
@@ -112,7 +227,10 @@ const mockProducts: Product[] = [
     // Apply filters
     result = result.filter((product) => {
       // Price range filter
-      if (product.price < filters.priceRange[0] || product.price > filters.priceRange[1]) {
+      if (
+        product.price < filters.priceRange[0] ||
+        product.price > filters.priceRange[1]
+      ) {
         return false;
       }
 
@@ -131,19 +249,19 @@ const mockProducts: Product[] = [
 
     // Apply sorting
     switch (currentSort) {
-      case 'price_asc':
+      case "price_asc":
         result.sort((a, b) => a.price - b.price);
         break;
-      case 'price_desc':
+      case "price_desc":
         result.sort((a, b) => b.price - a.price);
         break;
-      case 'rating':
+      case "rating":
         result.sort((a, b) => b.rating - a.rating);
         break;
-      case 'popular':
+      case "popular":
         result.sort((a, b) => b.sold - a.sold);
         break;
-      case 'latest':
+      case "latest":
         result.sort((a, b) => b.id - a.id);
         break;
       default:
@@ -164,10 +282,8 @@ const mockProducts: Product[] = [
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    productsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    productsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
-
-
 
   const [featuredProducts, setFeaturedProducts] = useState<FeaturedProduct[]>(
     []
@@ -559,147 +675,116 @@ const mockProducts: Product[] = [
   // Categories data
   const categories = [
     {
+      id: 1,
       name: "Home Entertainment",
       icon: "https://cdn-icons-png.flaticon.com/512/3659/3659898.png",
     },
     {
+      id: 2,
       name: "Babies & Kids",
       icon: "https://cdn-icons-png.flaticon.com/512/2917/2917995.png",
     },
     {
+      id: 3,
       name: "Home & Living",
       icon: "https://cdn-icons-png.flaticon.com/512/2917/2917242.png",
     },
     {
+      id: 4,
       name: "Groceries",
       icon: "https://cdn-icons-png.flaticon.com/512/3050/3050464.png",
     },
     {
+      id: 5,
       name: "Toys, Games & Collectibles",
       icon: "https://cdn-icons-png.flaticon.com/512/2917/2917995.png",
     },
     {
+      id: 6,
       name: "Women's Bags",
       icon: "https://cdn-icons-png.flaticon.com/512/2609/2609358.png",
     },
     {
+      id: 7,
       name: "Women Accessories",
       icon: "https://cdn-icons-png.flaticon.com/512/3050/3050155.png",
     },
     {
+      id: 8,
       name: "Women's Shoes",
       icon: "https://cdn-icons-png.flaticon.com/512/2329/2329876.png",
     },
     {
+      id: 9,
       name: "Pet Care",
       icon: "https://cdn-icons-png.flaticon.com/512/2138/2138440.png",
     },
     {
+      id: 10,
       name: "Audio",
       icon: "https://cdn-icons-png.flaticon.com/512/2941/2941885.png",
     },
     {
+      id: 12,
       name: "Home Appliances",
       icon: "https://cdn-icons-png.flaticon.com/512/2917/2917180.png",
     },
     {
+      id: 13,
       name: "Laptops & Computers",
       icon: "https://cdn-icons-png.flaticon.com/512/3659/3659898.png",
     },
     {
+      id: 14,
       name: "Cameras",
       icon: "https://cdn-icons-png.flaticon.com/512/3342/3342137.png",
     },
     {
+      id: 15,
       name: "Sports & Travel",
       icon: "https://cdn-icons-png.flaticon.com/512/2917/2917995.png",
     },
     {
+      id: 16,
       name: "Men's Bags & Accessories",
       icon: "https://cdn-icons-png.flaticon.com/512/2913/2913133.png",
     },
     {
+      id: 17,
       name: "Men's Shoes",
       icon: "https://cdn-icons-png.flaticon.com/512/2589/2589903.png",
     },
     {
+      id: 18,
       name: "Motors",
       icon: "https://cdn-icons-png.flaticon.com/512/3097/3097039.png",
     },
     {
+      id: 19,
       name: "Hobbies & Stationery",
       icon: "https://cdn-icons-png.flaticon.com/512/2917/2917995.png",
     },
     {
+      id: 20,
       name: "Gaming",
       icon: "https://cdn-icons-png.flaticon.com/512/686/686589.png",
     },
     {
+      id: 21,
       name: "Home Entertainment",
       icon: "https://cdn-icons-png.flaticon.com/512/3659/3659898.png",
     },
     {
+      id: 22,
       name: "Babies & Kids",
       icon: "https://cdn-icons-png.flaticon.com/512/2917/2917995.png",
-    },
-    {
-      name: "Home & Living",
-      icon: "https://cdn-icons-png.flaticon.com/512/2917/2917242.png",
-    },
-    {
-      name: "Groceries",
-      icon: "https://cdn-icons-png.flaticon.com/512/3050/3050464.png",
-    },
-    {
-      name: "Toys, Games & Collectibles",
-      icon: "https://cdn-icons-png.flaticon.com/512/2917/2917995.png",
-    },
-    {
-      name: "Women's Bags",
-      icon: "https://cdn-icons-png.flaticon.com/512/2609/2609358.png",
-    },
-    {
-      name: "Women Accessories",
-      icon: "https://cdn-icons-png.flaticon.com/512/3050/3050155.png",
-    },
-    {
-      name: "Women's Shoes",
-      icon: "https://cdn-icons-png.flaticon.com/512/2329/2329876.png",
-    },
-    {
-      name: "Pet Care",
-      icon: "https://cdn-icons-png.flaticon.com/512/2138/2138440.png",
-    },
-    {
-      name: "Audio",
-      icon: "https://cdn-icons-png.flaticon.com/512/2941/2941885.png",
-    },
-    {
-      name: "Home Appliances",
-      icon: "https://cdn-icons-png.flaticon.com/512/2917/2917180.png",
-    },
-    {
-      name: "Laptops & Computers",
-      icon: "https://cdn-icons-png.flaticon.com/512/3659/3659898.png",
-    },
-    {
-      name: "Cameras",
-      icon: "https://cdn-icons-png.flaticon.com/512/3342/3342137.png",
-    },
-    {
-      name: "Sports & Travel",
-      icon: "https://cdn-icons-png.flaticon.com/512/2917/2917995.png",
-    },
-    {
-      name: "Men's Bags & Accessories",
-      icon: "https://cdn-icons-png.flaticon.com/512/2913/2913133.png",
     },
   ];
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-slate-900 via-orange-900 to-red-900 text-white overflow-hidden">
+      <section className="relative bg-gradient-to-br from-slate-900 via-blue-900 to-red-900 text-white overflow-hidden">
         <div className="absolute inset-0 bg-black/10"></div>
       </section>
 
@@ -772,12 +857,12 @@ const mockProducts: Product[] = [
             </button>
           </div>
         </div>{" "}
-        <div className="bg-gradient-to-r from-orange-600 to-red-600 flex items-center justify-center space-x-4 text-white py-4">
+        <div className="bg-gradient-to-r from-blue-600 to-red-600 flex items-center justify-center space-x-4 text-white py-4">
           <Gift className="w-6 h-6 animate-bounce" />
           <span className="font-bold text-lg">MEGA SALE</span>
-          <span className="text-orange-200">•</span>
+          <span className="text-blue-200">•</span>
           <span>Free Shipping on Orders Over ₱50,000</span>
-          <span className="text-orange-200">•</span>
+          <span className="text-blue-200">•</span>
           <span>2-Year Warranty Included</span>
         </div>
       </div>
@@ -795,61 +880,12 @@ const mockProducts: Product[] = [
                 key={index}
                 name={category.name}
                 icon={category.icon}
-                onClick={handleCategoryClick}
+                onClick={() => {
+                  window.location.href = `/categories/${category.id}`;
+                }}
               />
             ))}
           </Carousel>
-        </div>
-      </div>
-
-
-      {/* Category Products Section with Filters */}
-      <div className="max-w-7xl mx-auto p-4" ref={productsRef}>
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-bold text-gray-900">All Products</h2>
-          <p className="text-sm text-gray-600">
-            {filteredAndSortedProducts.length} items
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-          {/* Filter Sidebar */}
-          <div className="lg:col-span-1">
-            <FilterSidebar onFilterChange={setFilters} />
-          </div>
-
-          {/* Products Grid */}
-          <div className="lg:col-span-3">
-            {/* Sort Bar with Pagination */}
-            <FilterBar
-              currentSort={currentSort}
-              onSortChange={setCurrentSort}
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={handlePageChange}
-            />
-
-            {paginatedProducts.length > 0 ? (
-              <>
-                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-5 gap-4">
-                  {paginatedProducts.map((product) => (
-                    <ProductCard
-                      key={product.id}
-                      product={product}
-                      // onClick={() => navigate(`/product/similar/${product.id}`)}
-                    />
-                  ))}
-                </div>
-              </>
-            ) : (
-              <div className="text-center py-12">
-                <p className="text-gray-500 text-lg mb-2">No products found</p>
-                <p className="text-gray-400 text-sm">
-                  Try adjusting your filters
-                </p>
-              </div>
-            )}
-          </div>
         </div>
       </div>
 
@@ -868,7 +904,9 @@ const mockProducts: Product[] = [
                       <TopProductCard
                         key={product.id}
                         product={product}
-                        // onClick={() => navigate(`/product/${product.id}`)}
+                        onClick={() => {
+                          window.location.href = `/products/top/${product.id}`;
+                        }}
                       />
                     ))}
                   </div>
@@ -898,7 +936,7 @@ const mockProducts: Product[] = [
                   className="group cursor-pointer border border-gray-200 shadow hover:shadow-lg transition-all hover:-translate-y-1"
                 >
                   <div className="relative">
-                    <Badge className="absolute bg-red-300 text-white text-xs text-red-700 text-center w-12 px-2 py-1 top-0 right-0 rounded-tl-lg rounded-r-none border-l-red-200 shadow-sm hover:bg-orange-300">
+                    <Badge className="absolute bg-red-300 text-white text-xs text-red-700 text-center w-12 px-2 py-1 top-0 right-0 rounded-tl-lg rounded-r-none border-l-red-200 shadow-sm hover:bg-blue-300">
                       -10%
                     </Badge>
                     <img
@@ -915,7 +953,7 @@ const mockProducts: Product[] = [
                       <Badge className="bg-blue-100 text-blue-600 rounded-none border border-border border-blue-600 text-xs">
                         ₽5 OFF
                       </Badge>
-                      <Badge className="bg-yellow-100 text-yellow-600 rounded-none border border-border border-orange-500 text-xs">
+                      <Badge className="bg-yellow-100 text-yellow-600 rounded-none border border-border border-blue-500 text-xs">
                         ★ 4.8
                       </Badge>
                     </div>
