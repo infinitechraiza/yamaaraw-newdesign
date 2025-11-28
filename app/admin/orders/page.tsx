@@ -257,7 +257,7 @@ export default function AdminOrdersPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Admin Header */}
-      <section className="bg-gradient-to-br from-orange-500 via-red-500 to-orange-600 text-white py-12">
+      <section className="bg-gradient-to-br from-orange-500 via-red-500 to-red-600 text-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             <div>
@@ -272,8 +272,17 @@ export default function AdminOrdersPage() {
               </p>
             </div>
             <div className="flex items-center space-x-4">
-              <div className="bg-white/20 backdrop-blur-sm rounded-full p-3">
-                <Package className="w-8 h-8" />
+              {/* Right: Export Buttons */}
+              <div className="flex items-center space-x-2">
+                <Button
+                  variant="outline"
+                  className="border-blue-500 text-blue-500  hover:text-blue-700 hover:bg-blue-50"
+                  onClick={handleExport}
+                  disabled={filteredOrders.length === 0}
+                >
+                  <Download className="w-4 h-4 mr-2" />
+                  Export
+                </Button>
               </div>
             </div>
           </div>
@@ -296,22 +305,11 @@ export default function AdminOrdersPage() {
       <section className="py-8 bg-white border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
-            <div className="flex flex-col sm:flex-row gap-4 flex-1">
-              <div className="relative flex-1 max-w-md">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                <Input
-                  type="text"
-                  placeholder="Search orders..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  onKeyPress={(e) => e.key === "Enter" && handleSearch()}
-                  className="pl-10 h-10 rounded-lg border-2 border-orange-200 focus:border-orange-500"
-                />
-              </div>
+            <div className="w-full flex justify-end flex-col sm:flex-row gap-4 flex-1">
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                className="h-10 px-4 rounded-lg border-2 border-orange-200 focus:border-orange-500 bg-white min-w-[150px]"
+                className="h-10 px-4 text-xs rounded-lg border-2 border-blue-200 focus:border-blue-500 bg-white min-w-[150px]"
               >
                 {statuses.map((status) => (
                   <option key={status} value={status}>
@@ -320,32 +318,34 @@ export default function AdminOrdersPage() {
                       : status.charAt(0).toUpperCase() + status.slice(1)}
                   </option>
                 ))}
-              </select>
+              </select>{" "}
+              <div className="relative max-w-md">
+                <Input
+                  type="text"
+                  placeholder="Search orders..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onKeyPress={(e) => e.key === "Enter" && handleSearch()}
+                  className="w-56 pl-2 h-10 rounded-lr-full rounded-r-2xl border-r-sm border-2 border-blue-200 focus:border-blue-500 text-xs"
+                />
+              </div>
               <Button
                 onClick={handleSearch}
                 variant="outline"
-                className="border-orange-500 text-orange-600 hover:bg-orange-50"
+                className="group absolute p-2 bg-blue-500 group-hover:border-2 group-hover:border-blue-700 text-xs text-blue-600 rounded-full hover:bg-blue-50"
                 disabled={loading}
               >
-                <Filter className="w-4 h-4 mr-2" />
-                {loading ? "Loading..." : "Apply Filters"}
+                {loading ? (
+                  "wait.."
+                ) : (
+                  <Search className="transform text-white group-hover:text-black w-5 h-5" />
+                )}
               </Button>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Button
-                variant="outline"
-                className="border-orange-500 text-orange-600 hover:bg-orange-50"
-                onClick={handleExport}
-                disabled={filteredOrders.length === 0}
-              >
-                <Download className="w-4 h-4 mr-2" />
-                Export
-              </Button>
-              <Badge className="bg-orange-100 text-orange-600 border-orange-200">
-                {filteredOrders.length} Order
-                {filteredOrders.length !== 1 ? "s" : ""}
-              </Badge>
-            </div>
+            </div>{" "}
+            <Badge className="bg-blue-100 hover:bg-blue-500 text-blue-600 hover:text-white border-blue-200">
+              {filteredOrders.length} Order
+              {filteredOrders.length !== 1 ? "s" : ""}
+            </Badge>{" "}
           </div>
         </div>
       </section>
@@ -360,7 +360,7 @@ export default function AdminOrdersPage() {
           ) : filteredOrders.length === 0 ? (
             <div className="text-center py-12">
               <div className="w-24 h-24 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Package className="w-12 h-12 text-orange-500" />
+                <Package className="w-12 h-12 text-blue-500" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">
                 No orders found
@@ -371,8 +371,8 @@ export default function AdminOrdersPage() {
             </div>
           ) : (
             <Card>
-              <CardHeader>
-                <div className="flex justify-between items-center">
+              <CardHeader className="bg-gradient-to-r from-blue-50 to-blue-90 px-6 py-4 rounded border-b border-gray-200">
+                <div className="flex justify-between items-center bg-gradient-to-r from-blue-50 to-blue-90 px-6 py-4 rounded border-b border-gray-200">
                   <CardTitle className="text-xl">
                     Orders ({filteredOrders.length})
                   </CardTitle>
@@ -383,7 +383,7 @@ export default function AdminOrdersPage() {
                       onChange={(e) =>
                         handleItemsPerPageChange(Number(e.target.value))
                       }
-                      className="border border-gray-300 rounded-lg px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
+                      className="border border-gray-300 rounded-lg px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value={5}>5</option>
                       <option value={10}>10</option>
@@ -402,7 +402,7 @@ export default function AdminOrdersPage() {
               <CardContent>
                 <div className="overflow-x-auto">
                   <table className="w-full">
-                    <thead>
+                    <thead className="bg-gradient-to-r from-blue-50 to-blue-70 border-b border-blue-100 justify-between items-center">
                       <tr className="border-b-2 border-gray-200">
                         <th className="text-left py-4 px-4 font-semibold text-gray-900 bg-gray-50">
                           Order #
@@ -434,7 +434,7 @@ export default function AdminOrdersPage() {
                           className="border-b border-gray-100 hover:bg-gray-50"
                         >
                           <td className="py-4 px-4">
-                            <div className="font-medium text-gray-900">
+                            <div className="text-sm text-gray-900">
                               #{order.order_number}
                             </div>
                             <div className="text-sm text-gray-500">
@@ -447,7 +447,7 @@ export default function AdminOrdersPage() {
                                 {order.first_name.charAt(0).toUpperCase()}
                               </div>
                               <div>
-                                <div className="font-medium text-gray-900">
+                                <div className="text-sm text-gray-900">
                                   {order.first_name} {order.last_name}
                                 </div>
                                 <div className="text-sm text-gray-500">
@@ -463,7 +463,7 @@ export default function AdminOrdersPage() {
                                 handleStatusUpdate(order.id, e.target.value)
                               }
                               disabled={updatingStatus === order.id}
-                              className={`px-3 py-1 rounded-full text-sm font-medium border ${getStatusColor(order.status)} ${
+                              className={`px-3 py-1 rounded-full text-sm border ${getStatusColor(order.status)} ${
                                 updatingStatus === order.id ? "opacity-50" : ""
                               }`}
                             >
@@ -476,7 +476,7 @@ export default function AdminOrdersPage() {
                             </select>
                           </td>
                           <td className="py-4 px-4">
-                            <div className="font-bold text-orange-600">
+                            <div className="font-bold text-blue-600">
                               {formatPrice(order.total)}
                             </div>
                           </td>
@@ -516,7 +516,7 @@ export default function AdminOrdersPage() {
                                 onClick={() =>
                                   router.push(`/admin/orders/${order.id}`)
                                 }
-                                className="border-orange-200 text-orange-600 hover:bg-orange-50"
+                                className="border-blue-200 text-blue-600 hover:bg-blue-50"
                               >
                                 <Eye className="w-4 h-4 mr-1" />
                                 View
@@ -527,7 +527,7 @@ export default function AdminOrdersPage() {
                                   variant="outline"
                                   size="sm"
                                   onClick={() => handleTrackOrder(order.id)}
-                                  className="border-blue-200 text-blue-600 hover:bg-blue-50"
+                                  className="border-green-200 text-green-600 hover:bg-blue-50"
                                 >
                                   <Truck className="w-4 h-4 mr-1" />
                                   Track

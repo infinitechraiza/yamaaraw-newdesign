@@ -1,7 +1,6 @@
 "use client";
-import { useState, useMemo, useEffect, useRef } from "react";
 
-import { useParams } from "react-router";
+import { useState, useMemo, useEffect, useRef } from "react";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import ETrikeLoader from "@/components/ui/etrike-loader";
@@ -11,7 +10,7 @@ import "swiper/css/pagination";
 import FilterBar from "@/components/product/FilterBar";
 import FilterSidebar, { FilterState } from "@/components/product/FilterSidebar";
 import ProductCard, { Product } from "@/components/product/ProductCard";
-import { ArrowLeft } from "lucide-react";
+import Breadcrumb from "@/components/layout/Breadcrumb";
 
 interface FeaturedProduct {
   id: number;
@@ -39,34 +38,38 @@ interface Testimonial {
     model: string;
   };
 }
+
 // Mock product data - in a real app this would come from an API
 const allProducts: Product[] = [
   {
     id: 1,
-    name: "Nike Air Force 1 Low White",
-    price: 4500,
-    original_price: 5000,
+    category_id: 1,
+    name: "Acer Nitro 5",
+    price: 34500,
+    original_price: 39000,
     rating: 4.8,
-    sold: 12400,
+    sold: 1400,
     image:
-      "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      "https://i.pinimg.com/1200x/80/68/33/806833e9c3fa5eeaf67ed38d0c6ca59f.jpg",
     in_stock: true,
   },
   {
     id: 2,
-    name: "Nike Air Force 1 Mid Black",
-    price: 5200,
-    original_price: 6000,
+    category_id: 2,
+    name: "Pet Brush",
+    price: 1200,
+    original_price: 3200,
     rating: 4.9,
-    sold: 8900,
+    sold: 700,
     image:
-      "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      "https://down-ph.img.susercontent.com/file/ph-11134207-7ra0n-mdr5hv571pae7d.webp",
     in_stock: true,
   },
   {
     id: 3,
+    category_id: 15,
     name: "Nike Air Force 1 High Triple White",
-    price: 3800,
+    price: 6800,
     rating: 4.6,
     sold: 15200,
     image:
@@ -75,38 +78,43 @@ const allProducts: Product[] = [
   },
   {
     id: 4,
-    name: "Nike Air Force 1 Shadow Pale Ivory",
-    price: 6500,
-    original_price: 7500,
+    category_id: 3,
+    name: "Wireless Bluetooth Headphones Sony WH-CH520 with 50-Hour Battery Life and Enhanced Sound Quality",
+    price: 1999,
+    original_price: 3500,
     rating: 4.7,
-    sold: 6300,
+    sold: 220,
     image:
-      "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      "https://down-ph.img.susercontent.com/file/ph-11134207-7rasf-m9tk4bka5yir1c.webp",
     in_stock: false,
   },
   {
     id: 5,
-    name: "Nike Air Force 1 Low University Blue",
-    price: 4200,
+    category_id: 4,
+    name: "JISULIFE Handheld Fan Pro1S FA53,Speed(1-100) justable Turbo Mini Fan,5000mAh Battery Rechargeable Personal Fan,BrownHand-held",
+    price: 999,
+    original_price: 1790,
     rating: 4.5,
-    sold: 9800,
+    sold: 23,
     image:
       "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
     in_stock: true,
   },
   {
     id: 6,
-    name: "Nike Air Force 1 07 LX UV Reactive",
-    price: 7200,
-    original_price: 8500,
-    rating: 4.9,
-    sold: 4100,
+    category_id: 4,
+    name: "24H Waterproof Eyeliner - Smudge-Proof, Precise Lines for Weddings & Special Occasions",
+    price: 1999,
+    original_price: 1999,
+    rating: 3.9,
+    sold: 4500,
     image:
-      "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      "https://down-ph.img.susercontent.com/file/ph-11134207-7rasj-ma9j3gxx0ijy92.webp",
     in_stock: true,
   },
   {
     id: 7,
+    category_id: 15,
     name: "Nike Air Force 1 Low Cactus Jack",
     price: 2800,
     rating: 4.3,
@@ -117,123 +125,137 @@ const allProducts: Product[] = [
   },
   {
     id: 8,
-    name: "Nike Air Force 1 React White Ice",
-    price: 5800,
-    original_price: 6800,
+    category_id: 6,
+    name: "YOYO Travel Bag Women Men Waterproof Large Capacity Sport Gym With Shoe Duffle Bags #S1343",
+    price: 180,
+    original_price: 700,
     rating: 4.8,
-    sold: 7200,
+    sold: 123200,
     image:
-      "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      "https://down-ph.img.susercontent.com/file/sg-11134201-7rd6w-m6tch18gn89n95.webp",
     in_stock: true,
   },
   {
     id: 9,
-    name: "Nike Air Force 1 Low Off-White",
-    price: 8900,
-    original_price: 10000,
-    rating: 5.0,
-    sold: 3400,
+    category_id: 17,
+    name: "4-Grids Baby Milk Powder Dispenser Portable Food and Snack Storage Box Sealed Moisture-proof Box",
+    price: 65,
+    original_price: 345,
+    rating: 4.9,
+    sold: 333400,
     image:
-      "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      "https://down-ph.img.susercontent.com/file/sg-11134201-825b4-mgd7dlfdhrt70e.webp",
     in_stock: false,
   },
   {
     id: 10,
+    category_id: 15,
     name: "Nike Air Force 1 Low Pink Foam",
-    price: 3900,
+    price: 650,
+    original_price: 1200,
     rating: 4.6,
     sold: 11200,
     image:
-      "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-    in_stock: true,
-  },
-  {
-    id: 11,
-    name: "Nike Air Force 1 Sage Low Triple White",
-    price: 4600,
-    original_price: 5200,
-    rating: 4.7,
-    sold: 8600,
-    image:
-      "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-    in_stock: true,
-  },
-  {
-    id: 12,
-    name: "Nike Air Force 1 Low Wheat Mocha",
-    price: 5400,
-    rating: 4.8,
-    sold: 6900,
-    image:
-      "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-    in_stock: true,
-  },
-  {
-    id: 13,
-    name: "Nike Air Force 1 Low All Black",
-    price: 4100,
-    rating: 4.7,
-    sold: 9500,
-    image:
-      "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-    in_stock: true,
-  },
-  {
-    id: 14,
-    name: "Nike Air Force 1 Low Red",
-    price: 4700,
-    original_price: 5500,
-    rating: 4.6,
-    sold: 7800,
-    image:
-      "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-    in_stock: true,
-  },
-  {
-    id: 15,
-    name: "Nike Air Force 1 Low Green",
-    price: 4300,
-    rating: 4.5,
-    sold: 6700,
-    image:
-      "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-    in_stock: true,
-  },
-  {
-    id: 16,
-    name: "Nike Air Force 1 Low Yellow",
-    price: 4400,
-    rating: 4.4,
-    sold: 5900,
-    image:
-      "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-    in_stock: true,
-  },
-  {
-    id: 17,
-    name: "Nike Air Force 1 Low blue",
-    price: 4600,
-    original_price: 5300,
-    rating: 4.7,
-    sold: 8100,
-    image:
-      "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-    in_stock: true,
-  },
-  {
-    id: 18,
-    name: "Nike Air Force 1 Low Purple",
-    price: 4800,
-    rating: 4.8,
-    sold: 7400,
-    image:
-      "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      "https://down-ph.img.susercontent.com/file/sg-11134201-7ra2o-m558g7oifba6fa.webp",
     in_stock: true,
   },
 ];
 
-export default function HomePage() {
-  const { id } = useParams();
+// Categories data
+const categories = [
+  {
+    id: 1,
+    name: "Laptops & Computers",
+    icon: "https://cdn-icons-png.flaticon.com/512/3659/3659898.png",
+  },
+  {
+    id: 2,
+    name: "Pet Care",
+    icon: "https://cdn-icons-png.flaticon.com/512/2138/2138440.png",
+  },
+  {
+    id: 3,
+    name: "Audio",
+    icon: "https://cdn-icons-png.flaticon.com/512/2941/2941885.png",
+  },
+  {
+    id: 4,
+    name: "Home Appliances",
+    icon: "https://cdn-icons-png.flaticon.com/512/2917/2917180.png",
+  },
+  {
+    id: 5,
+    name: "Cameras",
+    icon: "https://cdn-icons-png.flaticon.com/512/3342/3342137.png",
+  },
+  {
+    id: 6,
+    name: "Sports & Travel",
+    icon: "https://cdn-icons-png.flaticon.com/512/2917/2917995.png",
+  },
+  {
+    id: 7,
+    name: "Home & Living",
+    icon: "https://cdn-icons-png.flaticon.com/512/2917/2917242.png",
+  },
+  {
+    id: 8,
+    name: "Groceries",
+    icon: "https://cdn-icons-png.flaticon.com/512/3050/3050464.png",
+  },
+  {
+    id: 9,
+    name: "Toys, Games & Collectibles",
+    icon: "https://cdn-icons-png.flaticon.com/512/2917/2917995.png",
+  },
+  {
+    id: 10,
+    name: "Women's Apparel",
+    icon: "https://cdn-icons-png.flaticon.com/512/2609/2609358.png",
+  },
+  {
+    id: 11,
+    name: "Women's Bags",
+    icon: "https://cdn-icons-png.flaticon.com/512/2609/2609358.png",
+  },
+  {
+    id: 12,
+    name: "Women Accessories",
+    icon: "https://cdn-icons-png.flaticon.com/512/3050/3050155.png",
+  },
+  {
+    id: 13,
+    name: "Women's Shoes",
+    icon: "https://cdn-icons-png.flaticon.com/512/2329/2329876.png",
+  },
+  {
+    id: 14,
+    name: "Men's Bags & Accessories",
+    icon: "https://cdn-icons-png.flaticon.com/512/2913/2913133.png",
+  },
+  {
+    id: 15,
+    name: "Men's Shoes",
+    icon: "https://cdn-icons-png.flaticon.com/512/2589/2589903.png",
+  },
+  {
+    id: 16,
+    name: "Men's Apparel",
+    icon: "https://cdn-icons-png.flaticon.com/512/2609/2609358.png",
+  },
+  {
+    id: 17,
+    name: "Babies & Kids",
+    icon: "https://cdn-icons-png.flaticon.com/512/2917/2917995.png",
+  },
+];
+
+export default function HomePage({ params }: { params: { id: string } }) {
+  // Use params from Next.js, not useParams()
+  const categoryId = parseInt(params.id, 10);
+
+  const category = categories.find((c) => c.id === categoryId);
+
   const [currentSort, setCurrentSort] = useState("relevance");
   const [currentPage, setCurrentPage] = useState(1);
   const productsRef = useRef<HTMLDivElement>(null);
@@ -243,17 +265,52 @@ export default function HomePage() {
     inStock: false,
     categories: [],
   });
+  const [minPrice, setMinPrice] = useState<number | null>(null);
+  const [maxPrice, setMaxPrice] = useState<number | null>(null);
+  const [minRating, setMinRating] = useState<number | null>(null);
+  const [inStockOnly, setInStockOnly] = useState<boolean>(false);
   const itemsPerPage = 24;
 
-  // Find the original product
-  const originalProduct = allProducts.find((p) => p.id === Number(id));
-
-  // Get similar products (exclude the original product)
-  const similarProducts = allProducts.filter((p) => p.id !== Number(id));
+  // Products in this category
+  const categoryProducts = allProducts.filter(
+    (product) => product.category_id === categoryId
+  );
 
   // Filter and sort products
   const filteredAndSortedProducts = useMemo(() => {
-    let result = [...similarProducts];
+    let result = [...categoryProducts];
+
+    // Apply price range filter from FilterSidebar
+    if (filters.priceRange[0] > 0) {
+      result = result.filter((p) => p.price >= filters.priceRange[0]);
+    }
+    if (filters.priceRange[1] < 10000) {
+      result = result.filter((p) => p.price <= filters.priceRange[1]);
+    }
+
+    // Apply rating filter from FilterSidebar
+    if (filters.rating > 0) {
+      result = result.filter((p) => p.rating >= filters.rating);
+    }
+
+    // Apply in-stock filter from FilterSidebar
+    if (filters.inStock) {
+      result = result.filter((p) => p.in_stock === true);
+    }
+
+    // Apply filters from FilterBar (price, rating, inStock)
+    if (minPrice !== null) {
+      result = result.filter((p) => p.price >= minPrice);
+    }
+    if (maxPrice !== null) {
+      result = result.filter((p) => p.price <= maxPrice);
+    }
+    if (minRating !== null) {
+      result = result.filter((p) => p.rating >= minRating);
+    }
+    if (inStockOnly) {
+      result = result.filter((p) => p.in_stock === true);
+    }
 
     // Apply sorting
     switch (currentSort) {
@@ -278,7 +335,7 @@ export default function HomePage() {
     }
 
     return result;
-  }, [currentSort, similarProducts]);
+  }, [currentSort, categoryProducts, filters, minPrice, maxPrice, minRating, inStockOnly]);
 
   // Pagination
   const totalPages = Math.ceil(filteredAndSortedProducts.length / itemsPerPage);
@@ -292,14 +349,6 @@ export default function HomePage() {
     setCurrentPage(page);
     productsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
-
-  const discountPercent = originalProduct?.original_price
-    ? Math.round(
-        ((originalProduct.original_price - originalProduct.price) /
-          originalProduct.original_price) *
-          100
-      )
-    : 0;
 
   const [featuredProducts, setFeaturedProducts] = useState<FeaturedProduct[]>(
     []
@@ -379,93 +428,13 @@ export default function HomePage() {
     );
   }
 
-  // Categories
-  const items = [
-    {
-      label: "Sweatshirt",
-      img: "https://i.pinimg.com/736x/3e/b0/95/3eb0951cd994932c11d281c352a2e0d0.jpg",
-    },
-    {
-      label: "Tripod",
-      img: "https://i.pinimg.com/736x/3e/b0/95/3eb0951cd994932c11d281c352a2e0d0.jpg",
-    },
-    {
-      label: "Beach",
-      img: "https://i.pinimg.com/736x/3e/b0/95/3eb0951cd994932c11d281c352a2e0d0.jpg",
-    },
-    {
-      label: "Sippy Cup",
-      img: "https://i.pinimg.com/736x/3e/b0/95/3eb0951cd994932c11d281c352a2e0d0.jpg",
-    },
-    {
-      label: "Power Drill",
-      img: "https://i.pinimg.com/736x/3e/b0/95/3eb0951cd994932c11d281c352a2e0d0.jpg",
-    },
-    {
-      label: "Toy",
-      img: "https://i.pinimg.com/736x/3e/b0/95/3eb0951cd994932c11d281c352a2e0d0.jpg",
-    },
-    {
-      label: "Backpack",
-      img: "https://i.pinimg.com/736x/3e/b0/95/3eb0951cd994932c11d281c352a2e0d0.jpg",
-    },
-    {
-      label: "Sunglasses",
-      img: "https://i.pinimg.com/736x/3e/b0/95/3eb0951cd994932c11d281c352a2e0d0.jpg",
-    },
-    {
-      label: "Dress",
-      img: "https://i.pinimg.com/736x/3e/b0/95/3eb0951cd994932c11d281c352a2e0d0.jpg",
-    },
-    {
-      label: "Vase",
-      img: "https://i.pinimg.com/736x/3e/b0/95/3eb0951cd994932c11d281c352a2e0d0.jpg",
-    },
-    {
-      label: "Lipstick",
-      img: "https://i.pinimg.com/736x/3e/b0/95/3eb0951cd994932c11d281c352a2e0d0.jpg",
-    },
-    {
-      label: "Green Dress",
-      img: "https://i.pinimg.com/736x/3e/b0/95/3eb0951cd994932c11d281c352a2e0d0.jpg",
-    },
-    {
-      label: "Laptop",
-      img: "https://i.pinimg.com/736x/3e/b0/95/3eb0951cd994932c11d281c352a2e0d0.jpg",
-    },
-    {
-      label: "Camera",
-      img: "https://i.pinimg.com/736x/3e/b0/95/3eb0951cd994932c11d281c352a2e0d0.jpg",
-    },
-    {
-      label: "Watch",
-      img: "https://i.pinimg.com/736x/3e/b0/95/3eb0951cd994932c11d281c352a2e0d0.jpg",
-    },
-    {
-      label: "Shoe",
-      img: "https://i.pinimg.com/736x/3e/b0/95/3eb0951cd994932c11d281c352a2e0d0.jpg",
-    },
-    {
-      label: "Beanie",
-      img: "https://i.pinimg.com/736x/3e/b0/95/3eb0951cd994932c11d281c352a2e0d0.jpg",
-    },
-  ];
-
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
-      {/* Header */}
+      {/* Header / Breadcrumb */}
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 py-4">
-          <button
-            onClick={() => {
-              window.location.href = `/`;
-            }}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition"
-          >
-            <ArrowLeft className="w-5 h-5" />
-            <span className="text-sm font-medium">Back</span>
-          </button>
+          <Breadcrumb items={[{ label: 'Products', href: '/products' }, { label: category?.name || 'Category' }]} />
         </div>
       </div>
 
@@ -474,6 +443,10 @@ export default function HomePage() {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Filter Sidebar */}
           <div className="lg:col-span-1">
+            <h2 className="text-2xl font-bold m-2 text-blue-600">
+              {category ? category.name : "Category"}
+            </h2>
+
             <FilterSidebar onFilterChange={setFilters} />
           </div>
 
@@ -487,20 +460,19 @@ export default function HomePage() {
               totalPages={totalPages}
               onPageChange={handlePageChange}
             />
+
             {paginatedProducts.length > 0 ? (
-              <>
-                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-5 gap-4">
-                  {paginatedProducts.map((product) => (
-                    <ProductCard
-                      key={product.id}
-                      product={product}
-                      onClick={() => {
-                        window.location.href = `/products/`;
-                      }}
-                    />
-                  ))}
-                </div>
-              </>
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-5 gap-4">
+                {paginatedProducts.map((product) => (
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    onClick={() => {
+                      window.location.href = `/products/top/${product.id}`;
+                    }}
+                  />
+                ))}
+              </div>
             ) : (
               <div className="text-center py-12">
                 <p className="text-gray-500 text-lg mb-2">No products found</p>

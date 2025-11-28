@@ -7,9 +7,34 @@ interface SortBarProps {
   currentPage?: number;
   totalPages?: number;
   onPageChange?: (page: number) => void;
+  // New filter props
+  minPrice?: number | null;
+  maxPrice?: number | null;
+  onPriceChange?: (min: number | null, max: number | null) => void;
+  minRating?: number | null;
+  onRatingChange?: (minRating: number | null) => void;
+  inStockOnly?: boolean;
+  onInStockChange?: (val: boolean) => void;
 }
 
-export default function SortBar({ currentSort, onSortChange, currentPage = 1, totalPages = 1, onPageChange }: SortBarProps) {
+export default function SortBar({
+  currentSort,
+  onSortChange,
+  currentPage = 1,
+  totalPages = 1,
+  onPageChange,
+  minPrice,
+  maxPrice,
+  onPriceChange,
+  minRating,
+  onRatingChange,
+  inStockOnly,
+  onInStockChange,
+}: SortBarProps) {
+  const [minPriceInput, setMinPriceInput] = useState<string>(minPrice != null ? String(minPrice) : '');
+  const [maxPriceInput, setMaxPriceInput] = useState<string>(maxPrice != null ? String(maxPrice) : '');
+  const [minRatingInput, setMinRatingInput] = useState<string>(minRating != null ? String(minRating) : '');
+  const [inStockOnlyLocal, setInStockOnlyLocal] = useState<boolean>(!!inStockOnly);
   const [isPriceDropdownOpen, setIsPriceDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -23,6 +48,20 @@ export default function SortBar({ currentSort, onSortChange, currentPage = 1, to
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  // Sync local inputs when parent props change
+  useEffect(() => {
+    setMinPriceInput(minPrice != null ? String(minPrice) : '');
+  }, [minPrice]);
+  useEffect(() => {
+    setMaxPriceInput(maxPrice != null ? String(maxPrice) : '');
+  }, [maxPrice]);
+  useEffect(() => {
+    setMinRatingInput(minRating != null ? String(minRating) : '');
+  }, [minRating]);
+  useEffect(() => {
+    setInStockOnlyLocal(!!inStockOnly);
+  }, [inStockOnly]);
 
   const isPriceSort = (value: string) => {
     return ['price_asc', 'price_desc'].includes(value);
@@ -113,6 +152,11 @@ export default function SortBar({ currentSort, onSortChange, currentPage = 1, to
           )}
         </div>
       </div>
+      </div>
+
+      {/* Filters: Price range, Rating, In-stock */}
+      <div className="flex items-center gap-3">
+      
       </div>
 
       {/* Pagination */}

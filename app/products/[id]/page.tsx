@@ -25,6 +25,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import ETrikeLoader from "@/components/ui/etrike-loader";
 import { productApi, type ProductData } from "@/lib/api";
+import allProducts from "../productsData";
 import { addToCart } from "@/lib/cart";
 import { getCurrentUser } from "@/lib/auth";
 import { useETrikeToast } from "@/components/ui/toast-container";
@@ -79,12 +80,33 @@ export default function ProductDetailPage() {
       const response = await productApi.getProduct(Number(params.id));
       setProduct(response);
     } catch (error) {
-      console.error("Error fetching product:", error);
-      setError("Failed to load product details");
-      toast.error(
-        "Failed to Load",
-        "Could not load product details. Please try again."
-      );
+      console.error("Error fetching product from API:", error);
+      // Fallback to local productsData if API fails
+      const fallback = allProducts.find((p) => p.id === Number(params.id));
+      if (fallback) {
+        const mapped: ProductData = {
+          id: fallback.id,
+          name: fallback.name,
+          description: fallback.name,
+          price: fallback.price,
+          original_price: fallback.original_price,
+          category: "",
+          model: "",
+          specifications: {},
+          ideal_for: [],
+          colors: [],
+          in_stock: fallback.in_stock,
+          featured: false,
+          images: fallback.image ? [fallback.image] : [],
+        };
+        setProduct(mapped);
+      } else {
+        setError("Failed to load product details");
+        toast.error(
+          "Failed to Load",
+          "Could not load product details. Please try again."
+        );
+      }
     } finally {
       setLoading(false);
     }
@@ -225,17 +247,22 @@ export default function ProductDetailPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
           <div className="flex items-center space-x-3 text-sm sm:text-base flex-wrap">
             <button
-              onClick={() => router.push("/products")}
-              className="text-orange-600 hover:text-orange-700 font-semibold transition-colors"
+              onClick={() => router.push("/")}
+              className="text-blue-600 hover:text-blue-700 font-semibold transition-colors"
             >
-              Products
+              Home
             </button>
-            <span className="text-orange-300 text-xl">›</span>
+            <span className="text-purple-300 text-xl">›</span>
             <span className="text-gray-600 font-medium">
-              {product.category}
+              <button
+                onClick={() => router.push("/products")}
+                className="text-blue-600 hover:text-blue-700 font-semibold transition-colors"
+              >
+                Products
+              </button>
             </span>
-            <span className="text-orange-300 text-xl">›</span>
-            <span className="text-gray-900 font-bold">{product.name}</span>
+            <span className="text-purple-300 text-xl">›</span>
+            <span className="text-orange-600 font-bold">{product.name}</span>
           </div>
         </div>
       </div>
@@ -852,14 +879,14 @@ export default function ProductDetailPage() {
                         </CardHeader>
                         <CardContent>
                           <div className="flex flex-wrap gap-2">
-                              {product.ideal_for.map((use, index) => (
-                                <Badge
-                                  key={index}
-                                  className="h-8 w-auto bg-blue-400 text-white text-base font-semibold px-2 py-2"
-                                >
-                                  {use}
-                                </Badge>
-                              ))}
+                            {product.ideal_for.map((use, index) => (
+                              <Badge
+                                key={index}
+                                className="h-8 w-auto bg-blue-400 text-white text-base font-semibold px-2 py-2"
+                              >
+                                {use}
+                              </Badge>
+                            ))}
                           </div>
                         </CardContent>
                       </Card>

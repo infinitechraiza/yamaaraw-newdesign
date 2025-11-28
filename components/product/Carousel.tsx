@@ -69,10 +69,10 @@ export default function Carousel({ children, itemsPerPage = 5, rows = 1, classNa
       <button
         onClick={goToNext}
         disabled={currentIndex === maxIndex}
-        className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-lg hover:bg-gray-100 transition disabled:opacity-50 disabled:cursor-not-allowed"
+        className="group absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-lg group-hover:bg-gray-100 transition disabled:opacity-50 disabled:cursor-not-allowed"
         aria-label="Next"
       >
-        <ChevronRight className="w-3 h-3 hover:w-6 hover:h-6 text-gray-700" />
+        <ChevronRight className="w-3 h-3 group-hover:w-6 group-hover:h-6 text-gray-700" />
       </button>
     </div>
   );

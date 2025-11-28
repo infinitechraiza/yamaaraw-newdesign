@@ -69,8 +69,8 @@ export default function ProductTable({
   if (products.length === 0) {
     return (
       <div className="bg-white rounded-2xl shadow-sm p-8 text-center">
-        <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-          <Eye className="w-8 h-8 text-orange-500" />
+        <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <Eye className="w-8 h-8 text-blue-500" />
         </div>
         <h3 className="text-lg font-semibold text-gray-900 mb-2">
           No Products Found
@@ -83,9 +83,9 @@ export default function ProductTable({
   }
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+    <div className="bg-white shadow-sm border border-1 border-gray-100 overflow-hidden">
       {/* Table Header with Items Per Page Selector */}
-      <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center bg-gradient-to-r from-orange-50 to-red-50">
+      <div className="px-6 py-4 rounded border-b border-gray-200 flex justify-between items-center bg-gradient-to-r from-blue-50 to-blue-90">
         <div>
           <h3 className="text-lg font-semibold text-gray-900">Products</h3>
           <p className="text-sm text-gray-600">
@@ -98,7 +98,7 @@ export default function ProductTable({
           <select
             value={itemsPerPage}
             onChange={(e) => handleItemsPerPageChange(Number(e.target.value))}
-            className="border border-gray-300 rounded-lg px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
+            className="border border-gray-300 rounded-lg px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value={5}>5</option>
             <option value={10}>10</option>
@@ -109,9 +109,9 @@ export default function ProductTable({
         </div>
       </div>
 
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto shadow-lg">
         <table className="w-full">
-          <thead className="bg-gradient-to-r from-orange-50 to-red-50 border-b border-orange-100 justify-between items-center">
+          <thead className="bg-gradient-to-r from-blue-50 to-blue-70 border-b border-blue-100 justify-between items-center">
             <tr>
               <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900 text-center justify-center items-center">
                 Product
@@ -126,6 +126,9 @@ export default function ProductTable({
                 Colors
               </th>
               <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900 text-center justify-center items-center">
+                Shop
+              </th>
+              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900 text-center justify-center items-center">
                 Status
               </th>
               <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900 text-center justify-center items-center">
@@ -137,9 +140,9 @@ export default function ProductTable({
             {currentProducts.map((product) => (
               <tr
                 key={product.id}
-                className="hover:bg-orange-50/30 transition-colors"
+                className="hover:bg-blue-50/30 transition-colors"
               >
-                <td className="px-6 py-4">
+                <td className="px-4 py-4">
                   <div className="flex items-center space-x-4">
                     <div className="relative w-16 h-16 flex-shrink-0">
                       <Image
@@ -166,7 +169,7 @@ export default function ProductTable({
                   </div>
                 </td>
                 <td className="px-6 py-4 items-center  text-center justify-center items-center">
-                  <Badge className="bg-orange-100 text-orange-600 border-orange-200">
+                  <Badge className="bg-blue-100 text-blue-600 border-blue-200">
                     {product.category}
                   </Badge>
                 </td>
@@ -203,19 +206,24 @@ export default function ProductTable({
                     )}
                   </div>
                 </td>
+                <td className="px-6 py-4 items-center  text-center justify-center items-center">
+                  <Badge className="bg-blue-100 text-blue-600 border-blue-200">
+                    {product.category}
+                  </Badge>
+                </td>
                 <td className="px-6 py-4  text-center ">
                   <div className="flex flex-col space-y-1 text-center justify-center items-center">
                     <Badge
                       className={
                         product.in_stock
-                          ? "bg-green-100 text-green-600 border-green-200"
-                          : "bg-red-100 text-red-600 border-red-200"
+                          ? "bg-green-100 text-green-600 border-green-300"
+                          : "bg-red-100 text-red-600 border-red-300"
                       }
                     >
                       {product.in_stock ? "In Stock" : "Out of Stock"}
                     </Badge>
                     {product.featured && (
-                      <Badge className="bg-yellow-100 text-yellow-600 border-yellow-200 text-center text-xs">
+                      <Badge className="bg-yellow-100 text-yellow-600 border-yellow-300 text-center text-xs">
                         Featured
                       </Badge>
                     )}
@@ -236,7 +244,7 @@ export default function ProductTable({
                       size="sm"
                       variant="outline"
                       onClick={() => onEdit(product)}
-                      className="border-orange-200 text-orange-600 hover:bg-orange-50"
+                      className="border-blue-200 text-blue-600 hover:bg-blue-50"
                       title="Edit Product"
                     >
                       <Edit className="w-4 h-4" />

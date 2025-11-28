@@ -1,8 +1,8 @@
 import type React from "react"
 import type { Metadata } from "next"
 import "./globals.css"
-import ChatbotWrapper from "@/components/chatbot-wrapper"
-import SocialMediaFloat from "@/components/social-media-float"
+// import ChatbotWrapper from "@/components/chatbot-wrapper"
+// import SocialMediaFloat from "@/components/social-media-float"
 import { CartProvider } from "@/contexts/cart-context"
 import { NotificationProvider } from "@/contexts/notification-context"
 import { ToastProvider } from "@/components/ui/toast-container"
@@ -43,8 +43,8 @@ export default function RootLayout({
               <NotificationToastBridge />
               {children}
               <PWAInstallPrompt />
-              <SocialMediaFloat />
-              <ChatbotWrapper />
+              {/* <SocialMediaFloat /> */}
+              {/* <ChatbotWrapper /> */}
             </NotificationProvider>
           </CartProvider>
         </ToastProvider>

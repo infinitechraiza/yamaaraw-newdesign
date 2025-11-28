@@ -513,20 +513,20 @@ export default function ETrikeLoader() {
         <div className="mt-8 text-center">
           {/* Animated Dots */}
           <div className="flex items-center justify-center space-x-2 mb-4">
-            <div className="w-3 h-3 bg-gradient-to-r from-orange-500 to-red-500 rounded-full animate-bounce"></div>
+            <div className="w-3 h-3 bg-gradient-to-r from-blue-600 to-red-600 rounded-full animate-bounce"></div>
             <div
-              className="w-3 h-3 bg-gradient-to-r from-orange-500 to-red-500 rounded-full animate-bounce"
+              className="w-3 h-3 bg-gradient-to-r from-blue-600 to-red-600 rounded-full animate-bounce"
               style={{ animationDelay: "0.2s" }}
             ></div>
             <div
-              className="w-3 h-3 bg-gradient-to-r from-orange-500 to-red-500 rounded-full animate-bounce"
+              className="w-3 h-3 bg-gradient-to-r from-blue-600 to-red-600 rounded-full animate-bounce"
               style={{ animationDelay: "0.4s" }}
             ></div>
           </div>
 
           {/* Loading Text with Enhanced Gradient */}
           <div className="relative">
-            <p className="text-3xl font-bold bg-gradient-to-r from-orange-500 via-red-500 to-orange-600 bg-clip-text text-transparent animate-pulse">
+            <p className="text-3xl font-bold bg-gradient-to-r from-blue-500 via-red-500 to-orange-600 bg-clip-text text-transparent animate-pulse">
               YAMAARAW
             </p>
             <p className="text-sm text-gray-600 mt-2 animate-fade-in-out font-medium">
@@ -571,6 +571,7 @@ export default function ETrikeLoader() {
         </div>
       </div>
 
+      
       {/* Enhanced Custom CSS for additional animations */}
       <style jsx>{`
         @keyframes fade-in-out {

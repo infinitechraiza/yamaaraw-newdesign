@@ -29,6 +29,14 @@ export interface ProductData {
   images?: string[]
 }
 
+// Product-related interfaces
+export interface CategoryData {
+  id?: number
+  name: string
+  brand: string
+  images?: string[]
+}
+
 export interface ProductFilters {
   search?: string
   category?: string

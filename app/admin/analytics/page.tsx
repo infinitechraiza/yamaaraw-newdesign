@@ -19,6 +19,8 @@ import {
 } from "lucide-react";
 import ETrikeLoader from "@/components/ui/etrike-loader";
 
+import Chart from "react-apexcharts";
+
 interface AnalyticsData {
   overview: {
     total_revenue: number;
@@ -167,6 +169,43 @@ export default function AnalyticsPage() {
     );
   }
 
+  // Prepare chart data/options derived from fetched `data`
+  const barCategories = data.monthly_revenue.slice(0, 6).map((m) => m.month);
+  const barData = data.monthly_revenue.slice(0, 6).map((m) => m.revenue);
+
+  const barOptions = {
+    chart: { type: "bar", toolbar: { show: false } },
+    xaxis: { categories: barCategories },
+    colors: ["#3b82f6"],
+    dataLabels: { enabled: false },
+    tooltip: { y: { formatter: (val: number) => formatCurrency(val) } },
+  } as any;
+
+  const barSeries = [
+    {
+      name: "Revenue",
+      data: barData,
+    },
+  ];
+
+  const statusEntries = Object.entries(data.order_status_distribution);
+  const pieLabels = statusEntries.map(
+    ([s]) => s.charAt(0).toUpperCase() + s.slice(1)
+  );
+  const pieSeries = statusEntries.map(([, v]) => Number(v || 0));
+
+    const pieOptions = {
+      chart: { type: "pie" },
+      labels: pieLabels,
+      legend: { position: "bottom" },
+      colors: ["#f59e0b", "#10b981", "#ef4444", "#8b5cf6"],
+    } as any;
+
+    if (typeof window !== "undefined") {
+      // eslint-disable-next-line no-console
+      console.debug("Analytics pieLabels:", pieLabels, "pieSeries:", pieSeries);
+    }
+
   return (
     <div className="p-8">
       <div className="space-y-6">
@@ -215,11 +254,11 @@ export default function AnalyticsPage() {
 
         {/* Overview Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
-          <Card>
+          <Card className="border border-border border-green-300">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">
+                  <p className="text-sm font-medium text-foreground text-gray-600">
                     Total Revenue
                   </p>
                   <p className="text-2xl font-bold text-gray-900">
@@ -233,7 +272,7 @@ export default function AnalyticsPage() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border border-border border-blue-300">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
@@ -251,7 +290,7 @@ export default function AnalyticsPage() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border border-border border-purple-300">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
@@ -269,7 +308,7 @@ export default function AnalyticsPage() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border border-border border-orange-300">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
@@ -287,7 +326,7 @@ export default function AnalyticsPage() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border border-border border-indigo-300">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
@@ -318,6 +357,15 @@ export default function AnalyticsPage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
+                <div>
+                  <Chart
+                    key={barSeries.map((s) => (Array.isArray(s.data) ? s.data.join('-') : String(s.data))).join('-')}
+                    options={barOptions}
+                    series={barSeries}
+                    type="bar"
+                    height={300}
+                  />
+                </div>
                 {data.monthly_revenue.slice(0, 6).map((item, index) => (
                   <div
                     key={index}
@@ -349,22 +397,34 @@ export default function AnalyticsPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
+              {pieSeries.length === 0 || pieSeries.reduce((s, v) => s + Number(v), 0) === 0 ? (
+                <div className="text-center text-sm text-gray-500 py-12">
+                  No order status data available for the selected date range.
+                </div>
+              ) : (
+                <Chart
+                  key={pieSeries.join('-')}
+                  options={pieOptions}
+                  series={pieSeries}
+                  type="pie"
+                  width="100%"
+                  height={300}
+                />
+              )}
               <div className="space-y-3">
-                {Object.entries(data.order_status_distribution).map(
-                  ([status, count]) => (
-                    <div
-                      key={status}
-                      className="flex items-center justify-between"
-                    >
-                      <div className="flex items-center space-x-2">
-                        <Badge className={getStatusColor(status)}>
-                          {status.charAt(0).toUpperCase() + status.slice(1)}
-                        </Badge>
-                      </div>
-                      <span className="font-semibold">{count}</span>
+                {statusEntries.map(([status, count]) => (
+                  <div
+                    key={status}
+                    className="flex items-center justify-between"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <Badge className={getStatusColor(status)}>
+                        {status.charAt(0).toUpperCase() + status.slice(1)}
+                      </Badge>
                     </div>
-                  )
-                )}
+                    <span className="font-semibold">{count}</span>
+                  </div>
+                ))}
               </div>
             </CardContent>
           </Card>

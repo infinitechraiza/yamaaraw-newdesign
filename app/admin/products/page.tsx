@@ -8,9 +8,17 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import ProductForm from "@/components/admin/product-form";
-import ProductTable from "@/components/admin/product-table";
+import CategoryForm from "@/components/admin/category-form";
+import CategoryTable from "@/components/admin/category-table";
 import ETrikeLoader from "@/components/ui/etrike-loader";
 import { productApi, type ProductData } from "@/lib/api";
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+} from "@/components/product/Tabs";
+import ProductTable from "@/components/admin/product-table";
 
 export default function ProductManagementPage() {
   const searchParams = useSearchParams();
@@ -150,12 +158,12 @@ export default function ProductManagementPage() {
     window.URL.revokeObjectURL(url);
   };
 
-  const categories = ["All", "E-Bike", "E-Trike", "E-Scooter", "E-Motorcycle"];
+  const categories = ["Price: High to Low", "Price: Low to High"];
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Admin Header */}
-      <section className="bg-gradient-to-br from-orange-500 via-red-500 to-orange-600 text-white py-12">
+      <section className="bg-gradient-to-br from-orange-500 via-red-500 to-red-600 text-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             <div>
@@ -163,21 +171,30 @@ export default function ProductManagementPage() {
                 Admin Dashboard
               </Badge>
               <h1 className="text-3xl lg:text-4xl font-bold mb-2">
-                Product Management
+                Products Management
               </h1>
-              <p className="text-orange-100">
-                Manage your electric vehicle inventory
+              <p className="text-blue-100">
+                Manage your categories in your inventory
               </p>
-            </div>
-            <div className="flex items-center space-x-4">
+            </div>{" "}
+            <div className="flex items-center space-x-2">
               <Button
+                variant="outline"
+                className="p-2 border-blue-500 text-xs text-blue-500 hover:text-blue-700  hover:bg-blue-50"
                 onClick={handleCreateProduct}
-                className="bg-white text-orange-600 hover:bg-orange-50 font-semibold"
               >
-                <Plus className="w-5 h-5 mr-2" />
-                Add Product
+                <Plus className="w-4 h-4 mr-2" />
+                Add Category
               </Button>
-            </div>
+              <Button
+                variant="outline"
+                className="p-2 border-blue-500 text-xs  text-blue-500 hover:text-blue-700  hover:bg-blue-50"
+                onClick={handleCreateProduct}
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Add Product
+              </Button>{" "}
+            </div>{" "}
           </div>
         </div>
       </section>
@@ -198,22 +215,11 @@ export default function ProductManagementPage() {
       <section className="py-8 bg-white border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
-            <div className="flex flex-col sm:flex-row gap-4 flex-1">
-              <div className="relative flex-1 max-w-md">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                <Input
-                  type="text"
-                  placeholder="Search products..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  onKeyPress={(e) => e.key === "Enter" && handleSearch()}
-                  className="pl-10 h-10 rounded-lg border-2 border-orange-200 focus:border-orange-500"
-                />
-              </div>
+            <div className="w-full flex justify-end flex-col sm:flex-row gap-4 flex-1">
               <select
                 value={categoryFilter}
                 onChange={(e) => setCategoryFilter(e.target.value)}
-                className="h-10 px-4 rounded-lg border-2 border-orange-200 focus:border-orange-500 bg-white min-w-[150px]"
+                className="h-10 px-4 text-xs rounded-lg border-2 border-blue-200 focus:border-blue-500 bg-white min-w-[150px]"
               >
                 {categories.map((category) => (
                   <option key={category} value={category}>
@@ -221,64 +227,166 @@ export default function ProductManagementPage() {
                   </option>
                 ))}
               </select>
+              <div className="relative max-w-md">
+                <Input
+                  type="text"
+                  placeholder="Search products..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onKeyPress={(e) => e.key === "Enter" && handleSearch()}
+                  className="w-56 pl-2 h-10 rounded-lr-full rounded-r-2xl border-r-sm border-2 border-blue-200 focus:border-blue-500 text-xs"
+                />
+              </div>
+
               <Button
                 onClick={handleSearch}
                 variant="outline"
-                className="border-orange-500 text-orange-600 hover:bg-orange-50"
+                className="group absolute p-2 bg-blue-500 group-hover:border-2 group-hover:border-blue-700 text-xs text-blue-600 rounded-full hover:bg-blue-50"
                 disabled={loading}
               >
-                <Filter className="w-4 h-4 mr-2" />
-                {loading ? "Loading..." : "Apply Filters"}
+                {loading ? (
+                  <p className="flex text-xs text-white">loading</p>
+                ) : (
+                  <Search className="transform text-white group-hover:text-blue-700 w-5 h-5" />
+                )}
               </Button>
             </div>
-            <div className="flex items-center space-x-2">
-              <Button
-                variant="outline"
-                className="border-orange-500 text-orange-600 hover:bg-orange-50"
-                onClick={handleExport}
-                disabled={products.length === 0}
-              >
-                <Download className="w-4 h-4 mr-2" />
-                Export
-              </Button>
-              <Badge className="bg-orange-100 text-orange-600 border-orange-200">
-                {products.length} Product{products.length !== 1 ? "s" : ""}
-              </Badge>
-            </div>
+            <Badge className="bg-blue-100 hover:bg-blue-500 text-blue-600 hover:text-white border-blue-200">
+              {products.length} Product{products.length !== 1 ? "s" : ""}
+            </Badge>
           </div>
         </div>
       </section>
 
       {/* Products Table */}
-      <section className="py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {loading ? (
-            <div className="flex items-center justify-center py-12">
-              <ETrikeLoader />
-            </div>
-          ) : products.length === 0 ? (
-            <div className="text-center py-12">
-              <div className="text-gray-500 text-lg mb-4">
-                No products found
+      <section className="relative mx-2 py-8">
+        <Tabs defaultValue="categories">
+          <div className="flex flex-col max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 overflow-x-auto">
+            <TabsList className="w-full flex justify-between items-center border-none">
+              {/* Left: Tabs */}
+              <div className="flex gap-2">
+                <TabsTrigger
+                  value="categories"
+                  className="bg-white p-2 text-sm text-blue-500 hover:text-blue-700  whitespace-nowrap rounded-md border border-blue-300
+            data-[state=active]:text-blue-500 data-[state=active]:border 
+            data-[state=active]:border-blue-600 data-[state=active]:bg-blue-100 hover:bg-blue-50"
+                >
+                  Categories
+                </TabsTrigger>
+                <TabsTrigger
+                  value="products"
+                  className="bg-white p-2 text-sm text-blue-500 hover:text-blue-700  whitespace-nowrap rounded-md border border-blue-300
+            data-[state=active]:text-blue-500 data-[state=active]:border 
+            data-[state=active]:border-blue-600 data-[state=active]:bg-blue-100 hover:bg-blue-50"
+                >
+                  Products
+                </TabsTrigger>
               </div>
-              <Button
-                onClick={handleCreateProduct}
-                className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600"
-              >
-                <Plus className="w-4 h-4 mr-2" />
-                Add Your First Product
-              </Button>
+
+              {/* Right: Export Buttons */}
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  className="p-2 text-sm whitespace-nowrap text-blue-500 hover:text-blue-700 rounded-lg border-blue-300
+            hover:bg-blue-50"
+                  onClick={handleExport}
+                  disabled={products.length === 0}
+                >
+                  <Download className="w-4 h-4 mr-2" />
+                  Export Categories
+                </Button>
+                <Button
+                  variant="outline"
+                  className="p-2 text-sm whitespace-nowrap text-blue-500 hover:text-blue-700 rounded-lg border-blue-300
+            hover:bg-blue-50"
+                  onClick={handleExport}
+                  disabled={products.length === 0}
+                >
+                  <Download className="w-4 h-4 mr-2" />
+                  Export Products
+                </Button>
+              </div>
+            </TabsList>
+          </div>
+
+          {/* Products Tab Content */}
+          <TabsContent value="products">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              {loading ? (
+                <div className="flex items-center justify-center py-12">
+                  <ETrikeLoader />
+                </div>
+              ) : products.length === 0 ? (
+                <div className="text-center py-12">
+                  <div className="text-gray-500 text-lg mb-4">
+                    No products found
+                  </div>
+                  <Button
+                    onClick={handleCreateProduct}
+                    className="bg-gradient-to-r from-orange-500 to-red-500 
+                       hover:from-orange-600 hover:to-red-600"
+                  >
+                    <Plus className="w-4 h-4 mr-2" />
+                    Add Your First Product
+                  </Button>
+                </div>
+              ) : (
+                <ProductTable
+                  products={products}
+                  loading={loading}
+                  onEdit={handleEditProduct}
+                  onDelete={handleDeleteProduct}
+                />
+              )}
             </div>
-          ) : (
-            <ProductTable
-              products={products}
-              loading={loading}
-              onEdit={handleEditProduct}
-              onDelete={handleDeleteProduct}
-            />
-          )}
-        </div>
+          </TabsContent>
+
+          {/* Categories Tab Content */}
+          <TabsContent value="categories">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              {loading ? (
+                <div className="flex items-center justify-center py-12">
+                  <ETrikeLoader />
+                </div>
+              ) : products.length === 0 ? (
+                <div className="text-center py-12">
+                  <div className="text-gray-500 text-lg mb-4">
+                    No category found
+                  </div>
+                  <Button
+                    onClick={handleCreateProduct}
+                    className="bg-gradient-to-r from-orange-500 to-red-500 
+                       hover:from-orange-600 hover:to-red-600"
+                  >
+                    <Plus className="w-4 h-4 mr-2" />
+                    Add Your First Product
+                  </Button>
+                </div>
+              ) : (
+                <CategoryTable
+                  products={products}
+                  loading={loading}
+                  onEdit={handleEditProduct}
+                  onDelete={handleDeleteProduct}
+                />
+              )}
+            </div>
+          </TabsContent>
+        </Tabs>
       </section>
+
+      {/* Product Form Modal */}
+      {showForm && (
+        <ProductForm
+          product={editingProduct}
+          onSubmit={handleFormSubmit}
+          onClose={() => {
+            setShowForm(false);
+            setEditingProduct(null);
+            setError(null);
+          }}
+        />
+      )}
 
       {/* Product Form Modal */}
       {showForm && (

@@ -31,11 +31,6 @@ const sidebarItems = [
     icon: LayoutDashboard,
   },
   {
-    title: "Categories",
-    href: "/admin/categories",
-    icon: Grid ,
-  },
-  {
     title: "Products",
     href: "/admin/products",
     icon: Package,
@@ -44,6 +39,11 @@ const sidebarItems = [
     title: "Orders",
     href: "/admin/orders",
     icon: ShoppingCart,
+  },
+  {
+    title: "Users",
+    href: "/admin/users",
+    icon: Users,
   },
   {
     title: "Customers",
@@ -168,7 +168,7 @@ export default function AdminSidebar() {
       {/* Sidebar */}
       <div
         className={cn(
-          "bg-gradient-to-b from-gray-900 to-gray-800 text-white transition-all duration-300 flex flex-col shadow-xl gap-4",
+          "bg-gradient-to-t from-red-600 to-blue-700 text-white transition-all duration-300 flex flex-col shadow-xl gap-4",
           // Desktop styles
           "hidden lg:flex",
           isCollapsed ? "lg:w-16" : "lg:w-64",
@@ -178,22 +178,22 @@ export default function AdminSidebar() {
         )}
       >
         {/* Header */}
-        <div className="p-4 border-b border-gray-700">
+        <div className="p-4 border-b border-gray-400">
           <div className="flex items-center justify-between">
             {!isCollapsed && (
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-gradient-to-r from-orange-400 to-red-500 rounded-xl flex items-center justify-center shadow-lg">
+                <div className="w-10 h-10 bg-gradient-to-b from-red-700 to-red-400 rounded-xl flex items-center justify-center shadow-lg">
                   <span className="text-white font-bold text-lg">Y</span>
                 </div>
                 <div>
                   <span className="font-bold text-lg">Admin Panel</span>
-                  <p className="text-xs text-gray-400">YAMAARAW</p>
+                  <p className="font-medium text-sm text-red-400">YAMAARAW</p>
                 </div>
               </div>
             )}
             <button
               onClick={() => setIsCollapsed(!isCollapsed)}
-              className="p-2 rounded-lg hover:bg-gray-700 transition-colors hidden lg:block"
+              className="p-2 rounded-lg hover:bg-gradient-to-b hover:from-blue-700 hover:to-blue-500 transition-colors hidden lg:block"
             >
               {isCollapsed ? (
                 <ChevronRight className="w-4 h-4" />
@@ -219,8 +219,8 @@ export default function AdminSidebar() {
                     className={cn(
                       "flex w-full items-center items-center gap-3 px-3 py-3 rounded-xl transition-all duration-200 group relative gap-3 mb-1 mx-1",
                       isActive
-                        ? "bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg transform scale-105"
-                        : "text-gray-300 hover:bg-gray-700 hover:text-fg-brand hover:transform hover:scale-105"
+                        ? "bg-gradient-to-b from-blue-700 to-blue-500  text-white shadow-lg transform scale-105"
+                        : "text-white hover:bg-gradient-to-b hover:from-blue-700 hover:to-blue-500 hover:text-fg-brand hover:transform hover:scale-105"
                     )}
                   >
                     <div className="relative ">
@@ -259,7 +259,7 @@ export default function AdminSidebar() {
         </nav>
 
         {/* Footer */}
-        <div className="px-2 py-2 my-2 border-t border-gray-700 gap-9">
+        <div className="px-2 py-2 my-2 border-t border-gray-300 gap-9">
           <button
             onClick={handleLogout}
             disabled={isLoggingOut}
@@ -267,7 +267,7 @@ export default function AdminSidebar() {
               "flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 group w-full",
               isLoggingOut
                 ? "text-gray-500 cursor-not-allowed"
-                : "text-gray-300 hover:bg-red-600 hover:text-white"
+                : "text-gray-300 hover:bg-gradient-to-b hover:from-blue-700 hover:to-blue-500 hover:text-white"
             )}
           >
             <LogOut className={cn("w-5 h-5", isLoggingOut && "animate-spin")} />

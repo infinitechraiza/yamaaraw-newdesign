@@ -4,7 +4,7 @@ import { Mail, Phone, MapPin } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-900 text-white">
+    <footer className="bg-gradient-to-b from-blue-700 to-blue-500 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
@@ -28,10 +28,10 @@ export default function Footer() {
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Products</h3>
             <ul className="space-y-2 text-sm">
-              <li>
+              <li className="group">
                 <Link
                   href="/products?category=E-Bike"
-                  className="text-gray-300 hover:text-orange-400 transition-colors duration-200"
+                  className="text-gray-300 group-hover:text-red-400 transition-colors duration-200"
                 >
                   Electric Bicycles
                 </Link>
@@ -39,7 +39,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/products?category=E-Trike"
-                  className="text-gray-300 hover:text-orange-400 transition-colors duration-200"
+                  className="text-gray-300 hover:text-red-400 transition-colors duration-200"
                 >
                   Electric Tricycles
                 </Link>
@@ -47,7 +47,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/products?category=E-Motorcycle"
-                  className="text-gray-300 hover:text-orange-400 transition-colors duration-200"
+                  className="text-gray-300 hover:text-red-400 transition-colors duration-200"
                 >
                   Electric Motorcycles
                 </Link>
@@ -55,7 +55,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/products?category=E-Dump"
-                  className="text-gray-300 hover:text-orange-400 transition-colors duration-200"
+                  className="text-gray-300 hover:text-red-400 transition-colors duration-200"
                 >
                   Electric Dump Truck Tricycle
                 </Link>
@@ -70,7 +70,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/support/customer-support"
-                  className="text-gray-300 hover:text-orange-400 transition-colors duration-200"
+                  className="text-gray-300 hover:text-red-400 transition-colors duration-200"
                 >
                   Customer Support
                 </Link>
@@ -78,7 +78,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/support/warranty"
-                  className="text-gray-300 hover:text-orange-400 transition-colors duration-200"
+                  className="text-gray-300 hover:text-red-400 transition-colors duration-200"
                 >
                   Warranty
                 </Link>
@@ -86,7 +86,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/support/service-centers"
-                  className="text-gray-300 hover:text-orange-400 transition-colors duration-200"
+                  className="text-gray-300 hover:text-red-400 transition-colors duration-200"
                 >
                   Service Centers
                 </Link>
@@ -94,7 +94,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/support/faq"
-                  className="text-gray-300 hover:text-orange-400 transition-colors duration-200"
+                  className="text-gray-300 hover:text-red-400 transition-colors duration-200"
                 >
                   FAQ
                 </Link>
@@ -107,13 +107,13 @@ export default function Footer() {
             <h3 className="text-lg font-semibold">Contact Us</h3>
             <div className="space-y-3 text-sm">
               <div className="flex items-start space-x-2">
-                <MapPin className="w-4 h-4 text-orange-400 mt-1" />
+                <MapPin className="w-4 h-4 text-white mt-1" />
                 <div>
                   <a
                     href="https://www.google.com/maps?q=DRT+Highway,+Brgy.+Cutcot,+Pulilan,+Bulacan,+Philippines"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-gray-300 hover:text-orange-400 transition-colors duration-200"
+                    className="text-gray-300 hover:text-red-400 transition-colors duration-200"
                   >
                     DRT Highway, Brgy. Cutcot,<br />
                     Pulilan, Bulacan, Philippines
@@ -123,20 +123,20 @@ export default function Footer() {
               </div>
               <div className="space-y-2">
                 <div className="flex items-center space-x-2">
-                  <Phone className="w-4 h-4 text-orange-400" />
+                  <Phone className="w-4 h-4 text-white" />
                   <a
                     href="tel:09549814678"
-                    className="text-gray-300 hover:text-orange-400 transition-colors duration-200"
+                    className="text-gray-300 hover:text-red-400 transition-colors duration-200"
                   >
                     09549814678
                   </a>
                 </div>
               </div>
               <div className="flex items-center space-x-2">
-                <Mail className="w-4 h-4 text-orange-400" />
+                <Mail className="w-4 h-4 text-white" />
                 <a
                   href="mailto:info@yamaaraw.com"
-                  className="text-gray-300 hover:text-orange-400 transition-colors duration-200"
+                  className="text-gray-300 hover:text-red-400 transition-colors duration-200"
                 >
                   info@yamaaraw.com
                 </a>
@@ -147,7 +147,7 @@ export default function Footer() {
 
         <div className="border-t border-gray-800 mt-8 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <p className="text-gray-400 text-sm">
+            <p className="text-gray-200 text-xs">
               © 2025 YAMAARAW. All rights reserved.
             </p>
           </div>

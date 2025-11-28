@@ -320,13 +320,13 @@ export default function AdminDashboard() {
         </div>
 
         {/* Business Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-2">
           {statsCards.map((stat, index) => (
-            <Card key={index} className="hover:shadow-lg transition-shadow">
-              <CardContent className={`p-6 bg-gradient-to-r ${stat.cardColor}`}>
+            <Card key={index} className={`hover:shadow-lg transition-shadow ${stat.cardColor}`}>
+              <CardContent className="p-6 bg-gradient-to-r">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium ett-foreground text-gray-600">
+                    <p className="text-sm font-medium text-foreground text-gray-600">
                       {stat.title}
                     </p>
                     <p className="text-2xl font-bold text-gray-900">

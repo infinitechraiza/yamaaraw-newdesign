@@ -352,7 +352,7 @@ export default function ProductForm({
   };
 
   const nextStep = () => {
-    if (currentStep < 4) setCurrentStep(currentStep + 1);
+    if (currentStep < 2) setCurrentStep(currentStep + 1);
   };
 
   const prevStep = () => {
@@ -360,10 +360,8 @@ export default function ProductForm({
   };
 
   const steps = [
-    { number: 1, title: "Basic Info", description: "Product details" },
-    { number: 2, title: "Images", description: "Product photos" },
-    { number: 3, title: "Specifications", description: "Technical details" },
-    { number: 4, title: "Options", description: "Colors & features" },
+    { number: 1, title: "Basic Info", description: "Category details" },
+    { number: 2, title: "Images", description: "Category photos" },
   ];
 
   // Filter options based on search term
@@ -378,11 +376,11 @@ export default function ProductForm({
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-2 sm:p-4">
       <div className="bg-white rounded-lg sm:rounded-2xl shadow-2xl w-full max-w-5xl h-[95vh] sm:h-[90vh] flex flex-col">
         {/* Header */}
-        <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-4 sm:px-6 py-3 sm:py-4 rounded-t-lg sm:rounded-t-2xl">
+        <div className="bg-gradient-to-b from-blue-700 to-blue-500 text-white px-4 sm:px-6 py-3 sm:py-4 rounded-t-lg sm:rounded-t-2xl">
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-lg sm:text-2xl font-bold">
-                {product ? "Edit Product" : "Create New Product"}
+                {product ? "Edit Category" : "Create New Category"}
               </h2>
               <p className="text-orange-100 text-sm">Step {currentStep} of 4</p>
             </div>
@@ -400,7 +398,7 @@ export default function ProductForm({
 
         {/* Progress Steps */}
         <div className="px-3 sm:px-6 py-2 sm:py-3 bg-gray-50 border-b">
-          <div className="flex items-center justify-between overflow-x-auto">
+          <div className="flex items-center justify-center overflow-x-auto">
             {steps.map((step, index) => (
               <div
                 key={step.number}
@@ -409,7 +407,7 @@ export default function ProductForm({
                 <div
                   className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-xs sm:text-sm font-semibold ${
                     currentStep >= step.number
-                      ? "bg-orange-500 text-white"
+                      ? "bg-gradient-to-br from-orange-500 via-red-500 to-red-600 text-white"
                       : "bg-gray-200 text-gray-600"
                   }`}
                 >
@@ -419,7 +417,7 @@ export default function ProductForm({
                   <div
                     className={`text-sm font-medium ${
                       currentStep >= step.number
-                        ? "text-orange-600"
+                        ? "text-blue-600"
                         : "text-gray-500"
                     }`}
                   >
@@ -439,7 +437,10 @@ export default function ProductForm({
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="flex flex-col h-full">
+        <form
+          onSubmit={handleSubmit}
+          className="flex justify-center flex-col h-full"
+        >
           <div
             className="flex-1 overflow-y-auto p-3 sm:p-4"
             style={{ maxHeight: "calc(95vh - 200px)" }}
@@ -449,7 +450,7 @@ export default function ProductForm({
               <div className="space-y-4">
                 <Card>
                   <CardHeader className="pb-3">
-                    <CardTitle className="text-orange-600 text-lg">
+                    <CardTitle className="text-blue-600 text-lg">
                       Basic Information
                     </CardTitle>
                   </CardHeader>
@@ -457,8 +458,10 @@ export default function ProductForm({
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
-                          Product Name *
+                          Category Name{" "}
+                          <span className="text-sm text-red-400">*</span>
                         </label>
+                        {/* formData.category */}
                         <Input
                           name="name"
                           value={formData.name}
@@ -466,93 +469,22 @@ export default function ProductForm({
                           required
                           disabled={isSubmitting}
                           className="h-10 text-sm"
-                          placeholder="Enter product name"
+                          placeholder="Enter category name"
                         />
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
-                          Model *
+                          Brand <span className="text-sm text-red-400">*</span>
                         </label>
+                        {/* formData.brand */}
                         <Input
-                          name="model"
-                          value={formData.model}
+                          name="brand"
+                          value={formData.name}
                           onChange={handleInputChange}
                           required
                           disabled={isSubmitting}
                           className="h-10 text-sm"
-                          placeholder="Enter model number"
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Description *
-                      </label>
-                      <textarea
-                        name="description"
-                        value={formData.description}
-                        onChange={handleInputChange}
-                        required
-                        disabled={isSubmitting}
-                        rows={3}
-                        className="w-full rounded-lg border-2 border-gray-200 focus:border-orange-500 px-3 py-2 resize-none text-sm disabled:opacity-50 disabled:cursor-not-allowed"
-                        placeholder="Enter product description"
-                      />
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                          Category *
-                        </label>
-                        <select
-                          name="category"
-                          value={formData.category}
-                          onChange={handleInputChange}
-                          required
-                          disabled={isSubmitting}
-                          className="h-10 w-full rounded-lg border-2 border-gray-200 focus:border-orange-500 px-3 bg-white text-sm disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                          <option value="">Select category</option>
-                          <option value="E-Bike">E-Bike</option>
-                          <option value="E-Trike">E-Trike</option>
-                          <option value="E-Scooter">E-Scooter</option>
-                          <option value="E-Motorcycle">E-Motorcycle</option>
-                          <option value="E-Dump">E-Dump</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                          Price (₱) *
-                        </label>
-                        <Input
-                          name="price"
-                          type="number"
-                          value={formData.price}
-                          onChange={handleInputChange}
-                          required
-                          disabled={isSubmitting}
-                          min="0"
-                          step="0.01"
-                          className="h-10 text-sm"
-                          placeholder="0.00"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                          Original Price (₱)
-                        </label>
-                        <Input
-                          name="original_price"
-                          type="number"
-                          value={formData.original_price || ""}
-                          onChange={handleInputChange}
-                          disabled={isSubmitting}
-                          min="0"
-                          step="0.01"
-                          className="h-10 text-sm"
-                          placeholder="0.00"
+                          placeholder="Enter brand name"
                         />
                       </div>
                     </div>
@@ -566,9 +498,9 @@ export default function ProductForm({
               <div className="space-y-4">
                 <Card>
                   <CardHeader className="pb-3">
-                    <CardTitle className="text-orange-600 text-lg flex items-center">
+                    <CardTitle className="text-blue-500 text-lg flex items-center">
                       <Eye className="w-5 h-5 mr-2" />
-                      Product Images with Preview
+                      Category Images with Preview
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
@@ -585,7 +517,7 @@ export default function ProductForm({
                       />
                       <label
                         htmlFor="image-upload"
-                        className={`cursor-pointer text-orange-600 hover:text-orange-700 font-medium text-base ${
+                        className={`cursor-pointer text-blue-500 hover:text-blue-700 font-medium text-base ${
                           isSubmitting ? "opacity-50 cursor-not-allowed" : ""
                         }`}
                       >
@@ -655,7 +587,7 @@ export default function ProductForm({
                             <div key={index} className="relative group">
                               <img
                                 src={image || "/placeholder.svg"}
-                                alt={`Product ${index + 1}`}
+                                alt={`Category ${index + 1}`}
                                 className="w-full h-24 object-cover rounded-lg border-2 border-gray-200 shadow-md group-hover:shadow-lg transition-shadow"
                               />
                               <Button
@@ -676,366 +608,6 @@ export default function ProductForm({
                         </div>
                       </div>
                     )}
-                  </CardContent>
-                </Card>
-              </div>
-            )}
-
-            {/* Step 3: Specifications */}
-            {currentStep === 3 && (
-              <div className="space-y-4">
-                <Card>
-                  <CardHeader className="pb-3">
-                    <CardTitle className="text-orange-600 text-lg">
-                      Technical Specifications
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Dimensions
-                        </label>
-                        <Input
-                          value={formData.specifications?.dimensions || ""}
-                          onChange={(e) =>
-                            handleSpecificationChange(
-                              "dimensions",
-                              e.target.value
-                            )
-                          }
-                          disabled={isSubmitting}
-                          className="h-11 text-sm"
-                          placeholder="e.g., 1820 × 680 × 1170 mm"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Battery Type
-                        </label>
-                        <Input
-                          value={formData.specifications?.battery_type || ""}
-                          onChange={(e) =>
-                            handleSpecificationChange(
-                              "battery_type",
-                              e.target.value
-                            )
-                          }
-                          disabled={isSubmitting}
-                          className="h-11 text-sm"
-                          placeholder="e.g., 72V / 38Ah"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Motor Power
-                        </label>
-                        <Input
-                          value={formData.specifications?.motor_power || ""}
-                          onChange={(e) =>
-                            handleSpecificationChange(
-                              "motor_power",
-                              e.target.value
-                            )
-                          }
-                          disabled={isSubmitting}
-                          className="h-11 text-sm"
-                          placeholder="e.g., 2000W"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Main Features
-                        </label>
-                        <Input
-                          value={formData.specifications?.main_features || ""}
-                          onChange={(e) =>
-                            handleSpecificationChange(
-                              "main_features",
-                              e.target.value
-                            )
-                          }
-                          disabled={isSubmitting}
-                          className="h-11 text-sm"
-                          placeholder="e.g., Bluetooth audio and anti-theft system"
-                        />
-                      </div>
-                      <div className="sm:col-span-2">
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Front/Rear Suspension
-                        </label>
-                        <Input
-                          value={
-                            formData.specifications?.front_rear_suspension || ""
-                          }
-                          onChange={(e) =>
-                            handleSpecificationChange(
-                              "front_rear_suspension",
-                              e.target.value
-                            )
-                          }
-                          disabled={isSubmitting}
-                          className="h-11 text-sm"
-                          placeholder='e.g., 27" hydraulic shock absorbers'
-                        />
-                      </div>
-                    </div>
-
-                    {/* Tire Specifications */}
-                    <div className="border-t pt-4">
-                      <h4 className="text-base font-semibold text-gray-800 mb-4 flex items-center">
-                        🛞 Tire Specifications
-                      </h4>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Front Tires
-                          </label>
-                          <Input
-                            value={formData.specifications?.front_tires || ""}
-                            onChange={(e) =>
-                              handleSpecificationChange(
-                                "front_tires",
-                                e.target.value
-                              )
-                            }
-                            disabled={isSubmitting}
-                            className="h-11 text-sm"
-                            placeholder="e.g., 110/70-12"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Rear Tires
-                          </label>
-                          <Input
-                            value={formData.specifications?.rear_tires || ""}
-                            onChange={(e) =>
-                              handleSpecificationChange(
-                                "rear_tires",
-                                e.target.value
-                              )
-                            }
-                            disabled={isSubmitting}
-                            className="h-11 text-sm"
-                            placeholder="e.g., 120/70-12"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            )}
-
-            {/* Step 4: Enhanced Colors & Options */}
-            {currentStep === 4 && (
-              <div className="space-y-4">
-                {/* Colors */}
-                <Card>
-                  <CardHeader className="pb-3">
-                    <CardTitle className="text-orange-600 text-lg">
-                      Available Colors
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="grid grid-cols-7 gap-3">
-                      {availableColors.map((color) => (
-                        <button
-                          key={color.value}
-                          type="button"
-                          onClick={() => handleColorToggle(color)}
-                          disabled={isSubmitting}
-                          className={`relative w-12 h-12 rounded-full border-3 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl ${
-                            (formData.colors || []).some(
-                              (c) => c.value === color.value
-                            )
-                              ? "border-orange-500 scale-110 ring-4 ring-orange-200"
-                              : "border-gray-300 hover:border-orange-300"
-                          }`}
-                          style={{ backgroundColor: color.value }}
-                          title={color.name}
-                        >
-                          {(formData.colors || []).some(
-                            (c) => c.value === color.value
-                          ) && (
-                            <div className="absolute inset-0 flex items-center justify-center">
-                              <div className="w-3 h-3 bg-orange-500 rounded-full shadow-lg"></div>
-                            </div>
-                          )}
-                        </button>
-                      ))}
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      {(formData.colors || []).map((color, index) => (
-                        <Badge
-                          key={index}
-                          className="bg-orange-100 text-orange-700 border-orange-300 px-3 py-1"
-                        >
-                          {color.name}
-                        </Badge>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Enhanced Ideal For Section */}
-                <Card>
-                  <CardHeader className="pb-3">
-                    <CardTitle className="text-orange-600 text-lg">
-                      Target Audience
-                    </CardTitle>
-                    <div className="relative">
-                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                      <Input
-                        placeholder="Search target audience..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="pl-10 h-10"
-                      />
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    {Object.entries(idealForCategories).map(
-                      ([key, category]) => {
-                        const filteredOptions = getFilteredOptions(
-                          category.options
-                        );
-                        if (filteredOptions.length === 0) return null;
-
-                        const IconComponent = category.icon;
-                        return (
-                          <div
-                            key={key}
-                            className={`border-2 rounded-xl p-4 ${category.color}`}
-                          >
-                            <h4 className="font-semibold mb-3 flex items-center text-sm">
-                              <IconComponent className="w-4 h-4 mr-2" />
-                              {category.title}
-                            </h4>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                              {filteredOptions.map((option) => (
-                                <label
-                                  key={option}
-                                  className={`flex items-center space-x-2 cursor-pointer p-2 rounded-lg hover:bg-white/50 transition-colors ${
-                                    isSubmitting
-                                      ? "opacity-50 cursor-not-allowed"
-                                      : ""
-                                  }`}
-                                >
-                                  <input
-                                    type="checkbox"
-                                    checked={(
-                                      formData.ideal_for || []
-                                    ).includes(option)}
-                                    onChange={() =>
-                                      handleIdealForChange(option)
-                                    }
-                                    disabled={isSubmitting}
-                                    className="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500 disabled:opacity-50"
-                                  />
-                                  <span className="text-sm text-gray-800 font-medium">
-                                    {option}
-                                  </span>
-                                </label>
-                              ))}
-                            </div>
-                          </div>
-                        );
-                      }
-                    )}
-
-                    {/* Selected Summary */}
-                    {(formData.ideal_for || []).length > 0 && (
-                      <div className="border-t pt-4">
-                        <h5 className="text-sm font-semibold text-gray-700 mb-2">
-                          Selected ({(formData.ideal_for || []).length}):
-                        </h5>
-                        <div className="flex flex-wrap gap-2">
-                          {(formData.ideal_for || []).map((item, index) => (
-                            <Badge
-                              key={index}
-                              variant="secondary"
-                              className="bg-blue-100 text-blue-700 border-blue-300"
-                            >
-                              {item}
-                            </Badge>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
-
-                {/* Product Status & Submit */}
-                <Card className="border-2 border-green-500 bg-gradient-to-r from-green-50 to-blue-50">
-                  <CardContent className="p-6">
-                    <div className="space-y-4">
-                      <h3 className="text-orange-600 font-bold text-lg">
-                        Product Status
-                      </h3>
-                      <div className="flex space-x-8">
-                        <label
-                          className={`flex items-center space-x-3 cursor-pointer ${
-                            isSubmitting ? "opacity-50 cursor-not-allowed" : ""
-                          }`}
-                        >
-                          <input
-                            type="checkbox"
-                            name="in_stock"
-                            checked={formData.in_stock}
-                            onChange={handleInputChange}
-                            disabled={isSubmitting}
-                            className="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500 disabled:opacity-50"
-                          />
-                          <span className="text-base text-gray-700 font-medium">
-                            In Stock
-                          </span>
-                        </label>
-                        <label
-                          className={`flex items-center space-x-3 cursor-pointer ${
-                            isSubmitting ? "opacity-50 cursor-not-allowed" : ""
-                          }`}
-                        >
-                          <input
-                            type="checkbox"
-                            name="featured"
-                            checked={formData.featured}
-                            onChange={handleInputChange}
-                            disabled={isSubmitting}
-                            className="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500 disabled:opacity-50"
-                          />
-                          <span className="text-base text-gray-700 font-medium">
-                            Featured Product
-                          </span>
-                        </label>
-                      </div>
-
-                      <div className="border-t pt-4 text-center">
-                        <div className="text-2xl mb-3">🚀</div>
-                        <Button
-                          type="submit"
-                          size="lg"
-                          disabled={isSubmitting}
-                          className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold text-lg px-8 py-4 shadow-xl transform hover:scale-105 transition-all duration-200 disabled:opacity-75 disabled:cursor-not-allowed disabled:transform-none"
-                        >
-                          {isSubmitting ? (
-                            <>
-                              <Loader2 className="w-5 h-5 mr-3 animate-spin" />
-                              {product
-                                ? "Updating Product..."
-                                : "Creating Product..."}
-                            </>
-                          ) : (
-                            <>
-                              {product
-                                ? "💾 UPDATE PRODUCT NOW"
-                                : "✨ CREATE PRODUCT NOW"}
-                            </>
-                          )}
-                        </Button>
-                      </div>
-                    </div>
                   </CardContent>
                 </Card>
               </div>

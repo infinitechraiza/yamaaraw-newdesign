@@ -75,9 +75,7 @@ export default function ProductTable({
         <h3 className="text-lg font-semibold text-gray-900 mb-2">
           No Category Found
         </h3>
-        <p className="text-gray-600">
-          Start by adding your first category.
-        </p>
+        <p className="text-gray-600">Start by adding your first category.</p>
       </div>
     );
   }
@@ -85,7 +83,7 @@ export default function ProductTable({
   return (
     <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
       {/* Table Header with Items Per Page Selector */}
-      <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center bg-gradient-to-r from-orange-50 to-red-50">
+      <div className="px-6 py-4 rounded border-b border-gray-200 flex justify-between items-center bg-gradient-to-r from-blue-50 to-blue-90">
         <div>
           <h3 className="text-lg font-semibold text-gray-900">Category</h3>
           <p className="text-sm text-gray-600">
@@ -109,15 +107,16 @@ export default function ProductTable({
         </div>
       </div>
 
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto shadow-lg">
         <table className="w-full">
-          <thead className="bg-gradient-to-r from-orange-50 to-red-50 border-b border-orange-100 justify-between items-center">
+          <thead className="bg-gradient-to-r from-blue-50 to-blue-70 border-b border-blue-100 justify-between items-center">
             <tr>
+              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900"></th>
               <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
-                
+                Category
               </th>
               <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
-                Name
+                Brand
               </th>
               <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
                 Actions
@@ -143,7 +142,6 @@ export default function ProductTable({
                         className="object-cover rounded-lg"
                       />
                     </div>
-                    
                   </div>
                 </td>
                 <td className="px-6 py-4">
@@ -161,8 +159,15 @@ export default function ProductTable({
                     </div>
                   </div>
                 </td>
-                
-                
+
+                <td className="px-6 py-4">
+                  <div className="flex items-center space-x-2">
+                    <Badge className="bg-blue-100 text-blue-600 border-blue-200">
+                      {product.category}
+                    </Badge>
+                  </div>
+                </td>
+
                 <td className="px-6 py-4">
                   <div className="flex items-center space-x-2">
                     <Button

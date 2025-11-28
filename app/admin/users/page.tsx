@@ -143,9 +143,9 @@ export default function AdminCustomers() {
                 Admin Dashboard
               </Badge>{" "}
               <h1 className="text-3xl lg:text-4xl font-bold mb-2">
-                Customer Management
+                Users Management
               </h1>
-              <p className="text-orange-100">Manage customer details</p>
+              <p className="text-orange-100">Manage Users details</p>
             </div>
             <div className="flex items-center space-x-4 text-blue-500 rounded-lg border border-border border-blue-500">
               <Button
@@ -166,7 +166,7 @@ export default function AdminCustomers() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-blue-100">Total Customers</p>
+                  <p className="text-blue-100">Total Users</p>
                   <p className="text-3xl font-bold">{customers.length}</p>
                 </div>
                 <Users className="w-8 h-8 text-blue-200" />
@@ -206,30 +206,36 @@ export default function AdminCustomers() {
         {/* Search and Filters */}
         <Card className="mb-6 shadow-lg border-0">
           <CardContent className="p-6">
-            <div className="flex flex-col sm:flex-row gap-4">
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                <Input
-                  placeholder="Search customers by name or email..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 border-gray-200 focus:border-orange-500 focus:ring-orange-500"
-                />
+            <div className="flex flex-col md:flex-row gap-4 items-center xs:items-start justify-between">
+              <div className="w-full flex justify-end flex-col sm:flex-row gap-4 flex-1">
+                <div className="relative max-w-md">
+                  <Input
+                    placeholder="Search users by name or email..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="w-56 pl-2 h-10 rounded-lr-full rounded-r-2xl border-r-sm border-2 border-blue-200 focus:border-blue-500 text-xs"
+                  />
+                </div>
+                <Button
+                  variant="outline"
+                  className="group absolute p-2 bg-blue-500 group-hover:border-2 group-hover:border-blue-700 text-xs text-blue-600 rounded-full hover:bg-blue-50"
+                >
+                  <Search className="transform text-white group-hover:text-blue-700 w-5 h-5" />
+                </Button>{" "}
               </div>
-              <Button variant="outline" className="flex items-center gap-2">
-                <Filter className="w-4 h-4" />
-                Filter
-              </Button>
+              <Badge className="bg-blue-100 hover:bg-blue-500 text-blue-600 hover:text-white border-blue-200">
+                Product 1
+              </Badge>
             </div>
           </CardContent>
         </Card>
 
-        {/* Customers Table */}
+        {/* Users Table */}
         <Card className="shadow-lg border-0">
           <CardHeader className="bg-gradient-to-r from-blue-50 to-blue-90 border-b">
             <div className="flex justify-between items-center">
               <CardTitle className="text-xl">
-                Customers ({filteredCustomers.length})
+                Users ({filteredCustomers.length})
               </CardTitle>
               <div className="flex items-center space-x-2">
                 <label className="text-sm text-gray-600">Show:</label>

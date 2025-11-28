@@ -454,13 +454,13 @@ export default function AdminTestimonialsPage() {
                   placeholder="Search testimonials..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 h-10 rounded-lg border-2 border-purple-200 focus:border-purple-500"
+                  className="pl-10 h-10 rounded-lg border-2 border-blue-200 focus:border-blue-500"
                 />
               </div>
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                className="h-10 px-4 rounded-lg border-2 border-purple-200 focus:border-purple-500 bg-white min-w-[150px]"
+                className="h-10 px-4 rounded-lg border-2 border-blue-200 focus:border-blue-500 bg-white min-w-[150px]"
               >
                 {statuses.map((status) => (
                   <option key={status} value={status}>
@@ -473,7 +473,7 @@ export default function AdminTestimonialsPage() {
               <select
                 value={ratingFilter}
                 onChange={(e) => setRatingFilter(e.target.value)}
-                className="h-10 px-4 rounded-lg border-2 border-purple-200 focus:border-purple-500 bg-white min-w-[150px]"
+                className="h-10 px-4 rounded-lg border-2 border-blue-200 focus:border-blue-500 bg-white min-w-[150px]"
               >
                 {ratings.map((rating) => (
                   <option key={rating} value={rating}>
@@ -487,14 +487,14 @@ export default function AdminTestimonialsPage() {
             <div className="flex items-center space-x-2">
               <Button
                 variant="outline"
-                className="border-purple-500 text-purple-600 hover:bg-purple-50"
+                className="border-blue-500 text-blue-600 hover:bg-blue-50"
                 onClick={handleExport}
                 disabled={testimonials.length === 0}
               >
                 <Download className="w-4 h-4 mr-2" />
                 Export
               </Button>
-              <Badge className="bg-purple-100 text-purple-600 border-purple-200">
+              <Badge className="bg-blue-100 text-blue-600 border-blue-200">
                 {testimonials.length} Testimonial
                 {testimonials.length !== 1 ? "s" : ""}
               </Badge>
@@ -508,8 +508,8 @@ export default function AdminTestimonialsPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {testimonials.length === 0 ? (
             <div className="text-center py-12">
-              <div className="w-24 h-24 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <MessageSquare className="w-12 h-12 text-purple-500" />
+              <div className="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <MessageSquare className="w-12 h-12 text-blue-500" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">
                 No testimonials found
@@ -520,7 +520,7 @@ export default function AdminTestimonialsPage() {
             </div>
           ) : (
             <Card>
-              <CardHeader>
+              <CardHeader className="bg-gradient-to-r from-blue-50 to-blue-90 border-b">
                 <div className="flex justify-between items-center">
                   <CardTitle className="text-xl">
                     Testimonials ({totalCount})

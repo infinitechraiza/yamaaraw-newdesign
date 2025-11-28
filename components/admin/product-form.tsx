@@ -362,8 +362,8 @@ export default function ProductForm({
   const steps = [
     { number: 1, title: "Basic Info", description: "Product details" },
     { number: 2, title: "Images", description: "Product photos" },
-    { number: 3, title: "Specifications", description: "Technical details" },
-    { number: 4, title: "Options", description: "Colors & features" },
+    { number: 3, title: "Specifications", description: "Product attributes" },
+    { number: 4, title: "Options", description: "Product Variant" },
   ];
 
   // Filter options based on search term
@@ -376,9 +376,9 @@ export default function ProductForm({
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-2 sm:p-4">
-      <div className="bg-white rounded-lg sm:rounded-2xl shadow-2xl w-full max-w-5xl h-[95vh] sm:h-[90vh] flex flex-col">
+      <div className="bg-white rounded-t-2xl rounded-b-none  sm:rounded-t-2xl shadow-2xl w-full max-w-5xl h-[95vh] sm:h-[90vh] flex flex-col">
         {/* Header */}
-        <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-4 sm:px-6 py-3 sm:py-4 rounded-t-lg sm:rounded-t-2xl">
+        <div className="bg-gradient-to-b from-blue-700 to-blue-500 text-white px-4 sm:px-6 py-3 sm:py-4 rounded-t-lg sm:rounded-t-2xl">
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-lg sm:text-2xl font-bold">
@@ -409,7 +409,7 @@ export default function ProductForm({
                 <div
                   className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-xs sm:text-sm font-semibold ${
                     currentStep >= step.number
-                      ? "bg-orange-500 text-white"
+                      ? "bg-gradient-to-br from-orange-500 via-red-500 to-red-600 text-white"
                       : "bg-gray-200 text-gray-600"
                   }`}
                 >
@@ -419,7 +419,7 @@ export default function ProductForm({
                   <div
                     className={`text-sm font-medium ${
                       currentStep >= step.number
-                        ? "text-orange-600"
+                        ? "text-blue-600"
                         : "text-gray-500"
                     }`}
                   >
@@ -449,15 +449,17 @@ export default function ProductForm({
               <div className="space-y-4">
                 <Card>
                   <CardHeader className="pb-3">
-                    <CardTitle className="text-orange-600 text-lg">
+                    <CardTitle className="text-blue-600 text-lg">
                       Basic Information
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <div>
+                        {/* product name */}
                         <label className="block text-sm font-medium text-gray-700 mb-1">
-                          Product Name *
+                          Product Name{" "}
+                          <span className="text-sm text-red-400">*</span>
                         </label>
                         <Input
                           name="name"
@@ -468,26 +470,78 @@ export default function ProductForm({
                           className="h-10 text-sm"
                           placeholder="Enter product name"
                         />
-                      </div>
+                      </div>{" "}
                       <div>
+                        {/* stock quantity */}
                         <label className="block text-sm font-medium text-gray-700 mb-1">
-                          Model *
+                         Stock Quantity{" "}
+                          <span className="text-sm text-red-400">*</span>
                         </label>
                         <Input
-                          name="model"
-                          value={formData.model}
+                          name="stock"
+                          value={formData.name}
                           onChange={handleInputChange}
                           required
                           disabled={isSubmitting}
                           className="h-10 text-sm"
-                          placeholder="Enter model number"
+                          placeholder="Enter stock quantity"
                         />
                       </div>
                     </div>
 
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        {/* product brand select option */}
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Brand <span className="text-sm text-red-400">*</span>
+                        </label>
+                        <select
+                          name="brand"
+                          value={formData.category}
+                          onChange={handleInputChange}
+                          required
+                          disabled={isSubmitting}
+                          className="h-10 w-full rounded-lg border-2 border-gray-200 focus:border-orange-500 px-3 bg-white text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          {/* option: selected from the categoryData */}
+                          <option value="">Select brand</option>
+                          <option value="E-Bike">Woomers Baby Things</option>
+                          <option value="E-Trike">Acer</option>
+                          <option value="E-Scooter">Sony</option>
+                          <option value="E-Motorcycle">555</option>
+                          <option value="E-Dump">Apple</option>
+                        </select>
+                      </div>
+                      <div>
+                        {/* product category */}
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Category{" "}
+                          <span className="text-sm text-red-400">*</span>
+                        </label>
+                        <select
+                          name="category"
+                          value={formData.category}
+                          onChange={handleInputChange}
+                          required
+                          disabled={isSubmitting}
+                          className="h-10 w-full rounded-lg border-2 border-gray-200 focus:border-orange-500 px-3 bg-white text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          {/* option: selected from the categoryData */}
+                          <option value="">Select category</option>
+                          <option value="E-Bike">Computers & Gadget</option>
+                          <option value="E-Trike">Home Entertainment</option>
+                          <option value="E-Scooter">Gaming</option>
+                          <option value="E-Motorcycle">Sports & Travel</option>
+                          <option value="E-Dump">Groceries</option>
+                        </select>
+                      </div>{" "}
+                    </div>
+
                     <div>
+                      {/* product description */}
                       <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Description *
+                        Description{" "}
+                        <span className="text-sm text-red-400">*</span>
                       </label>
                       <textarea
                         name="description"
@@ -504,27 +558,8 @@ export default function ProductForm({
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
-                          Category *
-                        </label>
-                        <select
-                          name="category"
-                          value={formData.category}
-                          onChange={handleInputChange}
-                          required
-                          disabled={isSubmitting}
-                          className="h-10 w-full rounded-lg border-2 border-gray-200 focus:border-orange-500 px-3 bg-white text-sm disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                          <option value="">Select category</option>
-                          <option value="E-Bike">E-Bike</option>
-                          <option value="E-Trike">E-Trike</option>
-                          <option value="E-Scooter">E-Scooter</option>
-                          <option value="E-Motorcycle">E-Motorcycle</option>
-                          <option value="E-Dump">E-Dump</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                          Price (₱) *
+                          Price (₱){" "}
+                          <span className="text-sm text-red-400">*</span>
                         </label>
                         <Input
                           name="price"
@@ -566,7 +601,7 @@ export default function ProductForm({
               <div className="space-y-4">
                 <Card>
                   <CardHeader className="pb-3">
-                    <CardTitle className="text-orange-600 text-lg flex items-center">
+                    <CardTitle className="text-blue-600 text-lg flex items-center">
                       <Eye className="w-5 h-5 mr-2" />
                       Product Images with Preview
                     </CardTitle>
@@ -585,7 +620,7 @@ export default function ProductForm({
                       />
                       <label
                         htmlFor="image-upload"
-                        className={`cursor-pointer text-orange-600 hover:text-orange-700 font-medium text-base ${
+                        className={`cursor-pointer text-blue-500 hover:text-blue-700 font-medium text-base ${
                           isSubmitting ? "opacity-50 cursor-not-allowed" : ""
                         }`}
                       >
@@ -686,15 +721,15 @@ export default function ProductForm({
               <div className="space-y-4">
                 <Card>
                   <CardHeader className="pb-3">
-                    <CardTitle className="text-orange-600 text-lg">
-                      Technical Specifications
+                    <CardTitle className="text-blue-600 text-lg">
+                      Product Specifications
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Dimensions
+                          Made In
                         </label>
                         <Input
                           value={formData.specifications?.dimensions || ""}
@@ -706,29 +741,26 @@ export default function ProductForm({
                           }
                           disabled={isSubmitting}
                           className="h-11 text-sm"
-                          placeholder="e.g., 1820 × 680 × 1170 mm"
+                          placeholder="e.g., Philippines"
                         />
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Battery Type
+                          Weight
                         </label>
                         <Input
                           value={formData.specifications?.battery_type || ""}
                           onChange={(e) =>
-                            handleSpecificationChange(
-                              "battery_type",
-                              e.target.value
-                            )
+                            handleSpecificationChange("weight", e.target.value)
                           }
                           disabled={isSubmitting}
                           className="h-11 text-sm"
-                          placeholder="e.g., 72V / 38Ah"
+                          placeholder="e.g., 12 kl / 20 pounds"
                         />
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Motor Power
+                          Height
                         </label>
                         <Input
                           value={formData.specifications?.motor_power || ""}
@@ -740,7 +772,7 @@ export default function ProductForm({
                           }
                           disabled={isSubmitting}
                           className="h-11 text-sm"
-                          placeholder="e.g., 2000W"
+                          placeholder="e.g., 12 ft / 100cm"
                         />
                       </div>
                       <div>
@@ -757,68 +789,53 @@ export default function ProductForm({
                           }
                           disabled={isSubmitting}
                           className="h-11 text-sm"
-                          placeholder="e.g., Bluetooth audio and anti-theft system"
-                        />
-                      </div>
-                      <div className="sm:col-span-2">
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Front/Rear Suspension
-                        </label>
-                        <Input
-                          value={
-                            formData.specifications?.front_rear_suspension || ""
-                          }
-                          onChange={(e) =>
-                            handleSpecificationChange(
-                              "front_rear_suspension",
-                              e.target.value
-                            )
-                          }
-                          disabled={isSubmitting}
-                          className="h-11 text-sm"
-                          placeholder='e.g., 27" hydraulic shock absorbers'
+                          placeholder="e.g., Breathable, Flexible, Slip Resistant"
                         />
                       </div>
                     </div>
 
-                    {/* Tire Specifications */}
+                    {/* Delivery Specifications */}
                     <div className="border-t pt-4">
                       <h4 className="text-base font-semibold text-gray-800 mb-4 flex items-center">
-                        🛞 Tire Specifications
+                        Usage Specifications
                       </h4>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Front Tires
+                            Perfect For
                           </label>
-                          <Input
-                            value={formData.specifications?.front_tires || ""}
-                            onChange={(e) =>
-                              handleSpecificationChange(
-                                "front_tires",
-                                e.target.value
-                              )
-                            }
+                          <select
+                            name="brand"
+                            value={formData.category}
+                            onChange={handleInputChange}
+                            required
                             disabled={isSubmitting}
-                            className="h-11 text-sm"
-                            placeholder="e.g., 110/70-12"
-                          />
+                            className="h-10 w-full rounded-lg border-2 border-gray-200 focus:border-orange-500 px-3 bg-white text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            {/* option: selected from the Data */}
+                            <option value="">Select category</option>
+                            <option value="Toddlers">Toddlers</option>
+                            <option value="Gaming">Gaming</option>
+                            <option value="Hiking">Hiking</option>
+                            <option value="Office Works">Office Works</option>
+                            <option value="Camping">Camping</option>
+                          </select>
                         </div>
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Rear Tires
+                            Usage Guide
                           </label>
                           <Input
                             value={formData.specifications?.rear_tires || ""}
                             onChange={(e) =>
                               handleSpecificationChange(
-                                "rear_tires",
+                                "usage_guide",
                                 e.target.value
                               )
                             }
                             disabled={isSubmitting}
                             className="h-11 text-sm"
-                            placeholder="e.g., 120/70-12"
+                            placeholder="e.g., Usage instructions: Use it only for morning."
                           />
                         </div>
                       </div>
@@ -831,10 +848,38 @@ export default function ProductForm({
             {/* Step 4: Enhanced Colors & Options */}
             {currentStep === 4 && (
               <div className="space-y-4">
+                <div className="flex justify-start items-center gap-2 m-2">
+                  {/* product brand select option */}
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Brand <span className="text-sm text-red-400">*</span>
+                  </label>
+                  <div className="flex max-w-md h-10">
+                    <select
+                      name="brand"
+                      value={formData.category}
+                      onChange={handleInputChange}
+                      required
+                      disabled={isSubmitting}
+                      className="w-full rounded-l-full border-2 border-blue-200 focus:border-blue-500 text-xs px-3"
+                    >
+                      <option value="">Select Options</option>
+                      <option value="E-Bike">Colors</option>
+                      <option value="E-Trike">Sizes </option>
+                      <option value="E-Scooter">Shapes</option>
+                      <option value="E-Motorcycle">Material</option>
+                    </select>
+                    <Button
+                      variant="outline"
+                      className="group w-12 bg-blue-500 text-white rounded-r-full bg-blue-500 group-hover:border-2 group-hover:bg-blue-300 group-hover:border-blue-700 text-xs text-blue-600 hover:bg-blue-50"
+                    >
+                      <Plus className="transform text-white group-hover:text-blue-500 w-5 h-5" />
+                    </Button>
+                  </div>
+                </div>{" "}
                 {/* Colors */}
                 <Card>
                   <CardHeader className="pb-3">
-                    <CardTitle className="text-orange-600 text-lg">
+                    <CardTitle className="text-blue-600 text-lg">
                       Available Colors
                     </CardTitle>
                   </CardHeader>
@@ -878,7 +923,6 @@ export default function ProductForm({
                     </div>
                   </CardContent>
                 </Card>
-
                 {/* Enhanced Ideal For Section */}
                 <Card>
                   <CardHeader className="pb-3">
@@ -966,11 +1010,10 @@ export default function ProductForm({
                     )}
                   </CardContent>
                 </Card>
-
                 {/* Product Status & Submit */}
                 <Card className="border-2 border-green-500 bg-gradient-to-r from-green-50 to-blue-50">
                   <CardContent className="p-6">
-                    <div className="space-y-4">
+                    <div className="flex md:flex-row flex-col">
                       <h3 className="text-orange-600 font-bold text-lg">
                         Product Status
                       </h3>
@@ -1005,19 +1048,19 @@ export default function ProductForm({
                             disabled={isSubmitting}
                             className="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500 disabled:opacity-50"
                           />
-                          <span className="text-base text-gray-700 font-medium">
+                          <span className="text-base text-gray-700 font-medium items-center">
                             Featured Product
                           </span>
                         </label>
                       </div>
 
-                      <div className="border-t pt-4 text-center">
+                      <div className="border-t pt-4 text-center justify-end mx-8">
                         <div className="text-2xl mb-3">🚀</div>
                         <Button
                           type="submit"
                           size="lg"
                           disabled={isSubmitting}
-                          className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold text-lg px-8 py-4 shadow-xl transform hover:scale-105 transition-all duration-200 disabled:opacity-75 disabled:cursor-not-allowed disabled:transform-none"
+                          className="flex justify-center items-center w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold text-lg px-8 py-4 shadow-xl transform hover:scale-105 transition-all duration-200 disabled:opacity-75 disabled:cursor-not-allowed disabled:transform-none"
                         >
                           {isSubmitting ? (
                             <>
@@ -1072,7 +1115,7 @@ export default function ProductForm({
                   type="button"
                   onClick={nextStep}
                   disabled={isSubmitting}
-                  className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 flex items-center px-6 py-2"
+                  className="bg-gradient-to-br from-orange-500 via-red-500 to-red-600 hover:from-orange-600 hover:to-red-600 flex items-center px-6 py-2"
                   size="sm"
                 >
                   Next

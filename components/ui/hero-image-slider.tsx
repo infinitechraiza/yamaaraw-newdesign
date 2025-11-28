@@ -200,7 +200,7 @@ export default function HeroImageSlider() {
           >
             {index === currentImage && (
               <div
-                className="absolute inset-0 bg-gradient-to-r from-orange-500 to-red-500 rounded-full animate-pulse"
+                className="absolute inset-0 bg-gradient-to-r from-sky-400 to-blue-500 rounded-full animate-pulse"
                 aria-hidden="true"
               />
             )}
@@ -224,7 +224,7 @@ export default function HeroImageSlider() {
           aria-valuetext={`Slide ${currentImage + 1} of ${heroImages.length}`}
         >
           <div
-            className="h-full bg-gradient-to-r from-orange-500 to-red-500 transition-all duration-100 ease-linear"
+            className="h-full bg-gradient-to-r from-sky-400 to-blue-500 transition-all duration-100 ease-linear"
             style={{
               width: `${((Date.now() % 4000) / 4000) * 100}%`,
             }}

@@ -21,12 +21,6 @@ import TestimonialForm from "@/components/testimonial/testimonial-form";
 import ETrikeLoader from "@/components/ui/etrike-loader";
 import TestimonialCarousel from "@/components/testimonial/testimonial-carousel";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  Tabs,
-  TabsList,
-  TabsTrigger,
-  TabsContent,
-} from "@/components/product/Tabs";
 import TopProductCard from "@/components/product/TopProductCard";
 import Carousel from "@/components/product/Carousel";
 import CategoryCard from "@/components/product/CategoryCard";
@@ -68,55 +62,38 @@ interface Testimonial {
   };
 }
 
-export default function HomePage() {
-  const [quantity, setQuantity] = useState(1);
-  const [selectedColor, setSelectedColor] = useState("White");
-  const [currentSort, setCurrentSort] = useState("relevance");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [filters, setFilters] = useState<FilterState>({
-    priceRange: [0, 10000],
-    rating: 0,
-    inStock: false,
-    categories: [],
-  });
-
-  const itemsPerPage = 12;
-
-  const colors = [
-    { name: "White", class: "bg-white" },
-    { name: "Black", class: "bg-black" },
-    { name: "Red", class: "bg-red-700" },
-    { name: "Blue", class: "bg-blue-700" },
-  ];
-
-  // Mock products for filtering demo
-  const mockProducts: Product[] = [
+export default function HomePage({ params }: { params: { id: string } }) {
+  // Mock product data - in a real app this would come from an API
+  const allProducts: Product[] = [
     {
       id: 1,
-      name: "Nike Air Force 1 Low White",
-      price: 4500,
-      original_price: 5000,
+      category_id: 1,
+      name: "Acer Nitro 5",
+      price: 34500,
+      original_price: 39000,
       rating: 4.8,
-      sold: 12400,
+      sold: 1400,
       image:
-        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+        "https://i.pinimg.com/1200x/80/68/33/806833e9c3fa5eeaf67ed38d0c6ca59f.jpg",
       in_stock: true,
     },
     {
       id: 2,
-      name: "Nike Air Force 1 Mid Black",
-      price: 5200,
-      original_price: 6000,
+      category_id: 2,
+      name: "Pet Brush",
+      price: 1200,
+      original_price: 3200,
       rating: 4.9,
-      sold: 8900,
+      sold: 700,
       image:
-        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+        "https://down-ph.img.susercontent.com/file/ph-11134207-7ra0n-mdr5hv571pae7d.webp",
       in_stock: true,
     },
     {
       id: 3,
+      category_id: 15,
       name: "Nike Air Force 1 High Triple White",
-      price: 3800,
+      price: 6800,
       rating: 4.6,
       sold: 15200,
       image:
@@ -125,38 +102,43 @@ export default function HomePage() {
     },
     {
       id: 4,
-      name: "Nike Air Force 1 Shadow Pale Ivory",
-      price: 6500,
-      original_price: 7500,
+      category_id: 3,
+      name: "Wireless Bluetooth Headphones Sony WH-CH520 with 50-Hour Battery Life and Enhanced Sound Quality",
+      price: 1999,
+      original_price: 3500,
       rating: 4.7,
-      sold: 6300,
+      sold: 220,
       image:
-        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+        "https://down-ph.img.susercontent.com/file/ph-11134207-7rasf-m9tk4bka5yir1c.webp",
       in_stock: false,
     },
     {
       id: 5,
-      name: "Nike Air Force 1 Low University Blue",
-      price: 4200,
+      category_id: 4,
+      name: "JISULIFE Handheld Fan Pro1S FA53,Speed(1-100) justable Turbo Mini Fan,5000mAh Battery Rechargeable Personal Fan,BrownHand-held",
+      price: 999,
+      original_price: 1790,
       rating: 4.5,
-      sold: 9800,
+      sold: 23,
       image:
         "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
       in_stock: true,
     },
     {
       id: 6,
-      name: "Nike Air Force 1 07 LX UV Reactive",
-      price: 7200,
-      original_price: 8500,
-      rating: 4.9,
-      sold: 4100,
+      category_id: 4,
+      name: "24H Waterproof Eyeliner - Smudge-Proof, Precise Lines for Weddings & Special Occasions",
+      price: 1999,
+      original_price: 1999,
+      rating: 3.9,
+      sold: 4500,
       image:
-        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+        "https://down-ph.img.susercontent.com/file/ph-11134207-7rasj-ma9j3gxx0ijy92.webp",
       in_stock: true,
     },
     {
       id: 7,
+      category_id: 15,
       name: "Nike Air Force 1 Low Cactus Jack",
       price: 2800,
       rating: 4.3,
@@ -167,206 +149,41 @@ export default function HomePage() {
     },
     {
       id: 8,
-      name: "Nike Air Force 1 React White Ice",
-      price: 5800,
-      original_price: 6800,
+      category_id: 6,
+      name: "YOYO Travel Bag Women Men Waterproof Large Capacity Sport Gym With Shoe Duffle Bags #S1343",
+      price: 180,
+      original_price: 700,
       rating: 4.8,
-      sold: 7200,
+      sold: 123200,
       image:
-        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+        "https://down-ph.img.susercontent.com/file/sg-11134201-7rd6w-m6tch18gn89n95.webp",
       in_stock: true,
     },
     {
       id: 9,
-      name: "Nike Air Force 1 Low Off-White",
-      price: 8900,
-      original_price: 10000,
-      rating: 5.0,
-      sold: 3400,
+      category_id: 17,
+      name: "4-Grids Baby Milk Powder Dispenser Portable Food and Snack Storage Box Sealed Moisture-proof Box",
+      price: 65,
+      original_price: 345,
+      rating: 4.9,
+      sold: 333400,
       image:
-        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+        "https://down-ph.img.susercontent.com/file/sg-11134201-825b4-mgd7dlfdhrt70e.webp",
       in_stock: false,
     },
     {
       id: 10,
+      category_id: 15,
       name: "Nike Air Force 1 Low Pink Foam",
-      price: 3900,
+      price: 650,
+      original_price: 1200,
       rating: 4.6,
       sold: 11200,
       image:
-        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-      in_stock: true,
-    },
-    {
-      id: 11,
-      name: "Nike Air Force 1 Sage Low Triple White",
-      price: 4600,
-      original_price: 5200,
-      rating: 4.7,
-      sold: 8600,
-      image:
-        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-      in_stock: true,
-    },
-    {
-      id: 12,
-      name: "Nike Air Force 1 Low Wheat Mocha",
-      price: 5400,
-      rating: 4.8,
-      sold: 6900,
-      image:
-        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+        "https://down-ph.img.susercontent.com/file/sg-11134201-7ra2o-m558g7oifba6fa.webp",
       in_stock: true,
     },
   ];
-
-  // Filter and sort products
-  const filteredAndSortedProducts = useMemo(() => {
-    let result = [...mockProducts];
-
-    // Apply filters
-    result = result.filter((product) => {
-      // Price range filter
-      if (
-        product.price < filters.priceRange[0] ||
-        product.price > filters.priceRange[1]
-      ) {
-        return false;
-      }
-
-      // Rating filter
-      if (filters.rating > 0 && product.rating < filters.rating) {
-        return false;
-      }
-
-      // Stock filter
-      if (filters.inStock && !product.in_stock) {
-        return false;
-      }
-
-      return true;
-    });
-
-    // Apply sorting
-    switch (currentSort) {
-      case "price_asc":
-        result.sort((a, b) => a.price - b.price);
-        break;
-      case "price_desc":
-        result.sort((a, b) => b.price - a.price);
-        break;
-      case "rating":
-        result.sort((a, b) => b.rating - a.rating);
-        break;
-      case "popular":
-        result.sort((a, b) => b.sold - a.sold);
-        break;
-      case "latest":
-        result.sort((a, b) => b.id - a.id);
-        break;
-      default:
-        // relevance - keep original order
-        break;
-    }
-
-    return result;
-  }, [filters, currentSort]);
-
-  // Pagination
-  const totalPages = Math.ceil(filteredAndSortedProducts.length / itemsPerPage);
-  const paginatedProducts = useMemo(() => {
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    return filteredAndSortedProducts.slice(startIndex, endIndex);
-  }, [filteredAndSortedProducts, currentPage]);
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-    productsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
-
-  const [featuredProducts, setFeaturedProducts] = useState<FeaturedProduct[]>(
-    []
-  );
-  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [showTestimonialForm, setShowTestimonialForm] = useState(false);
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    try {
-      setLoading(true);
-
-      // Fetch featured products and testimonials in parallel
-      const [productsResponse, testimonialsResponse] = await Promise.all([
-        fetch("/api/getfeatured"),
-        fetch(
-          `${process.env.NEXT_PUBLIC_LARAVEL_API_URL}/testimonials?featured=true`
-        ),
-      ]);
-
-      console.log("Products response status:", productsResponse.status);
-      console.log("Testimonials response status:", testimonialsResponse.status);
-
-      if (productsResponse.ok) {
-        const productsResult = await productsResponse.json();
-        console.log("Products result:", productsResult);
-
-        if (productsResult.success) {
-          setFeaturedProducts(productsResult.data || []);
-        }
-      } else {
-        console.error("Failed to fetch products:", productsResponse.status);
-      }
-
-      if (testimonialsResponse.ok) {
-        const testimonialsResult = await testimonialsResponse.json();
-        console.log("Testimonials result:", testimonialsResult);
-
-        if (testimonialsResult.success) {
-          // Get the first 3 testimonials for homepage display
-          setTestimonials(testimonialsResult.data?.data?.slice(0, 3) || []);
-        }
-      } else {
-        console.error(
-          "Failed to fetch testimonials:",
-          testimonialsResponse.status
-        );
-      }
-    } catch (error) {
-      console.error("Error fetching homepage data:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-  const productsRef = useRef<HTMLDivElement>(null);
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
-
-  const handleCategoryClick = () => {
-    productsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50">
-        <Header />
-        <div className="flex items-center justify-center py-20">
-          <ETrikeLoader />
-        </div>
-        <Footer />
-      </div>
-    );
-  }
 
   // Top Products data by category
   const topProductsByCategory = {
@@ -676,110 +493,279 @@ export default function HomePage() {
   const categories = [
     {
       id: 1,
-      name: "Home Entertainment",
-      icon: "https://cdn-icons-png.flaticon.com/512/3659/3659898.png",
-    },
-    {
-      id: 2,
-      name: "Babies & Kids",
-      icon: "https://cdn-icons-png.flaticon.com/512/2917/2917995.png",
-    },
-    {
-      id: 3,
-      name: "Home & Living",
-      icon: "https://cdn-icons-png.flaticon.com/512/2917/2917242.png",
-    },
-    {
-      id: 4,
-      name: "Groceries",
-      icon: "https://cdn-icons-png.flaticon.com/512/3050/3050464.png",
-    },
-    {
-      id: 5,
-      name: "Toys, Games & Collectibles",
-      icon: "https://cdn-icons-png.flaticon.com/512/2917/2917995.png",
-    },
-    {
-      id: 6,
-      name: "Women's Bags",
-      icon: "https://cdn-icons-png.flaticon.com/512/2609/2609358.png",
-    },
-    {
-      id: 7,
-      name: "Women Accessories",
-      icon: "https://cdn-icons-png.flaticon.com/512/3050/3050155.png",
-    },
-    {
-      id: 8,
-      name: "Women's Shoes",
-      icon: "https://cdn-icons-png.flaticon.com/512/2329/2329876.png",
-    },
-    {
-      id: 9,
-      name: "Pet Care",
-      icon: "https://cdn-icons-png.flaticon.com/512/2138/2138440.png",
-    },
-    {
-      id: 10,
-      name: "Audio",
-      icon: "https://cdn-icons-png.flaticon.com/512/2941/2941885.png",
-    },
-    {
-      id: 12,
-      name: "Home Appliances",
-      icon: "https://cdn-icons-png.flaticon.com/512/2917/2917180.png",
-    },
-    {
-      id: 13,
       name: "Laptops & Computers",
       icon: "https://cdn-icons-png.flaticon.com/512/3659/3659898.png",
     },
     {
-      id: 14,
+      id: 2,
+      name: "Pet Care",
+      icon: "https://cdn-icons-png.flaticon.com/512/2138/2138440.png",
+    },
+    {
+      id: 3,
+      name: "Audio",
+      icon: "https://cdn-icons-png.flaticon.com/512/2941/2941885.png",
+    },
+    {
+      id: 4,
+      name: "Home Appliances",
+      icon: "https://cdn-icons-png.flaticon.com/512/2917/2917180.png",
+    },
+    {
+      id: 5,
       name: "Cameras",
       icon: "https://cdn-icons-png.flaticon.com/512/3342/3342137.png",
     },
     {
-      id: 15,
+      id: 6,
       name: "Sports & Travel",
       icon: "https://cdn-icons-png.flaticon.com/512/2917/2917995.png",
     },
     {
-      id: 16,
+      id: 7,
+      name: "Home & Living",
+      icon: "https://cdn-icons-png.flaticon.com/512/2917/2917242.png",
+    },
+    {
+      id: 8,
+      name: "Groceries",
+      icon: "https://cdn-icons-png.flaticon.com/512/3050/3050464.png",
+    },
+    {
+      id: 9,
+      name: "Toys, Games & Collectibles",
+      icon: "https://cdn-icons-png.flaticon.com/512/2917/2917995.png",
+    },
+    {
+      id: 10,
+      name: "Women's Apparel",
+      icon: "https://cdn-icons-png.flaticon.com/512/2609/2609358.png",
+    },
+    {
+      id: 11,
+      name: "Women's Bags",
+      icon: "https://cdn-icons-png.flaticon.com/512/2609/2609358.png",
+    },
+    {
+      id: 12,
+      name: "Women Accessories",
+      icon: "https://cdn-icons-png.flaticon.com/512/3050/3050155.png",
+    },
+    {
+      id: 13,
+      name: "Women's Shoes",
+      icon: "https://cdn-icons-png.flaticon.com/512/2329/2329876.png",
+    },
+    {
+      id: 14,
       name: "Men's Bags & Accessories",
       icon: "https://cdn-icons-png.flaticon.com/512/2913/2913133.png",
     },
     {
-      id: 17,
+      id: 15,
       name: "Men's Shoes",
       icon: "https://cdn-icons-png.flaticon.com/512/2589/2589903.png",
     },
     {
-      id: 18,
-      name: "Motors",
-      icon: "https://cdn-icons-png.flaticon.com/512/3097/3097039.png",
+      id: 16,
+      name: "Men's Apparel",
+      icon: "https://cdn-icons-png.flaticon.com/512/2609/2609358.png",
     },
     {
-      id: 19,
-      name: "Hobbies & Stationery",
-      icon: "https://cdn-icons-png.flaticon.com/512/2917/2917995.png",
-    },
-    {
-      id: 20,
-      name: "Gaming",
-      icon: "https://cdn-icons-png.flaticon.com/512/686/686589.png",
-    },
-    {
-      id: 21,
-      name: "Home Entertainment",
-      icon: "https://cdn-icons-png.flaticon.com/512/3659/3659898.png",
-    },
-    {
-      id: 22,
+      id: 17,
       name: "Babies & Kids",
       icon: "https://cdn-icons-png.flaticon.com/512/2917/2917995.png",
     },
   ];
+
+  // Use params from Next.js, not useParams()
+  const categoryId = parseInt(params.id, 10);
+
+  const category = categories.find((c) => c.id === categoryId);
+
+  const filteredProducts = allProducts.filter(
+    (product) => product.category_id === categoryId
+  );
+
+  const [quantity, setQuantity] = useState(1);
+  const [selectedColor, setSelectedColor] = useState("White");
+  const [currentSort, setCurrentSort] = useState("relevance");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [filters, setFilters] = useState<FilterState>({
+    priceRange: [0, 10000],
+    rating: 0,
+    inStock: false,
+    categories: [],
+  });
+
+  const itemsPerPage = 12;
+
+  const colors = [
+    { name: "White", class: "bg-white" },
+    { name: "Black", class: "bg-black" },
+    { name: "Red", class: "bg-red-700" },
+    { name: "Blue", class: "bg-blue-700" },
+  ];
+
+  // Filter and sort products
+  const filteredAndSortedProducts = useMemo(() => {
+    let result = [...allProducts];
+
+    // Apply filters
+    result = result.filter((product) => {
+      // Price range filter
+      if (
+        product.price < filters.priceRange[0] ||
+        product.price > filters.priceRange[1]
+      ) {
+        return false;
+      }
+
+      // Rating filter
+      if (filters.rating > 0 && product.rating < filters.rating) {
+        return false;
+      }
+
+      // Stock filter
+      if (filters.inStock && !product.in_stock) {
+        return false;
+      }
+
+      return true;
+    });
+
+    // Apply sorting
+    switch (currentSort) {
+      case "price_asc":
+        result.sort((a, b) => a.price - b.price);
+        break;
+      case "price_desc":
+        result.sort((a, b) => b.price - a.price);
+        break;
+      case "rating":
+        result.sort((a, b) => b.rating - a.rating);
+        break;
+      case "popular":
+        result.sort((a, b) => b.sold - a.sold);
+        break;
+      case "latest":
+        result.sort((a, b) => b.id - a.id);
+        break;
+      default:
+        // relevance - keep original order
+        break;
+    }
+
+    return result;
+  }, [filters, currentSort]);
+
+  // Pagination
+  const totalPages = Math.ceil(filteredAndSortedProducts.length / itemsPerPage);
+  const paginatedProducts = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return filteredAndSortedProducts.slice(startIndex, endIndex);
+  }, [filteredAndSortedProducts, currentPage]);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    productsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  const [featuredProducts, setFeaturedProducts] = useState<FeaturedProduct[]>(
+    []
+  );
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [showTestimonialForm, setShowTestimonialForm] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  // Detect client-side session presence
+  useEffect(() => {
+    try {
+      const sessionData = localStorage.getItem("session");
+      setIsLoggedIn(!!sessionData);
+    } catch (e) {
+      setIsLoggedIn(false);
+    }
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+
+      // Fetch featured products and testimonials in parallel
+      const [productsResponse, testimonialsResponse] = await Promise.all([
+        fetch("/api/getfeatured"),
+        fetch(
+          `${process.env.NEXT_PUBLIC_LARAVEL_API_URL}/testimonials?featured=true`
+        ),
+      ]);
+
+      console.log("Products response status:", productsResponse.status);
+      console.log("Testimonials response status:", testimonialsResponse.status);
+
+      if (productsResponse.ok) {
+        const productsResult = await productsResponse.json();
+        console.log("Products result:", productsResult);
+
+        if (productsResult.success) {
+          setFeaturedProducts(productsResult.data || []);
+        }
+      } else {
+        console.error("Failed to fetch products:", productsResponse.status);
+      }
+
+      if (testimonialsResponse.ok) {
+        const testimonialsResult = await testimonialsResponse.json();
+        console.log("Testimonials result:", testimonialsResult);
+
+        if (testimonialsResult.success) {
+          // Get the first 3 testimonials for homepage display
+          setTestimonials(testimonialsResult.data?.data?.slice(0, 3) || []);
+        }
+      } else {
+        console.error(
+          "Failed to fetch testimonials:",
+          testimonialsResponse.status
+        );
+      }
+    } catch (error) {
+      console.error("Error fetching homepage data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const productsRef = useRef<HTMLDivElement>(null);
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
+  const handleCategoryClick = () => {
+    productsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <div className="flex items-center justify-center py-20">
+          <ETrikeLoader />
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
@@ -927,62 +913,52 @@ export default function HomePage() {
         </div>
 
         <div className="min-h-full text-card-foreground h-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-1 gap-3 mx-2 my-5">
+          <div className="grid grid-cols-1 lg:grid-cols-1 gap-3 my-5">
             {/* You May Also Like Section */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-              {[1, 2, 3, 4, 5, 6].map((i) => (
-                <Card
-                  key={i}
-                  className="group cursor-pointer border border-gray-200 shadow hover:shadow-lg transition-all hover:-translate-y-1"
-                >
-                  <div className="relative">
-                    <Badge className="absolute bg-red-300 text-white text-xs text-red-700 text-center w-12 px-2 py-1 top-0 right-0 rounded-tl-lg rounded-r-none border-l-red-200 shadow-sm hover:bg-blue-300">
-                      -10%
-                    </Badge>
-                    <img
-                      src="https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg"
-                      alt="Product"
-                      className="w-full aspect-square object-cover rounded-t-lg"
-                    />
-                  </div>
-                  <div className="p-3">
-                    <p className="text-sm text-gray-900 line-clamp-2 mb-2">
-                      Nike Air Force
-                    </p>
-                    <div className="flex flex-wrap gap-1 mb-2">
-                      <Badge className="bg-blue-100 text-blue-600 rounded-none border border-border border-blue-600 text-xs">
-                        ₽5 OFF
-                      </Badge>
-                      <Badge className="bg-yellow-100 text-yellow-600 rounded-none border border-border border-blue-500 text-xs">
-                        ★ 4.8
-                      </Badge>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <p className="text-sm font-bold text-blue-600">₽100</p>
-                      <p className="text-xs text-gray-500">10k Sold</p>
-                    </div>
-                  </div>
-                </Card>
-              ))}
-            </div>
+            {allProducts.length > 0 ? (
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-5 gap-4">
+                {allProducts.map((product) => (
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    onClick={() => {
+                      window.location.href = `/products/top/${product.id}`;
+                    }}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12">
+                <p className="text-gray-500 text-lg mb-2">No products found</p>
+                <p className="text-gray-400 text-sm">
+                  Try adjusting your filters
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>
 
       <section className="py-10 bg-white">
         <div className="max-w-7xl mx-auto my-8">
-          <div className="min-h-full text-card-foreground h-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-1 gap-3 mx-2 my-5">
-              {/* Load More */}
-              <div className="mt-8 flex justify-center">
-                <Card className="bg-gray-100 border border-gray-300 rounded-lg shadow hover:bg-gray-200 transition cursor-pointer">
-                  <div className="px-12 py-4">
-                    <p className="text-sm text-gray-600 text-center">
-                      See More
-                    </p>
-                  </div>
-                </Card>
-              </div>
+          {/* Login / See More card: shows appropriate action based on login state */}
+          <div className="mt-8 w-full flex justify-center">
+            <div className="w-full max-w-3xl rounded-lg p-4 bg-gradient-to-r from-blue-600 to-violet-600 text-white border border-transparent shadow-md">
+              {isLoggedIn ? (
+                <Link
+                  href="/products"
+                  className="block text-center text-sm md:text-base font-medium"
+                >
+                  See More
+                </Link>
+              ) : (
+                <Link
+                  href="/login"
+                  className="block text-center text-sm md:text-base font-medium"
+                >
+                  Login To See More
+                </Link>
+              )}
             </div>
           </div>
         </div>
