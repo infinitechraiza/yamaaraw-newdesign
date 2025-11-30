@@ -4,7 +4,7 @@ import Badge from "@/components/product/Badge";
 import { useParams, useNavigate } from 'react-router';
 import { ArrowLeft, Star } from 'lucide-react';
 import ProductCard, { Product } from '@/components/product/ProductCard';
-import FilterBar from "@/components/product/FilterBar";
+import FilterBar from "@/components/product/filter-bar";
 
 
 // Mock product data - in a real app this would come from an API

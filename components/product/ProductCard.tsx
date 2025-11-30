@@ -20,7 +20,7 @@ interface ProductCardProps {
 }
 
 // Mock product data - in a real app this would come from an API
-const allProducts: Product[] = [
+export const allProducts: Product[] = [
   {
     id: 1,
     category_id: 1,

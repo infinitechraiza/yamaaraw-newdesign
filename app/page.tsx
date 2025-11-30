@@ -3,27 +3,14 @@
 import { useState, useMemo, useEffect, useRef } from "react";
 import Link from "next/link";
 import {
-  ArrowRight,
-  Zap,
-  Shield,
-  Truck,
-  Play,
   Gift,
-  MessageSquare,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
-import ProductGrid from "@/components/product/product-grid";
-import HeroImageSlider from "@/components/ui/hero-image-slider";
-import TestimonialForm from "@/components/testimonial/testimonial-form";
 import ETrikeLoader from "@/components/ui/etrike-loader";
-import TestimonialCarousel from "@/components/testimonial/testimonial-carousel";
-import { Card, CardContent } from "@/components/ui/card";
-import TopProductCard from "@/components/product/TopProductCard";
+import TopProductCard from "@/components/product/top-product-card";
 import Carousel from "@/components/product/Carousel";
-import CategoryCard from "@/components/product/CategoryCard";
+import CategoryCard, { categoriesCard } from "@/components/product/category-card";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
@@ -31,9 +18,10 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
-import FilterBar from "@/components/product/FilterBar";
-import FilterSidebar, { FilterState } from "@/components/product/FilterSidebar";
+import { FilterState } from "@/components/product/filter-sidebar";
 import ProductCard, { Product } from "@/components/product/ProductCard";
+import AutoScrollCard, { row1Products, row2Products, row3Products } from "@/components/product/auto-scroll-card";
+
 
 interface FeaturedProduct {
   id: number;
@@ -103,7 +91,7 @@ export default function HomePage({ params }: { params: { id: string } }) {
     {
       id: 4,
       category_id: 3,
-      name: "Wireless Bluetooth Headphones Sony WH-CH520 with 50-Hour Battery Life and Enhanced Sound Quality",
+      name: "Wireless greentooth Headphones Sony WH-CH520 with 50-Hour Battery Life and Enhanced Sound Quality",
       price: 1999,
       original_price: 3500,
       rating: 4.7,
@@ -228,14 +216,6 @@ export default function HomePage({ params }: { params: { id: string } }) {
         image:
           "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
       },
-      {
-        id: 106,
-        name: "V380 Pro CCTV Camera 8MP 5G",
-        price: 380,
-        monthly_sales: "Sold 8259",
-        image:
-          "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-      },
     ],
     flipflop: [
       {
@@ -275,14 +255,6 @@ export default function HomePage({ params }: { params: { id: string } }) {
         name: "Stylish Colorful Flipflop Collection",
         price: 390,
         monthly_sales: "Sold 25K+",
-        image:
-          "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-      },
-      {
-        id: 206,
-        name: "Premium Leather Flipflop Sandals",
-        price: 780,
-        monthly_sales: "Sold 8K+",
         image:
           "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
       },
@@ -328,14 +300,6 @@ export default function HomePage({ params }: { params: { id: string } }) {
         image:
           "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
       },
-      {
-        id: 306,
-        name: "Fresh Citrus Perfume Oil Based",
-        price: 820,
-        monthly_sales: "Monthly Sales 73K+",
-        image:
-          "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-      },
     ],
     powerbank: [
       {
@@ -375,14 +339,6 @@ export default function HomePage({ params }: { params: { id: string } }) {
         name: "Ultra Fast 30000mAh Powerbank",
         price: 1890,
         monthly_sales: "Sold 35K+",
-        image:
-          "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-      },
-      {
-        id: 406,
-        name: "LED Display Powerbank 15000mAh",
-        price: 1250,
-        monthly_sales: "Sold 41K+",
         image:
           "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
       },
@@ -428,14 +384,6 @@ export default function HomePage({ params }: { params: { id: string } }) {
         image:
           "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
       },
-      {
-        id: 506,
-        name: "Wedge Sandals Comfortable Walk",
-        price: 950,
-        monthly_sales: "Sold 48K+",
-        image:
-          "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-      },
     ],
     solar: [
       {
@@ -478,105 +426,11 @@ export default function HomePage({ params }: { params: { id: string } }) {
         image:
           "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
       },
-      {
-        id: 606,
-        name: "Bright Solar Flood Light Outdoor",
-        price: 4200,
-        monthly_sales: "Sold 33K+",
-        image:
-          "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-      },
     ],
   };
 
-  // Categories data
-  const categories = [
-    {
-      id: 1,
-      name: "Laptops & Computers",
-      icon: "https://cdn-icons-png.flaticon.com/512/3659/3659898.png",
-    },
-    {
-      id: 2,
-      name: "Pet Care",
-      icon: "https://cdn-icons-png.flaticon.com/512/2138/2138440.png",
-    },
-    {
-      id: 3,
-      name: "Audio",
-      icon: "https://cdn-icons-png.flaticon.com/512/2941/2941885.png",
-    },
-    {
-      id: 4,
-      name: "Home Appliances",
-      icon: "https://cdn-icons-png.flaticon.com/512/2917/2917180.png",
-    },
-    {
-      id: 5,
-      name: "Cameras",
-      icon: "https://cdn-icons-png.flaticon.com/512/3342/3342137.png",
-    },
-    {
-      id: 6,
-      name: "Sports & Travel",
-      icon: "https://cdn-icons-png.flaticon.com/512/2917/2917995.png",
-    },
-    {
-      id: 7,
-      name: "Home & Living",
-      icon: "https://cdn-icons-png.flaticon.com/512/2917/2917242.png",
-    },
-    {
-      id: 8,
-      name: "Groceries",
-      icon: "https://cdn-icons-png.flaticon.com/512/3050/3050464.png",
-    },
-    {
-      id: 9,
-      name: "Toys, Games & Collectibles",
-      icon: "https://cdn-icons-png.flaticon.com/512/2917/2917995.png",
-    },
-    {
-      id: 10,
-      name: "Women's Apparel",
-      icon: "https://cdn-icons-png.flaticon.com/512/2609/2609358.png",
-    },
-    {
-      id: 11,
-      name: "Women's Bags",
-      icon: "https://cdn-icons-png.flaticon.com/512/2609/2609358.png",
-    },
-    {
-      id: 12,
-      name: "Women Accessories",
-      icon: "https://cdn-icons-png.flaticon.com/512/3050/3050155.png",
-    },
-    {
-      id: 13,
-      name: "Women's Shoes",
-      icon: "https://cdn-icons-png.flaticon.com/512/2329/2329876.png",
-    },
-    {
-      id: 14,
-      name: "Men's Bags & Accessories",
-      icon: "https://cdn-icons-png.flaticon.com/512/2913/2913133.png",
-    },
-    {
-      id: 15,
-      name: "Men's Shoes",
-      icon: "https://cdn-icons-png.flaticon.com/512/2589/2589903.png",
-    },
-    {
-      id: 16,
-      name: "Men's Apparel",
-      icon: "https://cdn-icons-png.flaticon.com/512/2609/2609358.png",
-    },
-    {
-      id: 17,
-      name: "Babies & Kids",
-      icon: "https://cdn-icons-png.flaticon.com/512/2917/2917995.png",
-    },
-  ];
+  const categories = categoriesCard;
+
 
   // Use params from Next.js, not useParams()
   const categoryId = parseInt(params.id, 10);
@@ -604,7 +458,7 @@ export default function HomePage({ params }: { params: { id: string } }) {
     { name: "White", class: "bg-white" },
     { name: "Black", class: "bg-black" },
     { name: "Red", class: "bg-red-700" },
-    { name: "Blue", class: "bg-blue-700" },
+    { name: "green", class: "bg-green-700" },
   ];
 
   // Filter and sort products
@@ -740,6 +594,7 @@ export default function HomePage({ params }: { params: { id: string } }) {
       setLoading(false);
     }
   };
+
   const productsRef = useRef<HTMLDivElement>(null);
 
   const formatDate = (dateString: string) => {
@@ -754,6 +609,9 @@ export default function HomePage({ params }: { params: { id: string } }) {
     productsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
+
+  // moving image in hero section
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50">
@@ -765,102 +623,149 @@ export default function HomePage({ params }: { params: { id: string } }) {
       </div>
     );
   }
-
+  const productRows = [
+    Array.from({ length: 10 }, (_, i) => ({
+      id: i + 1,
+      name: `Product ${i + 1}`,
+      image: "https://via.placeholder.com/150",
+    })),
+    Array.from({ length: 10 }, (_, i) => ({
+      id: i + 11,
+      name: `Product ${i + 11}`,
+      image: "https://via.placeholder.com/150",
+    })),
+    Array.from({ length: 10 }, (_, i) => ({
+      id: i + 21,
+      name: `Product ${i + 21}`,
+      image: "https://via.placeholder.com/150",
+    })),
+  ]
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
+
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-slate-900 via-blue-900 to-red-900 text-white overflow-hidden">
-        <div className="absolute inset-0 bg-black/10"></div>
+
+      <section>
+        <div className="relative w-full h-full">
+          <Swiper
+            loop={true}
+            autoplay={{
+              delay: 3000,
+              disableOnInteraction: false,
+            }}
+            navigation={{
+              prevEl: ".custom-prev",
+              nextEl: ".custom-next",
+            }}
+            pagination={{ clickable: true }}
+            modules={[Autoplay, Navigation, Pagination]}
+            className="w-full h-64 md:h-96 lg:h-[500px]"
+          >
+            <SwiperSlide>
+              <div className="relative w-full h-full">
+                <img
+                  src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=1200&h=500&fit=crop"
+                  alt="Electronics Banner"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                  <h2 className="text-white text-4xl font-bold">Electronics & Tech</h2>
+                </div>
+              </div>
+            </SwiperSlide>
+            <SwiperSlide>
+              <div className="relative w-full h-full">
+                <img
+                  src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1200&h=500&fit=crop"
+                  alt="Home & Furniture Banner"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                  <h2 className="text-white text-4xl font-bold">Home & Living</h2>
+                </div>
+              </div>
+            </SwiperSlide>
+            <SwiperSlide>
+              <div className="relative w-full h-full">
+                <img
+                  src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=1200&h=500&fit=crop"
+                  alt="Food & Groceries Banner"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                  <h2 className="text-white text-4xl font-bold">Fresh Food & Groceries</h2>
+                </div>
+              </div>
+            </SwiperSlide>
+            <SwiperSlide>
+              <div className="relative w-full h-full">
+                <img
+                  src="https://images.unsplash.com/photo-1522706604291-210a56c3b376?w=1200&h=500&fit=crop"
+                  alt="Sports & Fitness Banner"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                  <h2 className="text-white text-4xl font-bold">Sports & Fitness</h2>
+                </div>
+              </div>
+            </SwiperSlide>
+            <SwiperSlide>
+              <div className="relative w-full h-full">
+                <img
+                  src="https://images.unsplash.com/photo-1512820790803-83ca734da794?w=1200&h=500&fit=crop"
+                  alt="Books & Education Banner"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                  <h2 className="text-white text-4xl font-bold">Books & Education</h2>
+                </div>
+              </div>
+            </SwiperSlide>
+          </Swiper>
+
+          {/* Custom Pagination Styles */}
+          <style jsx global>{`
+      .swiper-pagination-bullet {
+        width: 12px;
+        height: 12px;
+        margin: 0 5px;
+        background-color: white;
+        border-radius: 9999px;
+        opacity: 0.7;
+      }
+      .swiper-pagination-bullet-active {
+        background-color: #ef4444;
+        opacity: 1;
+        transform: scale(1.1);
+      }
+    `}</style>
+
+          {/* Navigation Buttons */}
+          <button
+            className="group custom-prev absolute top-1/2 left-2 -translate-y-1/2 p-2 bg-gray-700/70 rounded shadow-lg z-20 hover:bg-gray-200 transition-colors"
+            aria-label="Previous slide"
+          >
+            <ChevronLeftIcon className="h-6 w-6 text-white group-hover:text-black" />
+          </button>
+
+          <button
+            className="group custom-next absolute top-1/2 right-2 -translate-y-1/2 p-2 bg-gray-700/70 rounded shadow-lg z-20 hover:bg-gray-200 transition-colors"
+            aria-label="Next slide"
+          >
+            <ChevronRightIcon className="h-6 w-6 text-white group-hover:text-black" />
+          </button>
+        </div>
       </section>
 
-      {/* Features Section */}
-      <div className="max-w-7xl mx-auto p-4">
-        <div className="min-h-full text-card-foreground h-auto">
-          <div className="relative grid grid-cols-1 lg:grid-cols-1 gap-3">
-            <Swiper
-              loop={true}
-              autoplay={{
-                delay: 3000,
-                disableOnInteraction: false,
-              }}
-              navigation={{
-                prevEl: ".custom-prev",
-                nextEl: ".custom-next",
-              }}
-              pagination={{ clickable: true }}
-              modules={[Autoplay, Navigation, Pagination]}
-              className="w-full h-64"
-            >
-              <SwiperSlide>
-                <div className="bg-blue-300 flex items-center justify-center h-full">
-                  Banner 1
-                </div>
-              </SwiperSlide>
-              <SwiperSlide>
-                <div className="bg-blue-300 flex items-center justify-center h-full">
-                  Banner 2
-                </div>
-              </SwiperSlide>
-              <SwiperSlide>
-                <div className="bg-blue-300 flex items-center justify-center h-full">
-                  Banner 3
-                </div>
-              </SwiperSlide>
-              <SwiperSlide>
-                <div className="bg-blue-300 flex items-center justify-center h-full">
-                  Banner 4
-                </div>
-              </SwiperSlide>
-              <SwiperSlide>
-                <div className="bg-blue-300 flex items-center justify-center h-full">
-                  Banner 5
-                </div>
-              </SwiperSlide>
-            </Swiper>
-            <style jsx>{`
-              :global(.swiper-pagination-bullet) {
-                @apply w-3 h-3 mx-5 bg-white rounded-full opacity-70;
-              }
-              :global(.swiper-pagination-bullet-active) {
-                @apply bg-red-500 opacity-100 scale-110;
-              }
-            `}</style>
-
-            {/* Overlay chevrons */}
-            <button
-              className="group custom-prev absolute top-1/2 left-1 -translate-y-1/2 p-2 bg-gray/70 shadow z-20 hover:bg-gray-200"
-              aria-label="Previous slide"
-            >
-              <ChevronLeftIcon className="h-6 w-6 text-white group-hover:text-black" />
-            </button>
-
-            <button
-              className="group custom-next absolute top-1/2 right-1 -translate-y-1/2 p-2 bg-gray/70 shadow z-20 hover:bg-gray-200"
-              aria-label="Next slide"
-            >
-              <ChevronRightIcon className="h-6 w-6 text-white group-hover:text-black" />
-            </button>
-          </div>
-        </div>{" "}
-        <div className="bg-gradient-to-r from-blue-600 to-red-600 flex items-center justify-center space-x-4 text-white py-4">
-          <Gift className="w-6 h-6 animate-bounce" />
-          <span className="font-bold text-lg">MEGA SALE</span>
-          <span className="text-blue-200">•</span>
-          <span>Free Shipping on Orders Over ₱50,000</span>
-          <span className="text-blue-200">•</span>
-          <span>2-Year Warranty Included</span>
-        </div>
-      </div>
-
       {/* Categories Section */}
-      <div className="max-w-7xl mx-auto p-4">
-        <div className="bg-white border-b border-gray-200">
-          <h2 className="text-lg font-bold text-blue-400 uppercase p-5 mb-2 border-b-2 border-blue-500">
+      < section className="py-20" >
+        <div className="mx-24 px-4 sm:px-6 lg:px-8 relative z-10">
+          <h2 className="bg-white border-b border-gray-200 text-lg font-bold text-gray-500 text-center uppercase p-5 mb-2 rounded-t-xl">
             Categories
           </h2>
 
-          <Carousel itemsPerPage={10} rows={1}>
+          <Carousel itemsPerPage={10} rows={2} className="m-5">
             {categories.map((category, index) => (
               <CategoryCard
                 key={index}
@@ -873,19 +778,27 @@ export default function HomePage({ params }: { params: { id: string } }) {
             ))}
           </Carousel>
         </div>
-      </div>
+      </section >
+
+      {/* Product Section */}
+      < section className="relative py-2 bg-gradient-to-br from-slate-200 via-blue-100 to-orange-100 text-white overflow-hidden" >
+        {/* Blurred Background Rows */}
+        <AutoScrollCard direction="right" products={row1Products} />
+        <AutoScrollCard direction="left" products={row2Products} />
+        <AutoScrollCard direction="right" products={row3Products} />
+      </section >
 
       {/* Top Products Section */}
-      <div className="max-w-7xl mx-auto p-4">
-        <div className="bg-white border-b border-gray-200">
-          <h2 className="text-lg font-bold text-blue-400 uppercase p-5 mb-2 border-b-2 border-blue-500">
+      < section className="py-20" >
+        <div className="mx-24 px-4 sm:px-6 lg:px-8 relative z-10">
+          <h2 className="bg-white border-b border-gray-200 text-lg font-bold text-gray-500 text-center uppercase p-5 mb-2 rounded-t-xl">
             Top Products
           </h2>
           <Carousel itemsPerPage={1} rows={1}>
             {Object.entries(topProductsByCategory).map(
               ([categoryName, products]) => (
                 <div key={categoryName} className="space-y-4">
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                     {products.map((product) => (
                       <TopProductCard
                         key={product.id}
@@ -901,49 +814,49 @@ export default function HomePage({ params }: { params: { id: string } }) {
             )}
           </Carousel>
         </div>
-      </div>
-
+      </section >
       {/* Daily Discover Section */}
 
-      <div className="max-w-7xl mx-auto p-4">
-        <div className="bg-white">
-          <h2 className="text-lg text-center font-bold text-blue-400 uppercase p-5 mb-2 border-b-2 border-blue-500 uppercase">
+
+      < section className="py-20" >
+        <div className="mx-24 px-4 sm:px-6 lg:px-8 relative z-10">
+          <h2 className="bg-white border-b border-gray-200 text-lg font-bold text-gray-500 text-center uppercase p-5 mb-2 rounded-t-xl">
             Daily Discover
           </h2>
-        </div>
 
-        <div className="min-h-full text-card-foreground h-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-1 gap-3 my-5">
-            {/* You May Also Like Section */}
-            {allProducts.length > 0 ? (
-              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-5 gap-4">
-                {allProducts.map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    onClick={() => {
-                      window.location.href = `/products/top/${product.id}`;
-                    }}
-                  />
-                ))}
-              </div>
-            ) : (
-              <div className="text-center py-12">
-                <p className="text-gray-500 text-lg mb-2">No products found</p>
-                <p className="text-gray-400 text-sm">
-                  Try adjusting your filters
-                </p>
-              </div>
-            )}
+          <div className="min-h-full text-card-foreground h-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-1 gap-3 my-5">
+              {/* You May Also Like Section */}
+              {allProducts.length > 0 ? (
+                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-5 gap-4">
+                  {allProducts.map((product) => (
+                    <ProductCard
+                      key={product.id}
+                      product={product}
+                      onClick={() => {
+                        window.location.href = `/products/top/${product.id}`;
+                      }}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-12">
+                  <p className="text-gray-500 text-lg mb-2">No products found</p>
+                  <p className="text-gray-400 text-sm">
+                    Try adjusting your filters
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
-      </div>
+      </section >
 
-      <section className="py-10 bg-white">
+      <section className="py-20">
         <div className="max-w-7xl mx-auto my-8">
           {/* Login / See More card: shows appropriate action based on login state */}
           <div className="mt-8 w-full flex justify-center">
-            <div className="w-full max-w-3xl rounded-lg p-4 bg-gradient-to-r from-blue-600 to-violet-600 text-white border border-transparent shadow-md">
+            <div className="w-44 max-w-3xl rounded-lg p-4 bg-gradient-to-r from-gray-200 to-gray-300 text-white ">
               {isLoggedIn ? (
                 <Link
                   href="/products"
@@ -965,6 +878,6 @@ export default function HomePage({ params }: { params: { id: string } }) {
       </section>
 
       <Footer />
-    </div>
+    </div >
   );
 }

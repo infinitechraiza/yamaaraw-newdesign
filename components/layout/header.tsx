@@ -464,9 +464,9 @@ export default function Header() {
     <>
       <ToastIntegration />
       {/* <header className="bg-white shadow-sm border-b sticky top-0 z-50 backdrop-blur-md"> */}
-      <header className="bg-gradient-to-l from-blue-700 to-violet-700 shadow-sm border-b sticky top-0 z-50 backdrop-blur-md">
+      <header className="bg-white shadow-sm border-b sticky top-0 z-50 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-3 sm:px-5 lg:px-7">
-          <div className="flex flex-row justify-between items-center h-24 sm:h-32">
+          <div className="flex flex-row justify-between items-center h-24 sm:h-24">
             {/* Enhanced Logo */}
             <Link
               href="/"
@@ -482,10 +482,10 @@ export default function Header() {
                 />
               </div>
               <div className="flex flex-col">
-                <span className="font-bold text-lg sm:text-2xl lg:text-3xl bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent leading-tight">
+                <span className="font-bold text-lg sm:text-2xl lg:text-3xl bg-gradient-to-r from-blue-600 to-violet-700 bg-clip-text text-transparent leading-tight">
                   YAMAARAW
                 </span>
-                <span className="text-xs sm:text-sm text-white font-medium tracking-wide hidden sm:block">
+                <span className="text-sm sm:text-md text-foreground font-bold tracking-wide hidden sm:block">
                   Electric Vehicles
                 </span>
               </div>
@@ -793,7 +793,7 @@ export default function Header() {
                                   >
                                     <div className="w-14 h-14 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0 border">
                                       {product.images &&
-                                      product.images.length > 0 ? (
+                                        product.images.length > 0 ? (
                                         <Image
                                           src={
                                             product.images[0] ||
@@ -828,11 +828,10 @@ export default function Header() {
                                         </Badge>
                                       )}
                                       <Badge
-                                        className={`text-xs font-medium ${
-                                          product.in_stock
-                                            ? "bg-green-500 text-white"
-                                            : "bg-red-500 text-white"
-                                        }`}
+                                        className={`text-xs font-medium ${product.in_stock
+                                          ? "bg-green-500 text-white"
+                                          : "bg-red-500 text-white"
+                                          }`}
                                       >
                                         {product.in_stock
                                           ? "In Stock"
@@ -891,29 +890,29 @@ export default function Header() {
                   <>
                     <Link
                       href="/products"
-                      className={`${linkBase} ${productsActive ? "text-violet-300" : "text-white hover:text-violet-300"}`}
+                      className={`${linkBase} ${productsActive ? "text-green-300" : "text-gray-400 hover:text-green-00"}`}
                     >
                       Products
                       <span
-                        className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-blue-400 to-violet-400 transition-all duration-300 ${productsActive ? "w-full" : "w-0 group-hover:w-full"}`}
+                        className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-green-400 to-green-200 transition-all duration-300 ${productsActive ? "w-full" : "w-0 group-hover:w-full"}`}
                       ></span>
                     </Link>
                     <Link
                       href="/about"
-                      className={`${linkBase} ${aboutActive ? "text-violet-300" : "text-white hover:text-violet-300"}`}
+                      className={`${linkBase} ${aboutActive ? "text-green-300" : "text-gray-400 hover:text-green-00"}`}
                     >
                       About Us
                       <span
-                        className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-blue-400 to-violet-400 transition-all duration-300 ${aboutActive ? "w-full" : "w-0 group-hover:w-full"}`}
+                        className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-green-400 to-green-200 transition-all duration-300 ${aboutActive ? "w-full" : "w-0 group-hover:w-full"}`}
                       ></span>
                     </Link>
                     <Link
                       href="/contact"
-                      className={`${linkBase} ${contactActive ? "text-violet-300" : "text-white hover:text-violet-300"}`}
+                      className={`${linkBase} ${contactActive ? "text-green-300" : "text-gray-400  hover:text-green-00"}`}
                     >
                       Contact
                       <span
-                        className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-blue-400 to-violet-400 transition-all duration-300 ${contactActive ? "w-full" : "w-0 group-hover:w-full"}`}
+                        className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-green-400 to-green-200 transition-all duration-300 ${contactActive ? "w-full" : "w-0 group-hover:w-full"}`}
                       ></span>
                     </Link>
                   </>
@@ -932,7 +931,7 @@ export default function Header() {
                   aria-label={`Shopping cart with ${cartCount} ${cartCount === 1 ? "item" : "items"}`}
                 >
                   <div className="relative">
-                    <ShoppingCart className="w-5 h-5 text-white group-hover:text-yellow-700 transition-colors" />
+                    <ShoppingCart className="w-5 h-5 text-yellow-700 group-hover:text-yellow-700 transition-colors" />
                     <div className="absolute inset-0 opacity-0 transition-opacity duration-300">
                       <Zap className="w-5 h-5 text-yellow-500" />
                     </div>
@@ -959,7 +958,7 @@ export default function Header() {
                   title="Install YAMAARAW App"
                   aria-label="Install YAMAARAW mobile app"
                 >
-                  <Download className="w-5 h-5 text-white group-hover:text-purple-700 group-hover:scale-110 transition-all" />
+                  <Download className="w-5 h-5 text-purple-700 group-hover:text-purple-700 group-hover:scale-110 transition-all" />
                   <span className="sr-only">Install App</span>
                 </Button>
               )}
@@ -989,7 +988,7 @@ export default function Header() {
                       {user.name.charAt(0).toUpperCase()}
                     </div>
                   ) : (
-                    <User className="w-5 h-5 text-white group-hover:text-blue-600 transition-colors" />
+                    <User className="w-5 h-5 text-blue-600 group-hover:text-blue-600 transition-colors" />
                   )}
                   <span className="sr-only">User Menu</span>
                 </Button>
@@ -1048,7 +1047,7 @@ export default function Header() {
                       <>
                         <Link
                           href="/login"
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-orange-50 hover:text-blue-600 transition-colors"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-600 transition-colors"
                           onClick={() => setIsUserMenuOpen(false)}
                           role="menuitem"
                         >
@@ -1056,7 +1055,7 @@ export default function Header() {
                         </Link>
                         <Link
                           href="/register"
-                          className="block px-4 py-2 text-sm text-blue-600 hover:bg-orange-50 transition-colors font-medium"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-600 transition-colors"  
                           onClick={() => setIsUserMenuOpen(false)}
                           role="menuitem"
                         >
@@ -1080,9 +1079,9 @@ export default function Header() {
                 aria-controls="mobile-menu"
               >
                 {isMenuOpen ? (
-                  <X className="w-5 h-5 text-white group-hover:text-blue-600 transition-colors" />
+                  <X className="w-5 h-5 text-blue-600  group-hover:text-blue-600 transition-colors" />
                 ) : (
-                  <Menu className="w-5 h-5 text-white group-hover:text-blue-600 transition-colors" />
+                  <Menu className="w-5 h-5 text-blue-600  group-hover:text-blue-600 transition-colors" />
                 )}
                 <span className="sr-only">Toggle Menu</span>
               </Button>
@@ -1149,7 +1148,7 @@ export default function Header() {
                         </div>
                       )}
                     </div>
-                    
+
                     <Button
                       onClick={() => handleSearch(undefined, true)}
                       className="h-12 px-3 rounded-r-none rounded-l-none rounded-r-xl bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700"
@@ -1164,155 +1163,155 @@ export default function Header() {
 
 
 
-                    {/* Mobile Filters */}
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button
-                          variant="outline"
-                          className="w-full mt-2 h-10 rounded-full border-2 border-gray-200 hover:border-orange-500 relative"
-                          aria-label={`Mobile search filters${hasActiveFilters ? " (active)" : ""}`}
-                          aria-expanded={false}
-                          aria-haspopup="dialog"
-                        >
-                          <SlidersHorizontal className="w-4 h-4 mr-2" />
-                          Filters
-                          {hasActiveFilters && (
-                            <Badge className="absolute -top-2 -right-2 w-5 h-5 p-0 flex items-center justify-center bg-orange-600 text-white text-xs">
-                              !
-                            </Badge>
-                          )}
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent
-                        className="w-80 p-4"
-                        align="center"
-                        role="dialog"
-                        aria-label="Mobile search filters"
+                  {/* Mobile Filters */}
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className="w-full mt-2 h-10 rounded-full border-2 border-gray-200 hover:border-orange-500 relative"
+                        aria-label={`Mobile search filters${hasActiveFilters ? " (active)" : ""}`}
+                        aria-expanded={false}
+                        aria-haspopup="dialog"
                       >
-                        <div className="space-y-4">
-                          <div className="flex items-center justify-between">
-                            <h3 className="font-semibold text-lg">Filters</h3>
-                            {hasActiveFilters && (
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={clearFilters}
-                                className="text-blue-600 hover:text-blue-700"
-                                aria-label="Clear all mobile filters"
+                        <SlidersHorizontal className="w-4 h-4 mr-2" />
+                        Filters
+                        {hasActiveFilters && (
+                          <Badge className="absolute -top-2 -right-2 w-5 h-5 p-0 flex items-center justify-center bg-orange-600 text-white text-xs">
+                            !
+                          </Badge>
+                        )}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent
+                      className="w-80 p-4"
+                      align="center"
+                      role="dialog"
+                      aria-label="Mobile search filters"
+                    >
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                          <h3 className="font-semibold text-lg">Filters</h3>
+                          {hasActiveFilters && (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={clearFilters}
+                              className="text-blue-600 hover:text-blue-700"
+                              aria-label="Clear all mobile filters"
+                            >
+                              Clear All
+                            </Button>
+                          )}
+                        </div>
+
+                        {/* Categories */}
+                        <div className="space-y-2">
+                          <Label className="text-sm font-medium">
+                            Categories
+                          </Label>
+                          <div className="space-y-2 max-h-32 overflow-y-auto">
+                            {availableCategories.map((category) => (
+                              <div
+                                key={category}
+                                className="flex items-center space-x-2"
                               >
-                                Clear All
-                              </Button>
-                            )}
-                          </div>
-
-                          {/* Categories */}
-                          <div className="space-y-2">
-                            <Label className="text-sm font-medium">
-                              Categories
-                            </Label>
-                            <div className="space-y-2 max-h-32 overflow-y-auto">
-                              {availableCategories.map((category) => (
-                                <div
-                                  key={category}
-                                  className="flex items-center space-x-2"
+                                <Checkbox
+                                  id={`mobile-category-${category}`}
+                                  checked={filters.categories.includes(
+                                    category
+                                  )}
+                                  onCheckedChange={(checked) => {
+                                    if (checked) {
+                                      updateFilters("categories", [
+                                        ...filters.categories,
+                                        category,
+                                      ]);
+                                    } else {
+                                      updateFilters(
+                                        "categories",
+                                        filters.categories.filter(
+                                          (c) => c !== category
+                                        )
+                                      );
+                                    }
+                                  }}
+                                  aria-describedby={`mobile-category-${category}-label`}
+                                />
+                                <Label
+                                  htmlFor={`mobile-category-${category}`}
+                                  id={`mobile-category-${category}-label`}
+                                  className="text-sm cursor-pointer"
                                 >
-                                  <Checkbox
-                                    id={`mobile-category-${category}`}
-                                    checked={filters.categories.includes(
-                                      category
-                                    )}
-                                    onCheckedChange={(checked) => {
-                                      if (checked) {
-                                        updateFilters("categories", [
-                                          ...filters.categories,
-                                          category,
-                                        ]);
-                                      } else {
-                                        updateFilters(
-                                          "categories",
-                                          filters.categories.filter(
-                                            (c) => c !== category
-                                          )
-                                        );
-                                      }
-                                    }}
-                                    aria-describedby={`mobile-category-${category}-label`}
-                                  />
-                                  <Label
-                                    htmlFor={`mobile-category-${category}`}
-                                    id={`mobile-category-${category}-label`}
-                                    className="text-sm cursor-pointer"
-                                  >
-                                    {category}
-                                  </Label>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-
-                          {/* Price Range */}
-                          <div className="space-y-2">
-                            <Label className="text-sm font-medium">
-                              Price Range: ₱
-                              {filters.priceRange[0].toLocaleString()} - ₱
-                              {filters.priceRange[1].toLocaleString()}
-                            </Label>
-                            <Slider
-                              value={filters.priceRange}
-                              onValueChange={(value) =>
-                                updateFilters(
-                                  "priceRange",
-                                  value as [number, number]
-                                )
-                              }
-                              max={1000000}
-                              min={0}
-                              step={1000}
-                              className="w-full"
-                              aria-label="Mobile price range filter"
-                            />
-                          </div>
-
-                          {/* Stock Status */}
-                          <div className="flex items-center space-x-2">
-                            <Checkbox
-                              id="mobile-in-stock"
-                              checked={filters.inStock}
-                              onCheckedChange={(checked) =>
-                                updateFilters("inStock", checked)
-                              }
-                              aria-describedby="mobile-in-stock-label"
-                            />
-                            <Label
-                              htmlFor="mobile-in-stock"
-                              id="mobile-in-stock-label"
-                              className="text-sm cursor-pointer"
-                            >
-                              In Stock Only
-                            </Label>
-                          </div>
-
-                          {/* Featured */}
-                          <div className="flex items-center space-x-2">
-                            <Checkbox
-                              id="mobile-featured"
-                              checked={filters.featured}
-                              onCheckedChange={(checked) =>
-                                updateFilters("featured", checked)
-                              }
-                              aria-describedby="mobile-featured-label"
-                            />
-                            <Label
-                              htmlFor="mobile-featured"
-                              id="mobile-featured-label"
-                              className="text-sm cursor-pointer"
-                            >
-                              Featured Products Only
-                            </Label>
+                                  {category}
+                                </Label>
+                              </div>
+                            ))}
                           </div>
                         </div>
-                      </PopoverContent>
-                    </Popover>
+
+                        {/* Price Range */}
+                        <div className="space-y-2">
+                          <Label className="text-sm font-medium">
+                            Price Range: ₱
+                            {filters.priceRange[0].toLocaleString()} - ₱
+                            {filters.priceRange[1].toLocaleString()}
+                          </Label>
+                          <Slider
+                            value={filters.priceRange}
+                            onValueChange={(value) =>
+                              updateFilters(
+                                "priceRange",
+                                value as [number, number]
+                              )
+                            }
+                            max={1000000}
+                            min={0}
+                            step={1000}
+                            className="w-full"
+                            aria-label="Mobile price range filter"
+                          />
+                        </div>
+
+                        {/* Stock Status */}
+                        <div className="flex items-center space-x-2">
+                          <Checkbox
+                            id="mobile-in-stock"
+                            checked={filters.inStock}
+                            onCheckedChange={(checked) =>
+                              updateFilters("inStock", checked)
+                            }
+                            aria-describedby="mobile-in-stock-label"
+                          />
+                          <Label
+                            htmlFor="mobile-in-stock"
+                            id="mobile-in-stock-label"
+                            className="text-sm cursor-pointer"
+                          >
+                            In Stock Only
+                          </Label>
+                        </div>
+
+                        {/* Featured */}
+                        <div className="flex items-center space-x-2">
+                          <Checkbox
+                            id="mobile-featured"
+                            checked={filters.featured}
+                            onCheckedChange={(checked) =>
+                              updateFilters("featured", checked)
+                            }
+                            aria-describedby="mobile-featured-label"
+                          />
+                          <Label
+                            htmlFor="mobile-featured"
+                            id="mobile-featured-label"
+                            className="text-sm cursor-pointer"
+                          >
+                            Featured Products Only
+                          </Label>
+                        </div>
+                      </div>
+                    </PopoverContent>
+                  </Popover>
 
 
 
@@ -1415,7 +1414,7 @@ export default function Header() {
                                       >
                                         <div className="w-10 h-10 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0 border">
                                           {product.images &&
-                                          product.images.length > 0 ? (
+                                            product.images.length > 0 ? (
                                             <Image
                                               src={
                                                 product.images[0] ||
@@ -1448,11 +1447,10 @@ export default function Header() {
                                             </Badge>
                                           )}
                                           <Badge
-                                            className={`text-xs ${
-                                              product.in_stock
-                                                ? "bg-green-500 text-white"
-                                                : "bg-red-500 text-white"
-                                            }`}
+                                            className={`text-xs ${product.in_stock
+                                              ? "bg-green-500 text-white"
+                                              : "bg-red-500 text-white"
+                                              }`}
                                           >
                                             {product.in_stock
                                               ? "In Stock"
@@ -1513,23 +1511,24 @@ export default function Header() {
                       pathname?.startsWith("/contact");
                     return (
                       <>
+
                         <Link
                           href="/products"
-                          className={`block ${productsActive ? "text-violet-300" : "text-white hover:text-violet-300"} font-medium py-2 transition-colors`}
+                          className={`block ${productsActive ? "text-green-300" : "bg-clip-text text-transparent bg-gradient-to-r text-blue-500 from-blue-600 to-violet-600 hover:text-violet-300"} font-medium py-2 transition-colors`}
                           onClick={() => setIsMenuOpen(false)}
                         >
                           Products
                         </Link>
                         <Link
                           href="/about"
-                          className={`block ${aboutActive ? "text-violet-300" : "text-white hover:text-violet-300"} font-medium py-2 transition-colors`}
+                          className={`block ${aboutActive ? "text-violet-300" : "bg-clip-text text-transparent bg-gradient-to-r text-blue-500 from-blue-600 to-violet-600 hover:text-violet-300"} font-medium py-2 transition-colors`}
                           onClick={() => setIsMenuOpen(false)}
                         >
                           About Us
                         </Link>
                         <Link
                           href="/contact"
-                          className={`block ${contactActive ? "text-violet-300" : "text-white hover:text-violet-300"} font-medium py-2 transition-colors`}
+                          className={`block ${contactActive ? "text-gray-300" : "bg-clip-text text-transparent bg-gradient-to-r text-blue-500 from-blue-600 to-violet-600 hover:text-violet-300"} font-medium py-2 transition-colors`}
                           onClick={() => setIsMenuOpen(false)}
                         >
                           Contact
@@ -1593,7 +1592,7 @@ export default function Header() {
                     <>
                       <Link
                         href="/login"
-                        className="block bottom-0 left-0 bg-white w-32 p-5 m-2 rounded-sm text-center text-gray-700 hover:text-violet-700 font-medium py-2 transition-colors"
+                        className="block bottom-0 left-0 bg-white w-32 m-2 rounded-sm text-center text-gray-700 hover:text-violet-700 font-medium py-2 transition-colors"
                         onClick={() => setIsMenuOpen(false)}
                       >
                         Sign In

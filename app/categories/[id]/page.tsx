@@ -7,8 +7,8 @@ import ETrikeLoader from "@/components/ui/etrike-loader";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import FilterBar from "@/components/product/FilterBar";
-import FilterSidebar, { FilterState } from "@/components/product/FilterSidebar";
+import FilterBar from "@/components/product/filter-bar";
+import FilterSidebar, { FilterState } from "@/components/product/filter-sidebar";
 import ProductCard, { Product } from "@/components/product/ProductCard";
 import Breadcrumb from "@/components/layout/Breadcrumb";
 

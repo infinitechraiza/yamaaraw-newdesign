@@ -6,318 +6,19 @@ import { ArrowLeft, Star } from "lucide-react";
 import { Product } from "@/components/product/ProductCard";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
-import TopProductCard from "@/components/product/TopProductCard";
+import TopProductCard from "@/components/product/top-product-card";
+import { topProductsByCategory } from "@/components/product/top-product-card";
 
 import {
   Tabs,
   TabsList,
   TabsTrigger,
   TabsContent,
-} from "@/components/product/Tabs";
+} from "@/components/product/tabs";
 
-// Top Products data by category
-const topProductsByCategory = {
-  cctv: [
-    {
-      id: 101,
-      name: "1080P Camera Hidden Super Mini CCTV Wireless 140 Degree Wide",
-      price: 142,
-      monthly_sales: "Sold 8259",
-      image:
-        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-    },
-    {
-      id: 102,
-      name: "V380 Pro BULB 2.4G/5G PTZ Camera Auto Tracking Night",
-      price: 299,
-      monthly_sales: "Sold 6721",
-      image:
-        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-    },
-    {
-      id: 103,
-      name: "Bulb Dual Lens CCTV Camera 8MP+8MP V380 NO Wifi Neede",
-      price: 365,
-      monthly_sales: "Sold 5526",
-      image:
-        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-    },
-    {
-      id: 104,
-      name: "TP-Link Tapo C200C Pan/Tilt Home Security Wi-Fi",
-      price: 809,
-      monthly_sales: "Sold 4360",
-      image:
-        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-    },
-    {
-      id: 105,
-      name: "TP-Link Official Store | Tapo C200C | Indoor | Security CCTV",
-      price: 840,
-      monthly_sales: "Sold 3910",
-      image:
-        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-    },
-    {
-      id: 106,
-      name: "V380 Pro CCTV Camera 8MP 5G",
-      price: 380,
-      monthly_sales: "Sold 8259",
-      image:
-        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-    },
-  ],
-  flipflop: [
-    {
-      id: 201,
-      name: "Comfortable Rubber Flipflop Sandals",
-      price: 450,
-      monthly_sales: "Sold 15K+",
-      image:
-        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-    },
-    {
-      id: 202,
-      name: "Beach Style Summer Flipflop",
-      price: 320,
-      monthly_sales: "Sold 22K+",
-      image:
-        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-    },
-    {
-      id: 203,
-      name: "Anti-Slip Home Flipflop Slippers",
-      price: 280,
-      monthly_sales: "Sold 18K+",
-      image:
-        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-    },
-    {
-      id: 204,
-      name: "Outdoor Walking Flipflop Sandals",
-      price: 520,
-      monthly_sales: "Sold 12K+",
-      image:
-        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-    },
-    {
-      id: 205,
-      name: "Stylish Colorful Flipflop Collection",
-      price: 390,
-      monthly_sales: "Sold 25K+",
-      image:
-        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-    },
-    {
-      id: 206,
-      name: "Premium Leather Flipflop Sandals",
-      price: 780,
-      monthly_sales: "Sold 8K+",
-      image:
-        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-    },
-  ],
-  perfume: [
-    {
-      id: 301,
-      name: "Oil Based Inspired Perfume Long Lasting",
-      price: 890,
-      monthly_sales: "Monthly Sales 145K+",
-      image:
-        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-    },
-    {
-      id: 302,
-      name: "Premium Designer Perfume Collection",
-      price: 1200,
-      monthly_sales: "Monthly Sales 98K+",
-      image:
-        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-    },
-    {
-      id: 303,
-      name: "Luxury Fragrance Oil Based Perfume",
-      price: 950,
-      monthly_sales: "Monthly Sales 112K+",
-      image:
-        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-    },
-    {
-      id: 304,
-      name: "Floral Scent Long Lasting Perfume",
-      price: 750,
-      monthly_sales: "Monthly Sales 87K+",
-      image:
-        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-    },
-    {
-      id: 305,
-      name: "Masculine Woody Perfume Inspired",
-      price: 1100,
-      monthly_sales: "Monthly Sales 65K+",
-      image:
-        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-    },
-    {
-      id: 306,
-      name: "Fresh Citrus Perfume Oil Based",
-      price: 820,
-      monthly_sales: "Monthly Sales 73K+",
-      image:
-        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-    },
-  ],
-  powerbank: [
-    {
-      id: 401,
-      name: "20000mAh Fast Charging Powerbank",
-      price: 1450,
-      monthly_sales: "Sold 45K+",
-      image:
-        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-    },
-    {
-      id: 402,
-      name: "Slim Portable 10000mAh Powerbank",
-      price: 890,
-      monthly_sales: "Sold 62K+",
-      image:
-        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-    },
-    {
-      id: 403,
-      name: "Solar Wireless Charging Powerbank",
-      price: 2100,
-      monthly_sales: "Sold 28K+",
-      image:
-        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-    },
-    {
-      id: 404,
-      name: "Mini Compact 5000mAh Powerbank",
-      price: 650,
-      monthly_sales: "Sold 78K+",
-      image:
-        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-    },
-    {
-      id: 405,
-      name: "Ultra Fast 30000mAh Powerbank",
-      price: 1890,
-      monthly_sales: "Sold 35K+",
-      image:
-        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-    },
-    {
-      id: 406,
-      name: "LED Display Powerbank 15000mAh",
-      price: 1250,
-      monthly_sales: "Sold 41K+",
-      image:
-        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-    },
-  ],
-  sandals: [
-    {
-      id: 501,
-      name: "Fashionable Sandals For Women",
-      price: 680,
-      monthly_sales: "Sold 52K+",
-      image:
-        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-    },
-    {
-      id: 502,
-      name: "Elegant Heel Sandals Designer",
-      price: 1200,
-      monthly_sales: "Sold 38K+",
-      image:
-        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-    },
-    {
-      id: 503,
-      name: "Casual Flat Sandals Comfortable",
-      price: 450,
-      monthly_sales: "Sold 67K+",
-      image:
-        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-    },
-    {
-      id: 504,
-      name: "Platform Sandals Trendy Style",
-      price: 890,
-      monthly_sales: "Sold 44K+",
-      image:
-        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-    },
-    {
-      id: 505,
-      name: "Strappy High Heel Sandals",
-      price: 1350,
-      monthly_sales: "Sold 29K+",
-      image:
-        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-    },
-    {
-      id: 506,
-      name: "Wedge Sandals Comfortable Walk",
-      price: 950,
-      monthly_sales: "Sold 48K+",
-      image:
-        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-    },
-  ],
-  solar: [
-    {
-      id: 601,
-      name: "Outdoor Solar Light Waterproof",
-      price: 3200,
-      monthly_sales: "Monthly Sales 70K+",
-      image:
-        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-    },
-    {
-      id: 602,
-      name: "Garden Solar LED Light Set",
-      price: 2800,
-      monthly_sales: "Sold 55K+",
-      image:
-        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-    },
-    {
-      id: 603,
-      name: "Motion Sensor Solar Light Security",
-      price: 3500,
-      monthly_sales: "Sold 42K+",
-      image:
-        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-    },
-    {
-      id: 604,
-      name: "Decorative Solar String Lights",
-      price: 1900,
-      monthly_sales: "Sold 88K+",
-      image:
-        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-    },
-    {
-      id: 605,
-      name: "Pathway Solar Stake Lights",
-      price: 2400,
-      monthly_sales: "Sold 61K+",
-      image:
-        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-    },
-    {
-      id: 606,
-      name: "Bright Solar Flood Light Outdoor",
-      price: 4200,
-      monthly_sales: "Sold 33K+",
-      image:
-        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-    },
-  ],
-};
+
+
+const cctvProducts = topProductsByCategory.cctv;
 
 // Mock product data - in a real app this would come from an API
 const allProducts: Product[] = [
@@ -499,10 +200,10 @@ export default function SimilarProducts() {
 
   const discountPercent = originalProduct?.original_price
     ? Math.round(
-        ((originalProduct.original_price - originalProduct.price) /
-          originalProduct.original_price) *
-          100
-      )
+      ((originalProduct.original_price - originalProduct.price) /
+        originalProduct.original_price) *
+      100
+    )
     : 0;
 
   return (
@@ -525,47 +226,47 @@ export default function SimilarProducts() {
       {/* Top Products Section */}
       <div className="max-w-7xl mx-auto p-4">
         <div className="bg-white">
-          <h2 className="text-lg text-center font-bold text-blue-400 uppercase border-b-2 border-gray-200 p-5 mb-2 uppercase">
+          <h2 className="bg-white border-b border-blue-200 text-lg font-bold text-blue-400 text-center uppercase p-5 mb-2 rounded-t-xl">
             Top Products
           </h2>
         </div>
 
         <Tabs defaultValue="cctv">
           <div className="bg-white mb-6 overflow-x-auto">
-            <TabsList className="inline-flex w-full justify-center gap-1 border-b-2 border-blue-500 ">
+            <TabsList className="inline-flex w-full justify-center gap-1 e border-b-2 border-gray-200 ">
               <TabsTrigger
                 value="cctv"
-                className="px-4 py-2 text-sm whitespace-nowrap data-[state=active]:text-blue-500 data-[state=active]:border-b-2 data-[state=active]:border-blue-500"
+                className="px-4 py-2 text-sm whitespace-nowrap data-[state=active]:text-blue-500 data-[state=active]:border-b-2 data-[state=active]:border-blue-200"
               >
                 CCTV Wifi
               </TabsTrigger>
               <TabsTrigger
                 value="flipflop"
-                className="px-4 py-2 text-sm whitespace-nowrap data-[state=active]:text-blue-500 data-[state=active]:border-b-2 data-[state=active]:border-blue-500"
+                className="px-4 py-2 text-sm whitespace-nowrap data-[state=active]:text-blue-500 data-[state=active]:border-b-2 data-[state=active]:border-blue-200"
               >
                 Flipflop
               </TabsTrigger>
               <TabsTrigger
                 value="perfume"
-                className="px-4 py-2 text-sm whitespace-nowrap data-[state=active]:text-blue-500 data-[state=active]:border-b-2 data-[state=active]:border-blue-500"
+                className="px-4 py-2 text-sm whitespace-nowrap data-[state=active]:text-blue-500 data-[state=active]:border-b-2 data-[state=active]:border-blue-200"
               >
                 Oil Based Inspired Perfume
               </TabsTrigger>
               <TabsTrigger
                 value="powerbank"
-                className="px-4 py-2 text-sm whitespace-nowrap data-[state=active]:text-blue-500 data-[state=active]:border-b-2 data-[state=active]:border-blue-500"
+                className="px-4 py-2 text-sm whitespace-nowrap data-[state=active]:text-blue-500 data-[state=active]:border-b-2 data-[state=active]:border-blue-200"
               >
                 Powerbank
               </TabsTrigger>
               <TabsTrigger
                 value="sandals"
-                className="px-4 py-2 text-sm whitespace-nowrap data-[state=active]:text-blue-500 data-[state=active]:border-b-2 data-[state=active]:border-blue-500"
+                className="px-4 py-2 text-sm whitespace-nowrap data-[state=active]:text-blue-500 data-[state=active]:border-b-2 data-[state=active]:border-blue-200"
               >
                 Fashionable Sandals
               </TabsTrigger>
               <TabsTrigger
                 value="solar"
-                className="px-4 py-2 text-sm whitespace-nowrap data-[state=active]:text-blue-500 data-[state=active]:border-b-2 data-[state=active]:border-blue-500"
+                className="px-4 py-2 text-sm whitespace-nowrap data-[state=active]:text-blue-500 data-[state=active]:border-b-2 data-[state=active]:border-blue-200"
               >
                 Outdoor Solar Light
               </TabsTrigger>
@@ -577,12 +278,12 @@ export default function SimilarProducts() {
 
           {Object.entries(topProductsByCategory).map(([category, products]) => (
             <TabsContent key={category} value={category}>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                 {products.map((product) => (
                   <TopProductCard
                     key={product.id}
                     product={product}
-                    // onClick={() => navigate(`/product/${product.id}`)}
+                  // onClick={() => navigate(`/product/${product.id}`)}
                   />
                 ))}
               </div>

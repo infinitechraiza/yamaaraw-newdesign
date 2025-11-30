@@ -4,7 +4,7 @@ import { useState, useMemo, useRef } from "react";
 import { useParams } from "react-router";
 import { ArrowLeft, Star } from "lucide-react";
 import ProductCard, { Product } from "@/components/product/ProductCard";
-import FilterBar from "@/components/product/FilterBar";
+import FilterBar from "@/components/product/filter-bar";
 import Badge from "@/components/product/Badge";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
