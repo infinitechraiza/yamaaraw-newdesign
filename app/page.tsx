@@ -54,6 +54,13 @@ interface Testimonial {
 }
 
 export default function HomePage({ params }: { params: { id: string } }) {
+  // start with 1 row visible
+  const [visibleRows, setVisibleRows] = useState(1);
+
+  // each row = 5 products (since md:grid-cols-5)
+  const productsPerRow = 2;
+  const visibleCount = visibleRows * productsPerRow;
+
   // Top Products data by category
   const topProductsByCategory = {
     cctv: [
@@ -645,6 +652,8 @@ export default function HomePage({ params }: { params: { id: string } }) {
             <ChevronRightIcon className="h-6 w-6 text-white group-hover:text-black" />
           </button>
         </div>
+
+        {/* Add Banner For Promos */}
         <div className="bg-gradient-to-r from-orange-600 to-red-600 flex items-center justify-center space-x-4 text-white py-4">
           <Gift className="w-6 h-6 animate-bounce" />
           <span className="font-bold text-lg">MEGA SALE</span>
@@ -662,7 +671,7 @@ export default function HomePage({ params }: { params: { id: string } }) {
             Categories
           </h2>
 
-          <Carousel itemsPerPage={10} rows={2} className="m-5">
+          <Carousel itemsPerPage={8} rows={2} className="m-5">
             {categories.map((category, index) => (
               <CategoryCard
                 key={index}
@@ -722,10 +731,9 @@ export default function HomePage({ params }: { params: { id: string } }) {
 
           <div className="min-h-full text-card-foreground h-auto">
             <div className="grid grid-cols-1 lg:grid-cols-1 gap-3 my-5">
-              {/* You May Also Like Section */}
               {allProducts.length > 0 ? (
                 <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-5 gap-4">
-                  {allProducts.map((product) => (
+                  {allProducts.slice(0, visibleCount).map((product) => (
                     <ProductCard
                       key={product.id}
                       product={product}
@@ -755,18 +763,22 @@ export default function HomePage({ params }: { params: { id: string } }) {
         <div className="max-w-7xl mx-auto my-8">
           {/* Login / See More card: shows appropriate action based on login state */}
           <div className="mt-8 w-full flex justify-center">
-            <div className="w-44 max-w-3xl rounded-lg p-4 bg-gradient-to-r from-gray-200 to-gray-300 text-white ">
-              {isLoggedIn ? (
-                <Link
-                  href="/products"
-                  className="block text-center text-sm md:text-base font-medium"
-                >
-                  See More
-                </Link>
+            <div className="w-44 max-w-3xl rounded-lg text-white ">
+              {isLoggedIn === null ? (
+                <p>Loading...</p>
+              ) : isLoggedIn ? (
+                visibleCount < allProducts.length && (
+                  <button
+                    onClick={() => setVisibleRows((prev) => prev + 1)}
+                    className="w-44 max-w-3xl rounded-lg p-4 bg-gradient-to-r from-gray-300 to-gray-400 text-white"
+                  >
+                    See More
+                  </button>
+                )
               ) : (
                 <Link
                   href="/login"
-                  className="block text-center text-sm md:text-base font-medium"
+                  className="w-44 max-w-3xl rounded-lg p-4 bg-gradient-to-r from-gray-300 to-gray-400 text-white"
                 >
                   Login To See More
                 </Link>

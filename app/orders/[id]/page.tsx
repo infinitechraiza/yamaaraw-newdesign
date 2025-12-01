@@ -1,66 +1,92 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { useRouter, useParams } from "next/navigation"
-import Image from "next/image"
-import { Package, Truck, MapPin, ArrowLeft, CheckCircle, Clock, User, Phone, Mail, CreditCard, Share2, ChevronDown, ChevronUp } from 'lucide-react'
-import Header from "@/components/layout/header"
-import Footer from "@/components/layout/footer"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import ETrikeLoader from "@/components/ui/etrike-loader"
-import { getCurrentUser } from "@/lib/auth"
+import { useState, useEffect } from "react";
+import { useRouter, useParams } from "next/navigation";
+import Image from "next/image";
+import {
+  Package,
+  Truck,
+  MapPin,
+  ArrowLeft,
+  CheckCircle,
+  Clock,
+  User,
+  Phone,
+  Mail,
+  CreditCard,
+  Share2,
+  ChevronDown,
+  ChevronUp,
+} from "lucide-react";
+import Header from "@/components/layout/header";
+import Footer from "@/components/layout/footer";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import ETrikeLoader from "@/components/ui/etrike-loader";
+import { getCurrentUser } from "@/lib/auth";
+
+import Breadcrumb from "@/components/layout/Breadcrumb";
 
 interface OrderDetail {
-  id: number
-  order_number: string
-  status: string
-  total: number
-  created_at: string
-  updated_at: string
+  id: number;
+  order_number: string;
+  status: string;
+  total: number;
+  created_at: string;
+  updated_at: string;
   items: Array<{
-    id: number
+    id: number;
     product: {
-      name: string
-      images: string[]
-      description: string
-      model?: string
-    }
-    quantity: number
-    price: number
-    color?: string
-  }>
-  first_name: string
-  last_name: string
-  email: string
-  phone: string
-  address: string
-  city: string
-  postal_code: string
-  payment_method: string
-  tracking_number?: string
-  estimated_delivery?: string
-  order_notes?: string
-  admin_notes?: string
+      name: string;
+      images: string[];
+      description: string;
+      model?: string;
+    };
+    quantity: number;
+    price: number;
+    color?: string;
+  }>;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string;
+  address: string;
+  city: string;
+  postal_code: string;
+  payment_method: string;
+  tracking_number?: string;
+  estimated_delivery?: string;
+  order_notes?: string;
+  admin_notes?: string;
 }
 
 interface TrackingEvent {
-  id: number
-  status: string
-  description: string
-  location: string
-  timestamp: string
-  admin_notes?: string
+  id: number;
+  status: string;
+  description: string;
+  location: string;
+  timestamp: string;
+  admin_notes?: string;
 }
 
 // Component for expandable description
-function ExpandableDescription({ description, maxLength = 150 }: { description: string; maxLength?: number }) {
-  const [isExpanded, setIsExpanded] = useState(false)
-  const shouldTruncate = description.length > maxLength
+function ExpandableDescription({
+  description,
+  maxLength = 150,
+}: {
+  description: string;
+  maxLength?: number;
+}) {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const shouldTruncate = description.length > maxLength;
 
   if (!shouldTruncate) {
-    return <p className="text-xs sm:text-sm text-gray-600 mt-1 sm:mt-2 leading-relaxed">{description}</p>
+    return (
+      <p className="text-xs sm:text-sm text-gray-600 mt-1 sm:mt-2 leading-relaxed">
+        {description}
+      </p>
+    );
   }
 
   return (
@@ -72,7 +98,7 @@ function ExpandableDescription({ description, maxLength = 150 }: { description: 
         variant="ghost"
         size="sm"
         onClick={() => setIsExpanded(!isExpanded)}
-        className="mt-1 p-0 h-auto text-xs text-orange-600 hover:text-orange-700 hover:bg-transparent"
+        className="mt-1 p-0 h-auto text-xs text-blue-600 hover:text-blue-700 hover:bg-transparent"
       >
         {isExpanded ? (
           <>
@@ -87,97 +113,97 @@ function ExpandableDescription({ description, maxLength = 150 }: { description: 
         )}
       </Button>
     </div>
-  )
+  );
 }
 
 export default function OrderDetailPage() {
-  const router = useRouter()
-  const params = useParams()
-  const orderId = params.id as string
+  const router = useRouter();
+  const params = useParams();
+  const orderId = params.id as string;
 
-  const [order, setOrder] = useState<OrderDetail | null>(null)
-  const [tracking, setTracking] = useState<TrackingEvent[]>([])
-  const [loading, setLoading] = useState(true)
+  const [order, setOrder] = useState<OrderDetail | null>(null);
+  const [tracking, setTracking] = useState<TrackingEvent[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const user = getCurrentUser()
+    const user = getCurrentUser();
     if (!user) {
-      router.push("/login")
-      return
+      router.push("/login");
+      return;
     }
 
-    fetchOrderDetail()
-    fetchTrackingInfo()
-  }, [orderId, router])
+    fetchOrderDetail();
+    fetchTrackingInfo();
+  }, [orderId, router]);
 
   const fetchOrderDetail = async () => {
     try {
-      const token = getAuthToken()
+      const token = getAuthToken();
       if (!token) {
-        router.push("/login")
-        return
+        router.push("/login");
+        return;
       }
 
-      const apiUrl = process.env.NEXT_PUBLIC_LARAVEL_API_URL
+      const apiUrl = process.env.NEXT_PUBLIC_LARAVEL_API_URL;
       const response = await fetch(`${apiUrl}/orders/${orderId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
           Accept: "application/json",
         },
-      })
+      });
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const data = await response.json()
+      const data = await response.json();
       if (data.success) {
-        setOrder(data.data)
+        setOrder(data.data);
       }
     } catch (error) {
-      console.error("Error fetching order detail:", error)
+      console.error("Error fetching order detail:", error);
     }
-  }
+  };
 
   const fetchTrackingInfo = async () => {
     try {
-      const token = getAuthToken()
-      if (!token) return
+      const token = getAuthToken();
+      if (!token) return;
 
-      const apiUrl = process.env.NEXT_PUBLIC_LARAVEL_API_URL
+      const apiUrl = process.env.NEXT_PUBLIC_LARAVEL_API_URL;
       const response = await fetch(`${apiUrl}/orders/${orderId}/tracking`, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
           Accept: "application/json",
         },
-      })
+      });
 
       if (response.ok) {
-        const data = await response.json()
+        const data = await response.json();
         if (data.success) {
-          setTracking(data.data || [])
+          setTracking(data.data || []);
         }
       }
     } catch (error) {
-      console.error("Error fetching tracking info:", error)
+      console.error("Error fetching tracking info:", error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const getAuthToken = () => {
     try {
-      const sessionData = localStorage.getItem("session")
-      if (!sessionData) return null
-      const session = JSON.parse(sessionData)
-      return session.token || null
+      const sessionData = localStorage.getItem("session");
+      if (!sessionData) return null;
+      const session = JSON.parse(sessionData);
+      return session.token || null;
     } catch (error) {
-      console.error("Error getting auth token:", error)
-      return null
+      console.error("Error getting auth token:", error);
+      return null;
     }
-  }
+  };
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("en-PH", {
@@ -185,40 +211,40 @@ export default function OrderDetailPage() {
       currency: "PHP",
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
-    }).format(price)
-  }
+    }).format(price);
+  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
       case "pending":
-        return "bg-yellow-100 text-yellow-800 border-yellow-200"
+        return "bg-yellow-100 text-yellow-800 border-yellow-200";
       case "confirmed":
-        return "bg-orange-100 text-orange-800 border-orange-200"
+        return "bg-blue-100 text-blue-800 border-blue-200";
       case "processing":
-        return "bg-red-100 text-red-800 border-red-200"
+        return "bg-red-100 text-red-800 border-red-200";
       case "shipped":
-        return "bg-orange-100 text-orange-800 border-orange-200"
+        return "bg-blue-100 text-blue-800 border-blue-200";
       case "delivered":
-        return "bg-green-100 text-green-800 border-green-200"
+        return "bg-green-100 text-green-800 border-green-200";
       case "cancelled":
-        return "bg-red-100 text-red-800 border-red-200"
+        return "bg-red-100 text-red-800 border-red-200";
       default:
-        return "bg-gray-100 text-gray-800 border-gray-200"
+        return "bg-gray-100 text-gray-800 border-gray-200";
     }
-  }
+  };
 
   const getTrackingIcon = (status: string) => {
     switch (status) {
       case "delivered":
-        return <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
+        return <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />;
       case "shipped":
-        return <Truck className="w-4 h-4 sm:w-5 sm:h-5 text-orange-600" />
+        return <Truck className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />;
       case "processing":
-        return <Package className="w-4 h-4 sm:w-5 sm:h-5 text-red-600" />
+        return <Package className="w-4 h-4 sm:w-5 sm:h-5 text-red-600" />;
       default:
-        return <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" />
+        return <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" />;
     }
-  }
+  };
 
   const handleShare = async (item: any) => {
     if (navigator.share) {
@@ -227,15 +253,15 @@ export default function OrderDetailPage() {
           title: item.product.name,
           text: item.product.description,
           url: window.location.href,
-        })
+        });
       } catch (error) {
-        console.log("Error sharing:", error)
+        console.log("Error sharing:", error);
       }
     } else {
       // Fallback: copy to clipboard
-      navigator.clipboard.writeText(window.location.href)
+      navigator.clipboard.writeText(window.location.href);
     }
-  }
+  };
 
   if (loading) {
     return (
@@ -246,7 +272,7 @@ export default function OrderDetailPage() {
         </div>
         <Footer />
       </div>
-    )
+    );
   }
 
   if (!order) {
@@ -255,8 +281,13 @@ export default function OrderDetailPage() {
         <Header />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <div className="text-center">
-            <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">Order Not Found</h1>
-            <Button onClick={() => router.push("/orders")} className="w-full sm:w-auto">
+            <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">
+              Order Not Found
+            </h1>
+            <Button
+              onClick={() => router.push("/orders")}
+              className="w-full sm:w-auto"
+            >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Orders
             </Button>
@@ -264,7 +295,7 @@ export default function OrderDetailPage() {
         </div>
         <Footer />
       </div>
-    )
+    );
   }
 
   return (
@@ -272,14 +303,16 @@ export default function OrderDetailPage() {
       <Header />
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-slate-900 via-orange-900 to-red-900 text-white py-6 sm:py-8 lg:py-12">
+      <section className="bg-gradient-to-b from-blue-900 to-blue-700 text-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div className="min-w-0 flex-1">
-              <h1 className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-bold mb-2 truncate">Order Details</h1>
-              <p className="text-slate-300 text-sm sm:text-base truncate">Order #{order.order_number}</p>
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl lg:text-4xl font-bold mb-2">
+                Order Details
+              </h1>
+              <p className="text-slate-300"> Order #{order.order_number}</p>
             </div>
-            <div className="flex-shrink-0">
+            <div className="hidden md:flex items-center space-x-4">
               <Badge
                 className={`${getStatusColor(order.status)} text-sm sm:text-base lg:text-lg px-3 py-1 sm:px-4 sm:py-2`}
               >
@@ -290,20 +323,21 @@ export default function OrderDetailPage() {
         </div>
       </section>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
-        {/* Breadcrumb */}
-        <div className="flex items-center mb-6 sm:mb-8">
-          <Button
-            variant="ghost"
-            onClick={() => router.push("/orders")}
-            className="text-orange-600 hover:text-orange-700 p-2 sm:px-4 sm:py-2"
-          >
-            <ArrowLeft className="w-4 h-4 mr-1 sm:mr-2" />
-            <span className="hidden sm:inline">Back to Orders</span>
-            <span className="sm:hidden">Back</span>
-          </Button>
+      {/* Breadcrumb */}
+      <section className="bg-white">
+        <div className="bg-white flex flex-col items-center justify-between md:flex-row gap-4 border-b border-gray-200 px-44 py-5">
+          <Breadcrumb
+            items={[
+              { label: "Home", href: "/" },
+              ...order.items.map((item) => ({
+                label: `View Orders - ${item.product.name}`,
+              })),
+            ]}
+          />
         </div>
+      </section>
 
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-4 sm:space-y-6">
@@ -340,12 +374,22 @@ export default function OrderDetailPage() {
                             <h3 className="font-semibold text-gray-900 text-base sm:text-lg leading-tight">
                               {item.product.name}
                             </h3>
-                            {item.product.model && <p className="text-sm text-gray-600 mt-1">{item.product.model}</p>}
-                            
+                            {item.product.model && (
+                              <p className="text-sm text-gray-600 mt-1">
+                                {item.product.model}
+                              </p>
+                            )}
+
                             {/* Expandable Description */}
-                            <ExpandableDescription description={item.product.description} />
-                            
-                            {item.color && <p className="text-xs text-gray-500 mt-1">Color: {item.color}</p>}
+                            <ExpandableDescription
+                              description={item.product.description}
+                            />
+
+                            {item.color && (
+                              <p className="text-xs text-gray-500 mt-1">
+                                Color: {item.color}
+                              </p>
+                            )}
                           </div>
 
                           {/* Share Button */}
@@ -353,7 +397,7 @@ export default function OrderDetailPage() {
                             variant="ghost"
                             size="sm"
                             onClick={() => handleShare(item)}
-                            className="self-start sm:self-center p-2 rounded-full bg-orange-500 hover:bg-orange-600 text-white"
+                            className="self-start sm:self-center p-2 rounded-full bg-blue-500 hover:bg-blue-600 text-white"
                           >
                             <Share2 className="w-4 h-4" />
                           </Button>
@@ -366,7 +410,7 @@ export default function OrderDetailPage() {
                               Qty: {item.quantity}
                             </span>
                           </div>
-                          <span className="font-bold text-orange-600 text-lg sm:text-xl">
+                          <span className="font-bold text-blue-600 text-lg sm:text-xl">
                             {formatPrice(item.price)}
                           </span>
                         </div>
@@ -391,17 +435,24 @@ export default function OrderDetailPage() {
                     {tracking.map((event, index) => (
                       <div key={event.id} className="relative">
                         <div className="flex items-start gap-3 sm:gap-4">
-                          <div className="flex-shrink-0 mt-1">{getTrackingIcon(event.status)}</div>
+                          <div className="flex-shrink-0 mt-1">
+                            {getTrackingIcon(event.status)}
+                          </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-4">
-                              <h4 className="font-semibold text-gray-900 text-sm sm:text-base">{event.description}</h4>
+                              <h4 className="font-semibold text-gray-900 text-sm sm:text-base">
+                                {event.description}
+                              </h4>
                               <span className="text-xs sm:text-sm text-gray-500 flex-shrink-0">
-                                {new Date(event.timestamp).toLocaleDateString("en-PH", {
-                                  month: "short",
-                                  day: "numeric",
-                                  hour: "2-digit",
-                                  minute: "2-digit",
-                                })}
+                                {new Date(event.timestamp).toLocaleDateString(
+                                  "en-PH",
+                                  {
+                                    month: "short",
+                                    day: "numeric",
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                  }
+                                )}
                               </span>
                             </div>
                             <p className="text-xs sm:text-sm text-gray-600 flex items-center gap-1 mt-1">
@@ -409,7 +460,7 @@ export default function OrderDetailPage() {
                               <span>{event.location}</span>
                             </p>
                             {event.admin_notes && (
-                              <p className="text-xs sm:text-sm text-orange-600 mt-2 bg-orange-50 p-2 sm:p-3 rounded">
+                              <p className="text-xs sm:text-sm text-blue-600 mt-2 bg-blue-50 p-2 sm:p-3 rounded">
                                 <strong>Admin Note:</strong> {event.admin_notes}
                               </p>
                             )}
@@ -431,7 +482,9 @@ export default function OrderDetailPage() {
             {/* Order Summary */}
             <Card>
               <CardHeader className="pb-3 sm:pb-6">
-                <CardTitle className="text-lg sm:text-xl">Order Summary</CardTitle>
+                <CardTitle className="text-lg sm:text-xl">
+                  Order Summary
+                </CardTitle>
               </CardHeader>
               <CardContent className="pt-0 space-y-3 sm:space-y-4">
                 <div className="flex justify-between text-sm sm:text-base">
@@ -445,7 +498,9 @@ export default function OrderDetailPage() {
                 <hr className="my-3 sm:my-4" />
                 <div className="flex justify-between font-semibold text-base sm:text-lg">
                   <span>Total:</span>
-                  <span className="text-orange-600">{formatPrice(order.total)}</span>
+                  <span className="text-blue-600">
+                    {formatPrice(order.total)}
+                  </span>
                 </div>
               </CardContent>
             </Card>
@@ -497,7 +552,9 @@ export default function OrderDetailPage() {
                 <div className="space-y-2 sm:space-y-3 text-sm sm:text-base">
                   <div className="flex justify-between">
                     <span>Method:</span>
-                    <span className="capitalize font-medium">{order.payment_method}</span>
+                    <span className="capitalize font-medium">
+                      {order.payment_method}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span>Order Date:</span>
@@ -525,10 +582,12 @@ export default function OrderDetailPage() {
             {order.admin_notes && (
               <Card>
                 <CardHeader className="pb-3 sm:pb-6">
-                  <CardTitle className="text-lg sm:text-xl">Admin Notes</CardTitle>
+                  <CardTitle className="text-lg sm:text-xl">
+                    Admin Notes
+                  </CardTitle>
                 </CardHeader>
                 <CardContent className="pt-0">
-                  <p className="text-sm text-gray-700 bg-orange-50 p-3 sm:p-4 rounded-lg leading-relaxed">
+                  <p className="text-sm text-gray-700 bg-blue-50 p-3 sm:p-4 rounded-lg leading-relaxed">
                     {order.admin_notes}
                   </p>
                 </CardContent>
@@ -540,5 +599,5 @@ export default function OrderDetailPage() {
 
       <Footer />
     </div>
-  )
+  );
 }

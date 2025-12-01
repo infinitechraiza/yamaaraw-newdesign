@@ -200,12 +200,13 @@ export default function SimilarProducts() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
-      {/* Header */}
+
+      {/* Breadcrumb */}
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <Breadcrumb
             items={[
-              { label: "Products", href: "/products" },
+              { label: "Home", href: "/" },
               { label: originalProduct?.name || "Similar Products" },
             ]}
           />

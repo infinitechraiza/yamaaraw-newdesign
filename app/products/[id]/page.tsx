@@ -272,6 +272,12 @@ export default function ProductDetailPage() {
       );
     }
   };
+  // start with 1 row visible
+  const [visibleRows, setVisibleRows] = useState(1);
+
+  // each row = 5 products (since md:grid-cols-5)
+  const productsPerRow = 15;
+  const visibleCount = visibleRows * productsPerRow;
 
   if (loading) {
     return (
@@ -312,6 +318,10 @@ export default function ProductDetailPage() {
   }
 
   const discount = calculateDiscount(product.price, product.original_price);
+
+  // onclick - set quantity
+  const increase = () => setQuantity((prev) => prev + 1);
+  const decrease = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-100">
@@ -473,7 +483,6 @@ export default function ProductDetailPage() {
             <div className="space-y-3 mt-5 lg:mt-5 col-span-1">
               <div className="relative w-auto h-auto overflow-hidden sm:p-2 mx-3 my-3">
                 <h1 className="text-2xl lg:text-3xl font-bold text-balance mb-4">
-                  {" "}
                   {product.name}
                 </h1>
 
@@ -793,13 +802,19 @@ export default function ProductDetailPage() {
                     <p className="font-medium">Quantity</p>
 
                     <div className="flex items-center gap-1 w-fit border-2 border-gray-300 focus:border-gray-500 rounded m-2">
-                      <button className="w-8 h-8 bg-gray-200 text-gray-700 hover:text-white hover:bg-gray-300 transition">
+                      <button
+                        className="w-8 h-8 bg-gray-200 text-gray-700 hover:text-white hover:bg-gray-300 transition"
+                        onClick={decrease}
+                      >
                         −
                       </button>
                       <span className="text-lg font-semibold w-8 text-center">
-                        1
+                        {quantity}
                       </span>
-                      <button className="w-8 h-8 bg-gray-200 text-gray-700 hover:text-white hover:bg-gray-300 transition">
+                      <button
+                        className="w-8 h-8 bg-gray-200 text-gray-700 hover:text-white hover:bg-gray-300 transition"
+                        onClick={increase}
+                      >
                         +
                       </button>
                     </div>
@@ -825,9 +840,9 @@ export default function ProductDetailPage() {
       <section className="py-2">
         <div className="max-w-7xl mx-auto">
           {/* Product Details Tabs */}
-          <div className="h-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2 space-y-6">
-              <div className="bg-background shadow-sm p-6">
+          <div className="h-auto grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch h-100vh">
+            <div className="bg-background lg:col-span-2 space-y-6">
+              <div className=" p-6">
                 <Tabs defaultValue="productSpecification">
                   <TabsList className="grid w-auto h-auto grid-cols-6 mb-6 gap-1">
                     <TabsTrigger
@@ -1015,7 +1030,7 @@ export default function ProductDetailPage() {
             </div>
 
             {/* Seller Info */}
-            <div className="lg:col-span-1 space-y-6">
+            <div className="lg:col-span-1 space-y-6 h-full">
               <div className="bg-background shadow-sm p-6">
                 <div className="flex flex-col items-center gap-4">
                   <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center text-white text-xl font-bold">
@@ -1025,12 +1040,18 @@ export default function ProductDetailPage() {
                     caq_mall
                   </span>
                   <div className="flex flex-col sm:flex-row gap-3 w-full">
-                    <button className="flex-1 px-4 py-2 bg-blue-100 text-blue-600 border-2 border-blue-600 rounded-lg font-semibold hover:bg-blue-200 transition-all duration-200 active:scale-95">
+                    <Link
+                      href="/login"
+                      className="flex-1 px-4 py-2 bg-blue-100 text-center text-blue-600 border-2 border-blue-600 rounded-lg font-semibold hover:bg-blue-200 transition-all duration-200 active:scale-95"
+                    >
                       Chat Now
-                    </button>
-                    <button className="flex-1 px-4 py-2 text-gray-700 border-2 border-gray-300 rounded-lg font-semibold hover:bg-gray-50 transition-all duration-200 active:scale-95">
-                      View Shop
-                    </button>
+                    </Link>
+                    <Link
+                      href="/login"
+                      className="flex-1 px-4 py-2 text-gray-700 text-center border-2 border-gray-300 rounded-lg font-semibold hover:bg-gray-50 transition-all duration-200 active:scale-95"
+                    >
+                      Chat Now
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -1117,8 +1138,8 @@ export default function ProductDetailPage() {
             <div className="grid grid-cols-1 lg:grid-cols-1 gap-3 my-5">
               {/* You May Also Like Section */}
               {allProducts.length > 0 ? (
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                  {allProducts.map((product) => (
+                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-5 gap-4">
+                  {allProducts.slice(0, visibleCount).map((product) => (
                     <ProductCard
                       key={product.id}
                       product={product}
@@ -1148,18 +1169,22 @@ export default function ProductDetailPage() {
         <div className="max-w-7xl mx-auto my-8">
           {/* Login / See More card: shows appropriate action based on login state */}
           <div className="mt-8 w-full flex justify-center">
-            <div className="w-44 max-w-3xl rounded-lg p-4 bg-gradient-to-r from-gray-200 to-gray-300 text-white ">
-              {isLoggedIn ? (
-                <Link
-                  href="/products"
-                  className="block text-center text-sm md:text-base font-medium"
-                >
-                  See More
-                </Link>
+            <div className="w-44 max-w-3xl rounded-lg text-white ">
+              {isLoggedIn === null ? (
+                <p>Loading...</p>
+              ) : isLoggedIn ? (
+                visibleCount < allProducts.length && (
+                  <button
+                    onClick={() => setVisibleRows((prev) => prev + 1)}
+                    className="w-44 max-w-3xl rounded-lg p-4 bg-gradient-to-r from-gray-300 to-gray-400 text-white"
+                  >
+                    See More
+                  </button>
+                )
               ) : (
                 <Link
                   href="/login"
-                  className="block text-center text-sm md:text-base font-medium"
+                  className="w-44 max-w-3xl rounded-lg p-4 bg-gradient-to-r from-gray-300 to-gray-400 text-white"
                 >
                   Login To See More
                 </Link>

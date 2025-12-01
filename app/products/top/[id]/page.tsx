@@ -16,7 +16,7 @@ import {
   TabsContent,
 } from "@/components/product/tabs-card";
 
-
+import Breadcrumb from "@/components/layout/Breadcrumb";
 
 const cctvProducts = topProductsByCategory.cctv;
 
@@ -200,29 +200,28 @@ export default function SimilarProducts() {
 
   const discountPercent = originalProduct?.original_price
     ? Math.round(
-      ((originalProduct.original_price - originalProduct.price) /
-        originalProduct.original_price) *
-      100
-    )
+        ((originalProduct.original_price - originalProduct.price) /
+          originalProduct.original_price) *
+          100
+      )
     : 0;
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
-      {/* Header */}
+
+      {/* Breadcrumb */}
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 py-4">
-          <button
-            onClick={() => {
-              window.location.href = `/`;
-            }}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition"
-          >
-            <ArrowLeft className="w-5 h-5" />
-            <span className="text-sm font-medium">Back</span>
-          </button>
+          <Breadcrumb
+            items={[
+              { label: "Home", href: "/" },
+              { label: originalProduct?.name || "Similar Products" },
+            ]}
+          />
         </div>
       </div>
+
       {/* Top Products Section */}
       <div className="max-w-7xl mx-auto p-4">
         <div className="bg-white">
@@ -283,7 +282,11 @@ export default function SimilarProducts() {
                   <TopProductCard
                     key={product.id}
                     product={product}
-                  // onClick={() => navigate(`/product/${product.id}`)}
+                    onClick={() => {
+                      // When clicking a similar product, navigate to its similar products page
+                      // navigate(`/similar/${product.id}`);
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                    }}
                   />
                 ))}
               </div>

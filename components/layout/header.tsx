@@ -472,21 +472,21 @@ export default function Header() {
               href="/"
               className="flex items-center space-x-2 sm:space-x-4 group"
             >
-              <div className="relative w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 transition-transform duration-300 group-hover:scale-105">
+              <div className="relative w-12 h-12 sm:w-12 sm:h-12 lg:w-14 lg:h-14 transition-transform duration-300 group-hover:scale-105">
                 <Image
-                  src="/icon512_rounded.png"
+                  src="https://i.pinimg.com/736x/a9/75/fd/a975fd9872dee0a668d7ec634cc63cf7.jpg"
                   alt="YAMAARAW Electric Vehicles Logo"
                   fill
-                  className="object-contain drop-shadow-lg"
+                  className="object-contain drop-shadow-lg rounded-full"
                   priority
                 />
               </div>
               <div className="flex flex-col">
-                <span className="font-bold text-lg sm:text-2xl lg:text-3xl bg-gradient-to-r from-blue-600 to-violet-700 bg-clip-text text-transparent leading-tight">
-                  YAMAARAW
+                <span className="font-bold text-lg sm:text-xl lg:text-2xl bg-gradient-to-r from-blue-600 to-violet-700 bg-clip-text text-transparent leading-tight">
+                  INFINITRADE
                 </span>
                 <span className="text-sm sm:text-md text-foreground font-bold tracking-wide hidden sm:block">
-                  Electric Vehicles
+                  Trading Warehouse
                 </span>
               </div>
             </Link>

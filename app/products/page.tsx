@@ -6,7 +6,9 @@ import { useParams } from "react-router";
 import { ArrowLeft, Star } from "lucide-react";
 import ProductCard, { Product } from "@/components/product/ProductCard";
 import FilterBar from "@/components/product/filter-bar";
-import FilterSidebar, { FilterState } from "@/components/product/filter-sidebar";
+import FilterSidebar, {
+  FilterState,
+} from "@/components/product/filter-sidebar";
 import Badge from "@/components/product/Badge";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
@@ -15,6 +17,13 @@ import Breadcrumb from "@/components/layout/Breadcrumb";
 import allProducts from "./productsData";
 
 export default function SimilarProducts() {
+  // start with 1 row visible
+  const [visibleRows, setVisibleRows] = useState(1);
+
+  // each row = 5 products (since md:grid-cols-5)
+  const productsPerRow = 15;
+  const visibleCount = visibleRows * productsPerRow;
+
   const { id } = useParams();
   const [currentSort, setCurrentSort] = useState("relevance");
   const [filters, setFilters] = useState<FilterState>({
@@ -119,7 +128,12 @@ export default function SimilarProducts() {
       {/* Header / Breadcrumb */}
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 py-4">
-          <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: originalProduct?.name || 'Products' }]} />
+          <Breadcrumb
+            items={[
+              { label: "Home", href: "/" },
+              { label: originalProduct?.name || "Products" },
+            ]}
+          />
         </div>
       </div>
 
@@ -230,47 +244,55 @@ export default function SimilarProducts() {
               />
 
               {/* Products Grid */}
-              {paginatedProducts.length > 0 ? (
-                <div className="w-full flex justify-center">
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 w-full max-w-6xl">
-                  {paginatedProducts.map((product) => (
+              {allProducts.length > 0 ? (
+                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-5 gap-4">
+                  {allProducts.slice(0, visibleCount).map((product) => (
                     <ProductCard
                       key={product.id}
                       product={product}
                       onClick={() => {
-                        // When clicking a similar product, navigate to its similar products page
-                        // navigate(`/similar/${product.id}`);
-                        window.scrollTo({ top: 0, behavior: "smooth" });
+                        window.location.href = `/products/top/${product.id}`;
                       }}
                     />
                   ))}
-                  </div>
                 </div>
               ) : (
                 <div className="text-center py-12">
                   <p className="text-gray-500 text-lg mb-2">
-                    No similar products found
+                    No products found
+                  </p>
+                  <p className="text-gray-400 text-sm">
+                    Try adjusting your filters
                   </p>
                 </div>
               )}
             </div>
-              {/* Login / See More card: shows appropriate action based on login state */}
-              <div className="mt-8 w-full flex justify-center">
-                <div className="w-full max-w-3xl rounded-lg p-4 bg-gradient-to-r from-blue-600 to-violet-600 text-white border border-transparent shadow-md">
-                  {isLoggedIn ? (
-                    <Link href="/products" className="block text-center text-sm md:text-base font-medium">
+            
+            {/* Login / See More card: shows appropriate action based on login state */}
+            <div className="mt-8 w-full flex justify-center">
+              <div className="w-44 max-w-3xl rounded-lg text-white ">
+                {isLoggedIn === null ? (
+                  <p>Loading...</p>
+                ) : isLoggedIn ? (
+                  visibleCount < allProducts.length && (
+                    <button
+                      onClick={() => setVisibleRows((prev) => prev + 1)}
+                      className="w-44 max-w-3xl rounded-lg p-4 bg-gradient-to-r from-gray-300 to-gray-400 text-white"
+                    >
                       See More
-                    </Link>
-                  ) : (
-                    <Link href="/login" className="block text-center text-sm md:text-base font-medium">
-                      Login To See More
-                    </Link>
-                  )}
-                </div>
+                    </button>
+                  )
+                ) : (
+                  <Link
+                    href="/login"
+                    className="w-44 max-w-3xl rounded-lg p-4 bg-gradient-to-r from-gray-300 to-gray-400 text-white"
+                  >
+                    Login To See More
+                  </Link>
+                )}
               </div>
+            </div>
           </div>
-
-         
         </div>
       </div>
 

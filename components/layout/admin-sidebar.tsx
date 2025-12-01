@@ -168,7 +168,7 @@ export default function AdminSidebar() {
       {/* Sidebar */}
       <div
         className={cn(
-          "bg-gradient-to-b from-gray-900/80 to-gray-800/50 text-white transition-all duration-300 flex flex-col shadow-xl gap-4",
+          "bg-gradient-to-b from-gray-900 to-gray-800 text-white transition-all duration-300 flex flex-col shadow-xl gap-4",
           // Desktop styles
           "hidden lg:flex",
           isCollapsed ? "lg:w-16" : "lg:w-64",
@@ -220,7 +220,7 @@ export default function AdminSidebar() {
                       "flex w-full items-center items-center gap-3 px-3 py-3 rounded-xl transition-all duration-200 group relative gap-3 mb-1 mx-1",
                       isActive
                         ? "bg-gradient-to-b from-blue-700 to-blue-500  text-white shadow-lg transform scale-105"
-                        : "text-white hover:bg-gradient-to-b hover:from-blue-700 hover:to-blue-500 hover:text-fg-brand hover:transform hover:scale-105"
+                        : "text-white hover:bg-gradient-to-b hover:from-blue-700/40 hover:to-blue-500/40 hover:text-fg-brand hover:transform hover:scale-105"
                     )}
                   >
                     <div className="relative ">
@@ -267,7 +267,7 @@ export default function AdminSidebar() {
               "flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 group w-full",
               isLoggingOut
                 ? "text-gray-500 cursor-not-allowed"
-                : "text-gray-300 hover:bg-gradient-to-b hover:from-blue-700 hover:to-blue-500 hover:text-white"
+                : "text-gray-300 hover:bg-gradient-to-b hover:from-blue-700/40 hover:to-blue-500/40 hover:text-white"
             )}
           >
             <LogOut className={cn("w-5 h-5", isLoggingOut && "animate-spin")} />

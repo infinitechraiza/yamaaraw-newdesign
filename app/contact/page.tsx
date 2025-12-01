@@ -17,6 +17,28 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
+const accordions = [
+  {
+    question: "What is the warranty period for your electric vehicles?",
+    answer:
+      "All our electric vehicles come with a comprehensive 2-year warranty covering battery, motor, and electrical components.",
+  },
+  {
+    question: "Do you offer financing options?",
+    answer:
+      "Yes, we partner with leading financial institutions to offer flexible financing options with competitive interest rates.",
+  },
+  {
+    question: "How long does it take to charge the battery?",
+    answer:
+      "Charging time varies by model, but typically ranges from 4-8 hours for a full charge using standard household outlets.",
+  },
+  {
+    question: "Do you provide after-sales service?",
+    answer:
+      "We have over 100 service centers nationwide and provide comprehensive after-sales support.",
+  },
+];
 export default function ContactPage() {
   const toast = useETrikeToast();
   const [formData, setFormData] = useState({
@@ -391,31 +413,9 @@ export default function ContactPage() {
               </div>
 
               <div className="space-y-6">
-                {[
-                  {
-                    question:
-                      "What is the warranty period for your electric vehicles?",
-                    answer:
-                      "All our electric vehicles come with a comprehensive 2-year warranty covering battery, motor, and electrical components.",
-                  },
-                  {
-                    question: "Do you offer financing options?",
-                    answer:
-                      "Yes, we partner with leading financial institutions to offer flexible financing options with competitive interest rates.",
-                  },
-                  {
-                    question: "How long does it take to charge the battery?",
-                    answer:
-                      "Charging time varies by model, but typically ranges from 4-8 hours for a full charge using standard household outlets.",
-                  },
-                  {
-                    question: "Do you provide after-sales service?",
-                    answer:
-                      "We have over 100 service centers nationwide and provide comprehensive after-sales support.",
-                  },
-                ].map((faq, index) => (
+                {accordions.map((faq, index) => (
                   <div key={index}>
-                    <Accordion type="single" collapsible>
+                    <Accordion type="single" collapsible className="w-full">
                       <AccordionItem
                         value={`faq-${index}`}
                         className="bg-card h-50% border border-border rounded-xl overflow-hidden transition-all hover:shadow-lg p-6"
