@@ -168,7 +168,7 @@ export default function AdminSidebar() {
       {/* Sidebar */}
       <div
         className={cn(
-          "bg-gradient-to-t from-red-600 to-blue-700 text-white transition-all duration-300 flex flex-col shadow-xl gap-4",
+          "bg-gradient-to-b from-gray-900/80 to-gray-800/50 text-white transition-all duration-300 flex flex-col shadow-xl gap-4",
           // Desktop styles
           "hidden lg:flex",
           isCollapsed ? "lg:w-16" : "lg:w-64",

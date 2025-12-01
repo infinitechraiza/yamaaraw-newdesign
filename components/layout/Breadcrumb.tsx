@@ -11,11 +11,11 @@ export default function Breadcrumb({ items }: { items: Crumb[] }) {
       {items.map((it, idx) => (
         <span key={idx} className="flex items-center">
           {it.href ? (
-            <Link href={it.href} className="text-blue-600 hover:text-blue-700 font-medium">
+            <Link href={it.href} className="text-gray-500 hover:text-blue-700 font-medium">
               {it.label}
             </Link>
           ) : (
-            <span className={idx === items.length - 1 ? "bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent font-bold" : "text-gray-900 font-bold"}>
+            <span className={idx === items.length - 1 ? "text-blue-600 font-bold" : "text-gray-900 font-bold"}>
               {it.label}
             </span>
           )}

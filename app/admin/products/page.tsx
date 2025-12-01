@@ -17,7 +17,8 @@ import {
   TabsList,
   TabsTrigger,
   TabsContent,
-} from "@/components/product/tabs";
+} from "@/components/product/tabs-card";
+
 import ProductTable from "@/components/admin/product-table";
 
 export default function ProductManagementPage() {

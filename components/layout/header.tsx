@@ -793,7 +793,7 @@ export default function Header() {
                                   >
                                     <div className="w-14 h-14 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0 border">
                                       {product.images &&
-                                        product.images.length > 0 ? (
+                                      product.images.length > 0 ? (
                                         <Image
                                           src={
                                             product.images[0] ||
@@ -828,10 +828,11 @@ export default function Header() {
                                         </Badge>
                                       )}
                                       <Badge
-                                        className={`text-xs font-medium ${product.in_stock
-                                          ? "bg-green-500 text-white"
-                                          : "bg-red-500 text-white"
-                                          }`}
+                                        className={`text-xs font-medium ${
+                                          product.in_stock
+                                            ? "bg-green-500 text-white"
+                                            : "bg-red-500 text-white"
+                                        }`}
                                       >
                                         {product.in_stock
                                           ? "In Stock"
@@ -897,7 +898,7 @@ export default function Header() {
                         className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-blue-700 to-violet-700 transition-all duration-300 ${productsActive ? "w-full" : "w-0 group-hover:w-full"}`}
                       ></span>
                     </Link>
-                  {/* bg-gradient-to-r from-blue-600 to-violet-700 - bg-clip-text text-transparent bg-gradient-to-r text-blue-500 from-blue-600 to-violet-600 */}
+                    {/* bg-gradient-to-r from-blue-600 to-violet-700 - bg-clip-text text-transparent bg-gradient-to-r text-blue-500 from-blue-600 to-violet-600 */}
                     <Link
                       href="/about"
                       className={`${linkBase} ${aboutActive ? "bg-clip-text text-transparent bg-gradient-to-r text-blue-800 from-blue-700 to-violet-700" : "text-gray-400 hover:bg-clip-text hover:text-transparent hover:bg-gradient-to-r hover:text-blue-800 hover:from-blue-700 hover:to-violet-700"}`}
@@ -1011,7 +1012,7 @@ export default function Header() {
                         </div>
                         <Link
                           href="/profile"
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-orange-50 hover:text-blue-600 transition-colors"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors"
                           onClick={() => setIsUserMenuOpen(false)}
                           role="menuitem"
                         >
@@ -1019,7 +1020,7 @@ export default function Header() {
                         </Link>
                         <Link
                           href="/orders"
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-orange-50 hover:text-blue-600 transition-colors"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors"
                           onClick={() => setIsUserMenuOpen(false)}
                           role="menuitem"
                         >
@@ -1028,7 +1029,7 @@ export default function Header() {
                         {user.role === "admin" && (
                           <Link
                             href="/admin"
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-orange-50 hover:text-blue-600 transition-colors"
+                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors"
                             onClick={() => setIsUserMenuOpen(false)}
                             role="menuitem"
                           >
@@ -1038,7 +1039,7 @@ export default function Header() {
                         <hr className="my-2" />
                         <button
                           onClick={handleLogout}
-                          className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors"
                           role="menuitem"
                         >
                           Sign Out
@@ -1048,7 +1049,7 @@ export default function Header() {
                       <>
                         <Link
                           href="/login"
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-600 transition-colors"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors"
                           onClick={() => setIsUserMenuOpen(false)}
                           role="menuitem"
                         >
@@ -1056,7 +1057,7 @@ export default function Header() {
                         </Link>
                         <Link
                           href="/register"
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-600 transition-colors"  
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors"
                           onClick={() => setIsUserMenuOpen(false)}
                           role="menuitem"
                         >
@@ -1157,12 +1158,7 @@ export default function Header() {
                     >
                       Search
                     </Button>
-
                   </div>
-
-
-
-
 
                   {/* Mobile Filters */}
                   <Popover>
@@ -1314,12 +1310,6 @@ export default function Header() {
                     </PopoverContent>
                   </Popover>
 
-
-
-
-
-
-
                   {/* Mobile Search Suggestions */}
                   {showMobileSuggestions &&
                     (mobileSearchQuery.length > 0 ||
@@ -1415,7 +1405,7 @@ export default function Header() {
                                       >
                                         <div className="w-10 h-10 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0 border">
                                           {product.images &&
-                                            product.images.length > 0 ? (
+                                          product.images.length > 0 ? (
                                             <Image
                                               src={
                                                 product.images[0] ||
@@ -1448,10 +1438,11 @@ export default function Header() {
                                             </Badge>
                                           )}
                                           <Badge
-                                            className={`text-xs ${product.in_stock
-                                              ? "bg-green-500 text-white"
-                                              : "bg-red-500 text-white"
-                                              }`}
+                                            className={`text-xs ${
+                                              product.in_stock
+                                                ? "bg-green-500 text-white"
+                                                : "bg-red-500 text-white"
+                                            }`}
                                           >
                                             {product.in_stock
                                               ? "In Stock"
@@ -1512,7 +1503,6 @@ export default function Header() {
                       pathname?.startsWith("/contact");
                     return (
                       <>
-
                         <Link
                           href="/products"
                           className={`block ${productsActive ? "text-green-300" : "bg-clip-text text-transparent bg-gradient-to-r text-blue-500 from-blue-600 to-violet-600 hover:text-violet-300"} font-medium py-2 transition-colors`}

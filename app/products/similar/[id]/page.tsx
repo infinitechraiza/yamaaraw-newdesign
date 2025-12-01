@@ -2,12 +2,14 @@
 
 import { useState, useMemo, useRef } from "react";
 import { useParams } from "react-router";
-import { ArrowLeft, Star } from "lucide-react";
+import { Star } from "lucide-react";
 import ProductCard, { Product } from "@/components/product/ProductCard";
 import FilterBar from "@/components/product/filter-bar";
 import Badge from "@/components/product/Badge";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
+
+import Breadcrumb from "@/components/layout/Breadcrumb";
 
 // Mock product data - in a real app this would come from an API
 const allProducts: Product[] = [
@@ -201,7 +203,12 @@ export default function SimilarProducts() {
       {/* Header */}
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 py-4">
-          <Breadcrumb items={[{ label: 'Products', href: '/products' }, { label: originalProduct?.name || 'Products' }]} />
+          <Breadcrumb
+            items={[
+              { label: "Products", href: "/products" },
+              { label: originalProduct?.name || "Similar Products" },
+            ]}
+          />
         </div>
       </div>
 

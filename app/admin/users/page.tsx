@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
+  Plus,
   Users,
   Search,
   Filter,
@@ -147,10 +148,17 @@ export default function AdminCustomers() {
               </h1>
               <p className="text-orange-100">Manage Users details</p>
             </div>
-            <div className="flex items-center space-x-4 text-blue-500 rounded-lg border border-border border-blue-500">
+            <Button
+              variant="outline"
+              className="p-2 border-blue-500 text-xs text-blue-500 hover:text-blue-700  hover:bg-blue-50"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Add Category
+            </Button>
+            <div className="flex items-center space-x-4 text-blue-500 rounded-lg border-none">
               <Button
                 variant="outline"
-                className="flex items-center hover:text-blue-700 gap-2"
+                className="p-2 border-blue-500 text-xs text-blue-500 hover:text-blue-700  hover:bg-blue-50"
               >
                 <Download className="w-4 h-4" />
                 Export

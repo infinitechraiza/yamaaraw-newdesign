@@ -14,7 +14,7 @@ import {
   TabsList,
   TabsTrigger,
   TabsContent,
-} from "@/components/product/tabs";
+} from "@/components/product/tabs-card";
 
 
 

@@ -39,6 +39,7 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import ProductCard, { Product } from "@/components/product/product-card";
+import Breadcrumb from "@/components/layout/Breadcrumb";
 
 interface FeaturedProduct {
   id: number;
@@ -320,122 +321,107 @@ export default function ProductDetailPage() {
       <AnimationContainer />
 
       {/* Enhanced Breadcrumb */}
-      <div className="bg-white border-b-2 border-orange-100 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
-          <div className="flex items-center space-x-3 text-sm sm:text-base flex-wrap">
-            <button
-              onClick={() => router.push("/")}
-              className="text-blue-600 hover:text-blue-700 font-semibold transition-colors"
-            >
-              Home
-            </button>
-            <span className="text-purple-300 text-xl">›</span>
-            <span className="text-gray-600 font-medium">
-              <button
-                onClick={() => router.push("/products")}
-                className="text-blue-600 hover:text-blue-700 font-semibold transition-colors"
-              >
-                Products
-              </button>
-            </span>
-            <span className="text-purple-300 text-xl">›</span>
-            <span className="text-orange-600 font-bold">{product.name}</span>
-          </div>
+      <div className="bg-white border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 py-4">
+          <Breadcrumb
+            items={[
+              { label: "Products", href: "/products" },
+              { label: product?.name || "Similar Products" },
+            ]}
+          />
         </div>
       </div>
 
       {/* Product Details Section */}
       <section className="py-2">
         <div className="max-w-7xl mx-auto">
-            <div className="bg-background grid grid-cols-1 lg:grid-cols-3 gap-3 my-2">
-              {/* 1st Column */}
-              <div className="space-y-6 col-span-2">
-                {/* Left Column - Images */}
-                <div className="lg:col-span-2 space-y-6">
-                  {/* Main Image Container */}
-                  <div className=" border-none p-6">
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 h-full">
-                      {/* Thumbnails - Hidden on mobile, shown on lg+ */}
-                      <aside className="hidden lg:block lg:col-span-2">
-                        <div className="grid grid-cols-1 gap-4">
-                          {[1, 2, 3, 4, 5, 6].map((i) => (
-                            <button
-                              key={i}
-                              className="group overflow-hidden rounded-md border border-gray-200 transition hover:shadow-sm"
-                              aria-label={`View Angle ${i}`}
-                            >
-                              <img
-                                src="https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg"
-                                alt={`Shoe Angle ${i}`}
-                                className="aspect-[4/3] w-full object-cover transition group-hover:scale-[1.02]"
-                              />
-                            </button>
-                          ))}
-                        </div>
-                      </aside>
-
-                      {/* Hero image */}
-                      <div className="lg:col-span-10">
-                        <div className="overflow-hidden h-full w-auto rounded-xl border border-gray-200">
-                          <div className="bg-gray-50 px-4 py-2 text-sm text-gray-500">
-                            Top-down view
-                          </div>
-                          <img
-                            src="https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg"
-                            alt="Nike Air Force shoe top-down view"
-                            className="overflow-hidden h-full w-auto aspect-[4/3] object-cover transition group-hover:scale-[1.52]"
-                            sizes="(max-width: 1250px) 100vw, 50vw"
-                          />
-                        </div>
+          <div className="bg-background grid grid-cols-1 lg:grid-cols-3 gap-3 my-2">
+            {/* 1st Column */}
+            <div className="space-y-6 col-span-2">
+              {/* Left Column - Images */}
+              <div className="lg:col-span-2 space-y-6">
+                {/* Main Image Container */}
+                <div className=" border-none p-6">
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 h-full">
+                    {/* Thumbnails - Hidden on mobile, shown on lg+ */}
+                    <aside className="hidden lg:block lg:col-span-2">
+                      <div className="grid grid-cols-1 gap-4">
+                        {[1, 2, 3, 4, 5, 6].map((i) => (
+                          <button
+                            key={i}
+                            className="group overflow-hidden rounded-md border border-gray-200 transition hover:shadow-sm"
+                            aria-label={`View Angle ${i}`}
+                          >
+                            <img
+                              src="https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg"
+                              alt={`Shoe Angle ${i}`}
+                              className="aspect-[4/3] w-full object-cover transition hover:scale-[1.22]"
+                            />
+                          </button>
+                        ))}
                       </div>
+                    </aside>
 
-                      {/* Mobile Thumbnails - Horizontal scroll */}
-                      <div className="lg:hidden col-span-1 overflow-x-auto">
-                        <div className="flex gap-2 pb-2">
-                          {[1, 2, 3, 4, 5, 6].map((i) => (
-                            <button
-                              key={i}
-                              className="flex-shrink-0 w-16 h-16 overflow-hidden rounded-md border-2 border-gray-200 hover:border-blue-500"
-                            >
-                              <img
-                                src="https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg"
-                                alt={`Thumbnail ${i}`}
-                                className="w-full h-full object-cover"
-                              />
-                            </button>
-                          ))}
+                    {/* Hero image */}
+                    <div className="lg:col-span-10">
+                      <div className="overflow-hidden h-full w-auto rounded-xl border border-gray-200">
+                        <div className="bg-gray-50 px-4 py-2 text-sm text-gray-500">
+                          Top-down view
                         </div>
+                        <img
+                          src="https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg"
+                          alt="Nike Air Force shoe top-down view"
+                          className="overflow-hidden h-full w-auto aspect-[4/3] object-cover transition hover:scale-[1.22]"
+                          sizes="(max-width: 1250px) 100vw, 50vw"
+                        />
                       </div>
                     </div>
 
-                    {/* Share and Favorite */}
-                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4  pt-6 border-t">
-                      <div className="flex items-center gap-3">
-                        <span className="text-sm text-gray-600">Share:</span>
-                        <div className="flex gap-2">
-                          <button className="p-2 hover:bg-gray-100 rounded-full transition">
-                            <Facebook className="w-5 h-5 text-blue-600" />
+                    {/* Mobile Thumbnails - Horizontal scroll */}
+                    <div className="lg:hidden col-span-1 overflow-x-auto">
+                      <div className="flex gap-2 pb-2">
+                        {[1, 2, 3, 4, 5, 6].map((i) => (
+                          <button
+                            key={i}
+                            className="flex-shrink-0 w-16 h-16 overflow-hidden rounded-md border-2 border-gray-200 hover:border-blue-500"
+                          >
+                            <img
+                              src="https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg"
+                              alt={`Thumbnail ${i}`}
+                              className="w-full h-full object-cover"
+                            />
                           </button>
-                          <button className="p-2 hover:bg-gray-100 rounded-full transition">
-                            <Twitter className="w-5 h-5 text-sky-500" />
-                          </button>
-                          <button className="p-2 hover:bg-gray-100 rounded-full transition">
-                            <Copy className="w-5 h-5 text-gray-600" />
-                          </button>
-                        </div>
+                        ))}
                       </div>
-                      <button className="flex items-center gap-2 text-sm hover:text-red-600 transition">
-                        <Heart className="w-5 h-5" />
-                        <span className="hidden sm:inline">
-                          Favorite (44.1K)
-                        </span>
-                        <span className="sm:hidden">(44.1K)</span>
-                      </button>
                     </div>
                   </div>
 
-                  {/* Badges */}
-                  {/* <div className="flex flex-wrap gap-2">
+                  {/* Share and Favorite */}
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4  pt-6 border-t">
+                    <div className="flex items-center gap-3">
+                      <span className="text-sm text-gray-600">Share:</span>
+                      <div className="flex gap-2">
+                        <button className="p-2 hover:bg-gray-100 rounded-full transition">
+                          <Facebook className="w-5 h-5 text-blue-600" />
+                        </button>
+                        <button className="p-2 hover:bg-gray-100 rounded-full transition">
+                          <Twitter className="w-5 h-5 text-sky-500" />
+                        </button>
+                        <button className="p-2 hover:bg-gray-100 rounded-full transition">
+                          <Copy className="w-5 h-5 text-gray-600" />
+                        </button>
+                      </div>
+                    </div>
+                    <button className="flex items-center gap-2 text-sm hover:text-red-600 transition">
+                      <Heart className="w-5 h-5" />
+                      <span className="hidden sm:inline">Favorite (44.1K)</span>
+                      <span className="sm:hidden">(44.1K)</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Badges */}
+                {/* <div className="flex flex-wrap gap-2">
                   <Badge className="bg-red-100 text-red-600 border border-red-300">
                     Save ₽1000
                   </Badge>
@@ -446,424 +432,447 @@ export default function ProductDetailPage() {
                     ⭐ Featured
                   </Badge>
                 </div> */}
-                </div>
-
-                {/* Thumbnail Images - Enhanced */}
-                {product.images && product.images.length > 1 && (
-                  <div className="flex space-x-2 sm:space-x-4 overflow-x-auto pb-3">
-                    <span className="text-sm font-semibold text-destructive">
-                      {product.original_price &&
-                        product.original_price > product.price && (
-                          <div className="flex flex-wrap items-center gap-2">
-                            <Badge className="bg-red-100 text-red-600 border-red-600 text-xs font-bold px-2 py-1">
-                              Save{" "}
-                              {formatPrice(
-                                product.original_price - product.price
-                              )}
-                            </Badge>
-                            <Badge
-                              className={`text-xs font-bold px-2 ${
-                                product.in_stock
-                                  ? "bg-green-100 text-green-600 border-green-600"
-                                  : "bg-red-100 text-red-600 border-red-600"
-                              }`}
-                            >
-                              {product.in_stock
-                                ? "✓ In Stock"
-                                : "✗ Out of Stock"}
-                            </Badge>
-                            <Badge className="bg-yellow-100 text-yellow-600 text-xs px-2 font-bold border-yellow-600">
-                              ⭐<span> Featured</span>
-                            </Badge>
-                          </div>
-                        )}
-
-                      {/* Stock Status and Featured Badge - Better positioning */}
-                      <div className="flex flex-col items-start sm:items-end space-y-2"></div>
-                    </span>
-                  </div>
-                )}
               </div>
 
-              {/* 2nd Column */}
-              <div className="space-y-3 mt-5 lg:mt-5 col-span-1">
-                <div className="relative w-auto h-auto overflow-hidden sm:p-2 mx-3 my-3">
-                  <h1 className="text-2xl lg:text-3xl font-bold text-balance mb-4">
+              {/* Thumbnail Images - Enhanced */}
+              {product.images && product.images.length > 1 && (
+                <div className="flex space-x-2 sm:space-x-4 overflow-x-auto pb-3">
+                  <span className="text-sm font-semibold text-destructive">
+                    {product.original_price &&
+                      product.original_price > product.price && (
+                        <div className="flex flex-wrap items-center gap-2">
+                          <Badge className="bg-red-100 text-red-600 border-red-600 text-xs font-bold px-2 py-1">
+                            Save{" "}
+                            {formatPrice(
+                              product.original_price - product.price
+                            )}
+                          </Badge>
+                          <Badge
+                            className={`text-xs font-bold px-2 ${
+                              product.in_stock
+                                ? "bg-green-100 text-green-600 border-green-600"
+                                : "bg-red-100 text-red-600 border-red-600"
+                            }`}
+                          >
+                            {product.in_stock ? "✓ In Stock" : "✗ Out of Stock"}
+                          </Badge>
+                          <Badge className="bg-yellow-100 text-yellow-600 text-xs px-2 font-bold border-yellow-600">
+                            ⭐<span> Featured</span>
+                          </Badge>
+                        </div>
+                      )}
+
+                    {/* Stock Status and Featured Badge - Better positioning */}
+                    <div className="flex flex-col items-start sm:items-end space-y-2"></div>
+                  </span>
+                </div>
+              )}
+            </div>
+
+            {/* 2nd Column */}
+            <div className="space-y-3 mt-5 lg:mt-5 col-span-1">
+              <div className="relative w-auto h-auto overflow-hidden sm:p-2 mx-3 my-3">
+                <h1 className="text-2xl lg:text-3xl font-bold text-balance mb-4">
+                  {" "}
+                  {product.name}
+                </h1>
+
+                <div className="flex flex-wrap items-center gap-4 pb-4 border-b mb-4">
+                  <div className="flex items-center gap-1">
+                    <span className="font-medium underline">5.0</span>
+                    <div className="flex text-yellow-400 text-sm">
+                      {"★".repeat(5)}
+                    </div>
+                  </div>
+                  <div className="text-sm text-gray-600">
+                    <span className="font-medium underline">4.2k</span> Ratings
+                  </div>
+                  <div className="text-sm text-gray-600">
+                    <span className="font-medium underline">10k+</span> Sold
+                  </div>
+                  <a
+                    href="#"
+                    className="text-sm text-blue-600 hover:underline ml-auto"
+                  >
+                    Report
+                  </a>
+                </div>
+
+                {/* Price Section */}
+                <div className="text-base text-gray-700 bg-blue-50 p-2 border border-blue-200 my-2">
+                  <span className="text-xl font-bold text-blue-600">
                     {" "}
-                    {product.name}
-                  </h1>
+                    ₽{product.original_price}
+                  </span>
+                  <span className="text-sm text-muted-foreground line-through mx-2 my-1">
+                    ₽ {product.price}
+                  </span>
+                </div>
 
-                  <div className="flex flex-wrap items-center gap-4 pb-4 border-b mb-4">
-                    <div className="flex items-center gap-1">
-                      <span className="font-medium underline">5.0</span>
-                      <div className="flex text-yellow-400 text-sm">
-                        {"★".repeat(5)}
+                {/* Model, Location Manufacturer, Delivery Date */}
+                <div className="grid gap-4 my-5">
+                  {/* Shop Vouchers */}
+
+                  <HoverCard>
+                    <HoverCardTrigger className="flex flex-row items-center text-xs text-muted-foreground">
+                      <p className="font-medium">Shop Vouchers:</p>
+                      <div className="flex gap-2 ml-2">
+                        <span className="px-2 py-1 bg-blue-300 text-white rounded text-[11px]">
+                          ₽5 OFF
+                        </span>
+                        <span className="px-2 py-1 bg-blue-300 text-white rounded text-[11px]">
+                          ₽5 OFF
+                        </span>
                       </div>
-                    </div>
-                    <div className="text-sm text-gray-600">
-                      <span className="font-medium underline">4.2k</span>{" "}
-                      Ratings
-                    </div>
-                    <div className="text-sm text-gray-600">
-                      <span className="font-medium underline">10k+</span> Sold
-                    </div>
-                    <a
-                      href="#"
-                      className="text-sm text-blue-600 hover:underline ml-auto"
-                    >
-                      Report
-                    </a>
-                  </div>
+                    </HoverCardTrigger>
+                    <HoverCardContent className="items-center w-full max-w-xl bg-white border border-gray-200 rounded-lg p-4 space-y-4 shadow-sm">
+                      <h3 className="text-sm font-semibold text-gray-800 mb-2">
+                        Shop Vouchers
+                      </h3>
 
-                  {/* Price Section */}
-                  <div className="text-base text-gray-700 bg-blue-50 p-2 border border-blue-200 my-2">
-                    <span className="text-xl font-bold text-blue-600">
-                      {" "}
-                      ₽{product.original_price}
-                    </span>
-                    <span className="text-sm text-muted-foreground line-through mx-2 my-1">
-                      ₽ {product.price}
-                    </span>
-                  </div>
-
-                  {/* Model, Location Manufacturer, Delivery Date */}
-                  <div className="grid gap-4 my-5">
-                    {/* Shop Vouchers */}
-
-                    <HoverCard>
-                      <HoverCardTrigger className="flex flex-row items-center text-xs text-muted-foreground">
-                        <p className="font-medium">Shop Vouchers:</p>
-                        <div className="flex gap-2 ml-2">
-                          <span className="px-2 py-1 bg-blue-300 text-white rounded text-[11px]">
-                            ₽5 OFF
-                          </span>
-                          <span className="px-2 py-1 bg-blue-300 text-white rounded text-[11px]">
-                            ₽5 OFF
-                          </span>
+                      {/* Voucher 1 */}
+                      <div className="flex items-center justify-between border border-blue-200 rounded-md gap-3 px-2 py-3 bg-blue-50">
+                        <img
+                          src="https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg"
+                          alt="Shoe Angle 1"
+                          className="h-24 w-24 object-cover transition group-hover:scale-[1.02] mx-3"
+                        />
+                        <div className="text-sm text-gray-700">
+                          <p className="font-semibold text-blue-600">₱5 OFF</p>
+                          <p>
+                            Min. spend ₱200 ·{" "}
+                            <span className="text-xs text-gray-500">
+                              Second Order Voucher
+                            </span>
+                          </p>
+                          <p className="text-xs text-gray-500">
+                            Valid Till: 24.01.2026
+                          </p>
                         </div>
-                      </HoverCardTrigger>
-                      <HoverCardContent className="items-center w-full max-w-xl bg-white border border-gray-200 rounded-lg p-4 space-y-4 shadow-sm">
-                        <h3 className="text-sm font-semibold text-gray-800 mb-2">
-                          Shop Vouchers
+                        <button className="px-3 py-1 text-xs font-medium text-white bg-blue-600 rounded hover:bg-blue-700">
+                          Claim
+                        </button>
+                      </div>
+
+                      {/* Voucher 2 */}
+                      <div className="flex items-center justify-between border border-blue-200 rounded-md gap-3 px-2 py-3 bg-blue-50">
+                        {" "}
+                        <img
+                          src="https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg"
+                          alt="Shoe Angle 1"
+                          className="h-24 w-24 object-cover transition group-hover:scale-[1.02] m-3"
+                        />
+                        <div className="text-sm text-gray-700">
+                          <p className="font-semibold text-blue-600">₱5 OFF</p>
+                          <p>
+                            Min. spend ₱200 ·{" "}
+                            <span className="text-xs text-gray-500">
+                              Shop Welcome Voucher
+                            </span>
+                          </p>
+                          <p className="text-xs text-gray-500">
+                            Valid Till: 24.01.2026
+                          </p>
+                        </div>
+                        <button className="px-3 py-1 text-xs font-medium text-white bg-blue-600 rounded hover:bg-blue-700">
+                          Claim
+                        </button>
+                      </div>
+                    </HoverCardContent>
+                  </HoverCard>
+
+                  {/* Shipping Section */}
+                  <HoverCard>
+                    <HoverCardTrigger className="flex flex-row items-center text-xs text-muted-foreground">
+                      <p className="font-medium">Shipping:</p>
+                      <div className="flex items-start gap-2 ml-2">
+                        {/* courrier logo */}
+                        <svg
+                          className="w-5 h-5 text-blue-600 mt-0.5"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path d="M3 3a1 1 0 011-1h10a1 1 0 011 1v5h2a1 1 0 011 1v4h-1a2 2 0 10-4 0H8a2 2 0 10-4 0H3V3z" />
+                        </svg>
+                        <div className="text-[13px] text-gray-700 leading-snug">
+                          <p className="font-medium">
+                            Guaranteed to get by{" "}
+                            <span className="text-gray-900">25 - 26 Nov</span>
+                          </p>
+                          <p>Get a ₱50 voucher if your order arrives late.</p>
+                        </div>
+                      </div>
+                    </HoverCardTrigger>
+                    <HoverCardContent className="items-center w-full max-w-3xl bg-white border border-gray-200 rounded-lg py-4 space-y-4 shadow-sm">
+                      {/* Header */}
+                      <h3 className="text-sm font-semibold text-gray-800 mb-2">
+                        Shipping Fee Information
+                      </h3>
+                      <p className="text-xs text-gray-600">
+                        Shipping to:{" "}
+                        <span className="font-medium text-gray-900">
+                          Metro Manila
+                        </span>
+                      </p>
+                      <hr />
+
+                      {/* Standard Local */}
+                      <div className="border border-blue-200 rounded-md p-4 bg-blue-50 space-y-2">
+                        <h3 className="text-sm font-semibold text-blue-700">
+                          Standard Local
                         </h3>
+                        <ul className="text-sm text-gray-700 list-disc list-inside space-y-1">
+                          <li>
+                            Guaranteed to get by{" "}
+                            <span className="font-medium text-gray-900">
+                              25 - 26 Nov
+                            </span>
+                          </li>
+                          <li>Get a ₱50 voucher if your order arrives late</li>
+                          <li>₱35 off shipping from ₱0</li>
+                          <li>
+                            Original price:{" "}
+                            <span className="line-through">₱36</span>,
+                            discounted to{" "}
+                            <span className="font-semibold text-blue-700">
+                              ₱1
+                            </span>
+                          </li>
+                        </ul>
+                      </div>
 
-                        {/* Voucher 1 */}
-                        <div className="flex items-center justify-between border border-blue-200 rounded-md gap-3 px-2 py-3 bg-blue-50">
-                          <img
-                            src="https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg"
-                            alt="Shoe Angle 1"
-                            className="h-24 w-24 object-cover transition group-hover:scale-[1.02] mx-3"
-                          />
-                          <div className="text-sm text-gray-700">
-                            <p className="font-semibold text-blue-600">
-                              ₱5 OFF
-                            </p>
-                            <p>
-                              Min. spend ₱200 ·{" "}
-                              <span className="text-xs text-gray-500">
-                                Second Order Voucher
-                              </span>
-                            </p>
-                            <p className="text-xs text-gray-500">
-                              Valid Till: 24.01.2026
-                            </p>
-                          </div>
-                          <button className="px-3 py-1 text-xs font-medium text-white bg-blue-600 rounded hover:bg-blue-700">
-                            Claim
-                          </button>
-                        </div>
+                      {/* Exapress Air */}
+                      <div className="border border-gray-200 rounded-md p-4 bg-gray-50">
+                        <h3 className="text-sm font-semibold text-gray-800">
+                          Express Air Local
+                        </h3>
+                        <p className="text-sm text-red-600">
+                          Unserviceable Area
+                        </p>
+                      </div>
 
-                        {/* Voucher 2 */}
-                        <div className="flex items-center justify-between border border-blue-200 rounded-md gap-3 px-2 py-3 bg-blue-50">
-                          {" "}
-                          <img
-                            src="https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg"
-                            alt="Shoe Angle 1"
-                            className="h-24 w-24 object-cover transition group-hover:scale-[1.02] m-3"
-                          />
-                          <div className="text-sm text-gray-700">
-                            <p className="font-semibold text-blue-600">
-                              ₱5 OFF
-                            </p>
-                            <p>
-                              Min. spend ₱200 ·{" "}
-                              <span className="text-xs text-gray-500">
-                                Shop Welcome Voucher
-                              </span>
-                            </p>
-                            <p className="text-xs text-gray-500">
-                              Valid Till: 24.01.2026
-                            </p>
-                          </div>
-                          <button className="px-3 py-1 text-xs font-medium text-white bg-blue-600 rounded hover:bg-blue-700">
-                            Claim
-                          </button>
-                        </div>
-                      </HoverCardContent>
-                    </HoverCard>
+                      {/* Self Collection */}
+                      <div className="border border-gray-200 rounded-md p-4 bg-gray-50 space-y-1">
+                        <h3 className="text-sm font-semibold text-gray-800">
+                          (Shop Name) Self Pick-up
+                        </h3>
+                        <p className="text-sm text-gray-700">
+                          The seller's pickup address is not supported.
+                        </p>
+                        <p className="text-sm text-gray-500">
+                          Please contact seller for further assistance.
+                        </p>
+                      </div>
+                    </HoverCardContent>
+                  </HoverCard>
 
-                    {/* Shipping Section */}
-                    <HoverCard>
-                      <HoverCardTrigger className="flex flex-row items-center text-xs text-muted-foreground">
-                        <p className="font-medium">Shipping:</p>
-                        <div className="flex items-start gap-2 ml-2">
-                          {/* courrier logo */}
+                  {/* Shoppping Guarantee Section */}
+                  <HoverCard>
+                    <HoverCardTrigger className="flex flex-row items-center text-xs text-muted-foreground">
+                      <p className="font-medium">Shopping Guarantee:</p>
+                      <div className="flex items-start gap-2 ml-2">
+                        <span className="text-gray-600">
+                          Free Returns • Protection
+                        </span>
+                      </div>
+                    </HoverCardTrigger>
+                    <HoverCardContent className="items-center w-full max-w-3xl bg-white border border-gray-200 rounded-lg p-4 space-y-4 shadow-sm">
+                      <h3 className="text-sm font-semibold text-gray-800 mb-2">
+                        Shopping Guarantee
+                      </h3>
+                      <hr />
+
+                      {/* Free & Easy Returns */}
+                      <div className="flex items-start gap-3">
+                        {/* Icon */}
+                        <div className="text-blue-600">
                           <svg
-                            className="w-5 h-5 text-blue-600 mt-0.5"
+                            className="w-5 h-5"
                             fill="currentColor"
                             viewBox="0 0 20 20"
                           >
-                            <path d="M3 3a1 1 0 011-1h10a1 1 0 011 1v5h2a1 1 0 011 1v4h-1a2 2 0 10-4 0H8a2 2 0 10-4 0H3V3z" />
+                            <path d="M3 3a1 1 0 011-1h12a1 1 0 011 1v14a1 1 0 01-1 1H4a1 1 0 01-1-1V3z" />
                           </svg>
-                          <div className="text-[13px] text-gray-700 leading-snug">
-                            <p className="font-medium">
-                              Guaranteed to get by{" "}
-                              <span className="text-gray-900">25 - 26 Nov</span>
-                            </p>
-                            <p>Get a ₱50 voucher if your order arrives late.</p>
-                          </div>
                         </div>
-                      </HoverCardTrigger>
-                      <HoverCardContent className="items-center w-full max-w-3xl bg-white border border-gray-200 rounded-lg py-4 space-y-4 shadow-sm">
-                        {/* Header */}
-                        <h3 className="text-sm font-semibold text-gray-800 mb-2">
-                          Shipping Fee Information
-                        </h3>
-                        <p className="text-xs text-gray-600">
-                          Shipping to:{" "}
-                          <span className="font-medium text-gray-900">
-                            Metro Manila
-                          </span>
-                        </p>
-                        <hr />
-
-                        {/* Standard Local */}
-                        <div className="border border-blue-200 rounded-md p-4 bg-blue-50 space-y-2">
-                          <h3 className="text-sm font-semibold text-blue-700">
-                            Standard Local
-                          </h3>
-                          <ul className="text-sm text-gray-700 list-disc list-inside space-y-1">
-                            <li>
-                              Guaranteed to get by{" "}
-                              <span className="font-medium text-gray-900">
-                                25 - 26 Nov
-                              </span>
-                            </li>
-                            <li>
-                              Get a ₱50 voucher if your order arrives late
-                            </li>
-                            <li>₱35 off shipping from ₱0</li>
-                            <li>
-                              Original price:{" "}
-                              <span className="line-through">₱36</span>,
-                              discounted to{" "}
-                              <span className="font-semibold text-blue-700">
-                                ₱1
-                              </span>
-                            </li>
-                          </ul>
-                        </div>
-
-                        {/* Exapress Air */}
-                        <div className="border border-gray-200 rounded-md p-4 bg-gray-50">
-                          <h3 className="text-sm font-semibold text-gray-800">
-                            Express Air Local
-                          </h3>
-                          <p className="text-sm text-red-600">
-                            Unserviceable Area
+                        {/* Text */}
+                        <div className="text-sm text-gray-700">
+                          <p className="font-medium">Free & Easy Returns</p>
+                          <p>
+                            Free Returns • Protection{" "}
+                            <span className="italic text-gray-500">
+                              Terms and conditions apply.
+                            </span>
                           </p>
                         </div>
-
-                        {/* Self Collection */}
-                        <div className="border border-gray-200 rounded-md p-4 bg-gray-50 space-y-1">
-                          <h3 className="text-sm font-semibold text-gray-800">
-                            (Shop Name) Self Pick-up
-                          </h3>
-                          <p className="text-sm text-gray-700">
-                            The seller's pickup address is not supported.
-                          </p>
-                          <p className="text-sm text-gray-500">
-                            Please contact seller for further assistance.
-                          </p>
-                        </div>
-                      </HoverCardContent>
-                    </HoverCard>
-
-                    {/* Shoppping Guarantee Section */}
-                    <HoverCard>
-                      <HoverCardTrigger className="flex flex-row items-center text-xs text-muted-foreground">
-                        <p className="font-medium">Shopping Guarantee:</p>
-                        <div className="flex items-start gap-2 ml-2">
-                          <span className="text-gray-600">
-                            Free Returns • Protection
-                          </span>
-                        </div>
-                      </HoverCardTrigger>
-                      <HoverCardContent className="items-center w-full max-w-3xl bg-white border border-gray-200 rounded-lg p-4 space-y-4 shadow-sm">
-                        <h3 className="text-sm font-semibold text-gray-800 mb-2">
-                          Shopping Guarantee
-                        </h3>
-                        <hr />
-
-                        {/* Free & Easy Returns */}
-                        <div className="flex items-start gap-3">
-                          {/* Icon */}
-                          <div className="text-blue-600">
-                            <svg
-                              className="w-5 h-5"
-                              fill="currentColor"
-                              viewBox="0 0 20 20"
-                            >
-                              <path d="M3 3a1 1 0 011-1h12a1 1 0 011 1v14a1 1 0 01-1 1H4a1 1 0 01-1-1V3z" />
-                            </svg>
-                          </div>
-                          {/* Text */}
-                          <div className="text-sm text-gray-700">
-                            <p className="font-medium">Free & Easy Returns</p>
-                            <p>
-                              Free Returns • Protection{" "}
-                              <span className="italic text-gray-500">
-                                Terms and conditions apply.
-                              </span>
-                            </p>
-                          </div>
-                        </div>
-
-                        {/* Merchandise Protection */}
-                        <div className="flex items-start gap-3">
-                          {/* Icon */}
-                          <div className="text-blue-600">
-                            <svg
-                              className="w-5 h-5"
-                              fill="currentColor"
-                              viewBox="0 0 20 20"
-                            >
-                              <path d="M10 2a1 1 0 01.894.553l7 14A1 1 0 0117 18H3a1 1 0 01-.894-1.447l7-14A1 1 0 0110 2z" />
-                            </svg>
-                          </div>
-                          {/* Text */}
-                          <div className="text-sm text-gray-700">
-                            <p className="font-medium">
-                              Merchandise Protection
-                            </p>
-                            <p>
-                              Protect your items from total loss due to
-                              accidental damage and liquid damage where the
-                              original item is beyond repair.
-                            </p>
-                          </div>
-                        </div>
-                      </HoverCardContent>
-                    </HoverCard>
-                  </div>
-
-                  {/* Color Selection */}
-                  <div className="text-xs text-muted-foreground mb-5">
-                    <div className="grid grid-cols-5 gap-2">
-                      <p className="font-medium text-sm mb-2">Colors</p>
-                      {colors.map((color) => (
-                        <button
-                          key={color.name}
-                          onClick={() => setSelectedColor(color.name)}
-                          className={`p-1 rounded border-2 transition ${
-                            selectedColor === color.name
-                              ? "border-blue-600 bg-blue-50"
-                              : "border-gray-300 hover:border-gray-400"
-                          }`}
-                        >
-                          <div
-                            className={`w-6 h-6 ${color.class} rounded border border-gray-300 mx-auto mb-1`}
-                          ></div>
-                          <p className="text-xs text-center truncate">
-                            {color.name}
-                          </p>
-                        </button>
-                      ))}
-                    </div>
-                    <div className="bg-blue-50 border border-blue-200 rounded p-2 mt-2">
-                      <span className="text-xs font-semibold">Selected: </span>
-                      <span className="text-xs">{selectedColor}</span>
-                    </div>
-                  </div>
-
-                  {/* Sizes Selection */}
-                  <div className="text-muted-foreground mb-5">
-                    <div className="grid grid-cols-5 gap-2">
-                      <p className="text-sm mb-2">Sizes</p>
-                      {sizes.map((size) => (
-                        <button
-                          key={size}
-                          onClick={() => setSelectedSize(size)}
-                          className={`px-2 py-1 rounded border-2 transition ${
-                            selectedSize === size
-                              ? "border-blue-600 bg-blue-50"
-                              : "border-gray-300 hover:border-gray-400"
-                          }`}
-                        >
-                          <div className="w-3 h-3 flex items-center justify-center mx-auto mb-1 text-sm font-semibold">
-                            {size}
-                          </div>
-                          <p className="text-xs text-center truncate">{`US ${size}`}</p>
-                        </button>
-                      ))}
-                    </div>
-                    <div className="bg-blue-50 border border-blue-200 rounded p-2 mt-2">
-                      <span className="text-xs font-semibold">Selected: </span>
-                      <span className="text-xs">US {selectedSize}</span>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2 my-5 text-xs text-muted-foreground">
-                    <div className="grid grid-cols-7 gap-2">
-                      <p className="font-medium">Quantity</p>
-
-                      <div className="flex items-center gap-1 w-fit border-2 border-gray-300 focus:border-gray-500 rounded m-2">
-                        <button className="w-8 h-8 bg-gray-200 text-gray-700 hover:text-white hover:bg-gray-300 transition">
-                          −
-                        </button>
-                        <span className="text-lg font-semibold w-8 text-center">
-                          1
-                        </span>
-                        <button className="w-8 h-8 bg-gray-200 text-gray-700 hover:text-white hover:bg-gray-300 transition">
-                          +
-                        </button>
                       </div>
+
+                      {/* Merchandise Protection */}
+                      <div className="flex items-start gap-3">
+                        {/* Icon */}
+                        <div className="text-blue-600">
+                          <svg
+                            className="w-5 h-5"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path d="M10 2a1 1 0 01.894.553l7 14A1 1 0 0117 18H3a1 1 0 01-.894-1.447l7-14A1 1 0 0110 2z" />
+                          </svg>
+                        </div>
+                        {/* Text */}
+                        <div className="text-sm text-gray-700">
+                          <p className="font-medium">Merchandise Protection</p>
+                          <p>
+                            Protect your items from total loss due to accidental
+                            damage and liquid damage where the original item is
+                            beyond repair.
+                          </p>
+                        </div>
+                      </div>
+                    </HoverCardContent>
+                  </HoverCard>
+                </div>
+
+                {/* Color Selection */}
+                <div className="text-xs text-muted-foreground mb-5">
+                  <div className="grid grid-cols-5 gap-2">
+                    <p className="font-medium text-sm mb-2">Colors</p>
+                    {colors.map((color) => (
+                      <button
+                        key={color.name}
+                        onClick={() => setSelectedColor(color.name)}
+                        className={`p-1 rounded border-2 transition ${
+                          selectedColor === color.name
+                            ? "border-blue-600 bg-blue-50"
+                            : "border-gray-300 hover:border-gray-400"
+                        }`}
+                      >
+                        <div
+                          className={`w-6 h-6 ${color.class} rounded border border-gray-300 mx-auto mb-1`}
+                        ></div>
+                        <p className="text-xs text-center truncate">
+                          {color.name}
+                        </p>
+                      </button>
+                    ))}
+                  </div>
+                  <div className="bg-blue-50 border border-blue-200 rounded p-2 mt-2">
+                    <span className="text-xs font-semibold">Selected: </span>
+                    <span className="text-xs">{selectedColor}</span>
+                  </div>
+                </div>
+
+                {/* Sizes Selection */}
+                <div className="text-muted-foreground mb-5">
+                  <div className="grid grid-cols-5 gap-2">
+                    <p className="text-sm mb-2">Sizes</p>
+                    {sizes.map((size) => (
+                      <button
+                        key={size}
+                        onClick={() => setSelectedSize(size)}
+                        className={`px-2 py-1 rounded border-2 transition ${
+                          selectedSize === size
+                            ? "border-blue-600 bg-blue-50"
+                            : "border-gray-300 hover:border-gray-400"
+                        }`}
+                      >
+                        <div className="w-3 h-3 flex items-center justify-center mx-auto mb-1 text-sm font-semibold">
+                          {size}
+                        </div>
+                        <p className="text-xs text-center truncate">{`US ${size}`}</p>
+                      </button>
+                    ))}
+                  </div>
+                  <div className="bg-blue-50 border border-blue-200 rounded p-2 mt-2">
+                    <span className="text-xs font-semibold">Selected: </span>
+                    <span className="text-xs">US {selectedSize}</span>
+                  </div>
+                </div>
+
+                <div className="space-y-2 my-5 text-xs text-muted-foreground">
+                  <div className="grid grid-cols-7 gap-2">
+                    <p className="font-medium">Quantity</p>
+
+                    <div className="flex items-center gap-1 w-fit border-2 border-gray-300 focus:border-gray-500 rounded m-2">
+                      <button className="w-8 h-8 bg-gray-200 text-gray-700 hover:text-white hover:bg-gray-300 transition">
+                        −
+                      </button>
+                      <span className="text-lg font-semibold w-8 text-center">
+                        1
+                      </span>
+                      <button className="w-8 h-8 bg-gray-200 text-gray-700 hover:text-white hover:bg-gray-300 transition">
+                        +
+                      </button>
                     </div>
                   </div>
+                </div>
 
-                  {/* Action Buttons */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <button className="h-11 flex items-center justify-center gap-2 text-sm font-semibold text-blue-600 bg-blue-100 border-2 border-blue-300 rounded hover:bg-blue-200 transition">
-                      <ShoppingCart className="w-4 h-4" /> Add to Cart
-                    </button>
-                    <button className="h-11 flex items-center justify-center gap-2 text-sm font-semibold text-white bg-blue-600 border-2 border-blue-700 rounded hover:bg-blue-700 transition">
-                      Buy Now
-                    </button>
-                  </div>
+                {/* Action Buttons */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <button className="h-11 flex-1 flex items-center justify-center gap-2 text-sm font-semibold text-blue-600 bg-blue-100 border-2 border-blue-300 rounded-lg hover:bg-blue-200 transition-all duration-200">
+                    <ShoppingCart className="w-4 h-4" /> Add to Cart
+                  </button>
+                  <button className="h-11 flex-1 flex items-center justify-center gap-2 text-sm font-semibold text-white bg-blue-600 border-2 border-blue-700 rounded-lg hover:bg-blue-700 transition-all duration-200 active:scale-95">
+                    Buy Now
+                  </button>
                 </div>
               </div>
             </div>
+          </div>
         </div>
       </section>
 
       {/* Shop and Vouchers Section */}
       <section className="py-2">
         <div className="max-w-7xl mx-auto">
-            {/* Product Details Tabs */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 ">
-              <div className="lg:col-span-2 space-y-6">
-                <div className="bg-background shadow-sm p-6">
-                  <Tabs defaultValue="productSpecification">
-                    <TabsList className="flex flex-wrap gap-2 border-b pb-2 mb-6">
-                      <TabsTrigger value="productSpecification">
-                        Specifications
-                      </TabsTrigger>
-                      <TabsTrigger value="description">Description</TabsTrigger>
-                      <TabsTrigger value="reviews">Reviews</TabsTrigger>
-                      <TabsTrigger value="perfectFor">Perfect For</TabsTrigger>
-                      <TabsTrigger value="usageGuide">Usage Guide</TabsTrigger>
-                    </TabsList>
+          {/* Product Details Tabs */}
+          <div className="h-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-2 space-y-6">
+              <div className="bg-background shadow-sm p-6">
+                <Tabs defaultValue="productSpecification">
+                  <TabsList className="grid w-auto h-auto grid-cols-6 mb-6 gap-1">
+                    <TabsTrigger
+                      value="productSpecification"
+                      className="h-10 
+            hover:bg-gradient-to-l hover:from-blue-600 hover:to-violet-600 hover:text-gray-100
+            data-[state=active]:bg-gradient-to-l data-[state=active]:from-blue-600 data-[state=active]:to-violet-600 data-[state=active]:text-gray-100"
+                    >
+                      Specifications
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="description"
+                      className="h-10 
+            hover:bg-gradient-to-l hover:from-blue-600 hover:to-violet-600 hover:text-gray-100
+            data-[state=active]:bg-gradient-to-l data-[state=active]:from-blue-600 data-[state=active]:to-violet-600 data-[state=active]:text-gray-100"
+                    >
+                      Description
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="reviews"
+                      className="h-10 
+            hover:bg-gradient-to-l hover:from-blue-600 hover:to-violet-600 hover:text-gray-100
+            data-[state=active]:bg-gradient-to-l data-[state=active]:from-blue-600 data-[state=active]:to-violet-600 data-[state=active]:text-gray-100"
+                    >
+                      Reviews
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="perfectFor"
+                      className="h-10 
+            hover:bg-gradient-to-l hover:from-blue-600 hover:to-violet-600 hover:text-gray-100
+            data-[state=active]:bg-gradient-to-l data-[state=active]:from-blue-600 data-[state=active]:to-violet-600 data-[state=active]:text-gray-100"
+                    >
+                      Perfect For
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="usageGuide"
+                      className="h-10 
+            hover:bg-gradient-to-l hover:from-blue-600 hover:to-violet-600 hover:text-gray-100
+            data-[state=active]:bg-gradient-to-l data-[state=active]:from-blue-600 data-[state=active]:to-violet-600 data-[state=active]:text-gray-100"
+                    >
+                      Usage Guide
+                    </TabsTrigger>
+                  </TabsList>
 
+                  <div className="min-h-[300px]">
                     <TabsContent value="productSpecification">
                       <Card className="border-none shadow-none">
                         <CardHeader>
@@ -1000,62 +1009,63 @@ export default function ProductDetailPage() {
                         </CardContent>
                       </Card>
                     </TabsContent>
-                  </Tabs>
+                  </div>
+                </Tabs>
+              </div>
+            </div>
+
+            {/* Seller Info */}
+            <div className="lg:col-span-1 space-y-6">
+              <div className="bg-background shadow-sm p-6">
+                <div className="flex flex-col items-center gap-4">
+                  <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center text-white text-xl font-bold">
+                    SHOP
+                  </div>
+                  <span className="text-sm font-semibold text-gray-900">
+                    caq_mall
+                  </span>
+                  <div className="flex flex-col sm:flex-row gap-3 w-full">
+                    <button className="flex-1 px-4 py-2 bg-blue-100 text-blue-600 border-2 border-blue-600 rounded-lg font-semibold hover:bg-blue-200 transition-all duration-200 active:scale-95">
+                      Chat Now
+                    </button>
+                    <button className="flex-1 px-4 py-2 text-gray-700 border-2 border-gray-300 rounded-lg font-semibold hover:bg-gray-50 transition-all duration-200 active:scale-95">
+                      View Shop
+                    </button>
+                  </div>
                 </div>
               </div>
 
-              {/* Seller Info */}
-              <div className="lg:col-span-1 space-y-6">
-                <div className="bg-background shadow-sm p-6">
-                  <div className="flex flex-col items-center gap-4">
-                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center text-white text-xl font-bold">
-                      SHOP
-                    </div>
-                    <span className="text-sm font-semibold text-gray-900">
-                      caq_mall
-                    </span>
-                    <div className="flex flex-col sm:flex-row gap-3 w-full">
-                      <button className="flex-1 px-4 py-2 bg-blue-100 text-blue-600 border-2 border-blue-600 rounded font-semibold hover:bg-blue-200 transition">
-                        Chat Now
-                      </button>
-                      <button className="flex-1 px-4 py-2 text-gray-700 border-2 border-gray-300 rounded font-semibold hover:bg-gray-50 transition">
-                        View Shop
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Vouchers */}
-                <div className="bg-background shadow-sm p-6">
-                  <h3 className="text-sm font-semibold mb-4">Shop Vouchers</h3>
-                  <div className="space-y-3">
-                    {[1, 2].map((i) => (
-                      <div
-                        key={i}
-                        className="border border-blue-300 rounded-lg bg-blue-50 p-3"
-                      >
-                        <div className="flex items-start justify-between gap-3">
-                          <div className="flex-1">
-                            <p className="text-blue-600 font-bold text-base">
-                              ₽5 OFF
-                            </p>
-                            <p className="text-xs text-gray-600">
-                              Min. Spend ₽200
-                            </p>
-                            <p className="text-xs text-gray-500 mt-1">
-                              Valid: 24.01.2026
-                            </p>
-                          </div>
-                          <button className="px-3 py-1 text-xs font-medium text-white bg-blue-600 rounded hover:bg-blue-700 transition">
-                            Claim
-                          </button>
+              {/* Vouchers */}
+              <div className="bg-background shadow-sm p-6">
+                <h3 className="text-sm font-semibold mb-4">Shop Vouchers</h3>
+                <div className="space-y-3">
+                  {[1, 2].map((i) => (
+                    <div
+                      key={i}
+                      className="border border-blue-300 rounded-lg bg-blue-50 p-3"
+                    >
+                      <div className="flex items-center justify-center gap-3">
+                        <div className="flex-1">
+                          <p className="text-blue-600 font-bold text-base">
+                            ₽5 OFF
+                          </p>
+                          <p className="text-xs text-gray-600">
+                            Min. Spend ₽200
+                          </p>
+                          <p className="text-xs text-gray-500 mt-1">
+                            Valid: 24.01.2026
+                          </p>
                         </div>
+                        <button className="px-3 py-1 text-xs font-medium text-white bg-blue-600 rounded hover:bg-blue-700 transition">
+                          Claim
+                        </button>
                       </div>
-                    ))}
-                  </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
+          </div>
         </div>
       </section>
 
