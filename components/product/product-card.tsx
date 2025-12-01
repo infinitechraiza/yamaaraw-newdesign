@@ -1,222 +1,221 @@
-"use client"
+import Badge from "./Badge";
+import { Card } from "./Card";
 
-import React, { useState } from "react"
-import { useRouter } from "next/navigation"
-import Image from "next/image"
-import { ShoppingCart, Heart, Star } from 'lucide-react'
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { addToCart } from "@/lib/cart"
-import { useClientToast } from "@/hooks/use-client-toast"
-
-interface ProductCardProps {
-  product: {
-    id: string | number
-    name: string
-    price: number
-    original_price?: number
-    description: string
-    images: string[]
-    category: string
-    in_stock: boolean
-    featured?: boolean
-    model?: string
-  }
+export interface Product {
+  id: number;
+  category_id: number;
+  name: string;
+  price: number;
+  original_price?: number;
+  rating: number;
+  sold: number;
+  image: string;
+  in_stock: boolean;
+  discount?: number;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
-  const router = useRouter()
-  const toast = useClientToast()
-  const [isAdding, setIsAdding] = useState(false)
-  const [imageError, setImageError] = useState(false)
+interface ProductCardProps {
+  product: Product;
+  onClick?: () => void;
+}
 
-  const handleAddToCart = async (event: React.MouseEvent) => {
-    // Prevent card click when clicking add to cart button
-    event.stopPropagation()
+// Mock product data - in a real app this would come from an API
+export const allProducts: Product[] = [
+  {
+    id: 1,
+    category_id: 1,
+    name: "Acer Nitro 5",
+    price: 34500,
+    original_price: 5000,
+    rating: 4.8,
+    sold: 1400,
+    image:
+      "https://i.pinimg.com/1200x/80/68/33/806833e9c3fa5eeaf67ed38d0c6ca59f.jpg",
+    in_stock: true,
+  },
+  {
+    id: 2,
+    category_id: 1,
+    name: "Nike Air Force 1 Mid Black",
+    price: 5200,
+    original_price: 6000,
+    rating: 4.9,
+    sold: 8900,
+    image:
+      "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+    in_stock: true,
+  },
+  {
+    id: 3,
+    category_id: 1,
+    name: "Nike Air Force 1 High Triple White",
+    price: 3800,
+    rating: 4.6,
+    sold: 15200,
+    image:
+      "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+    in_stock: true,
+  },
+  {
+    id: 4,
+    category_id: 1,
+    name: "Nike Air Force 1 Shadow Pale Ivory",
+    price: 6500,
+    original_price: 7500,
+    rating: 4.7,
+    sold: 6300,
+    image:
+      "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+    in_stock: false,
+  },
+  {
+    id: 5,
+    category_id: 1,
+    name: "Nike Air Force 1 Low University Blue",
+    price: 4200,
+    rating: 4.5,
+    sold: 9800,
+    image:
+      "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+    in_stock: true,
+  },
+  {
+    id: 6,
+    category_id: 1,
+    name: "Nike Air Force 1 07 LX UV Reactive",
+    price: 7200,
+    original_price: 8500,
+    rating: 4.9,
+    sold: 4100,
+    image:
+      "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+    in_stock: true,
+  },
+  {
+    id: 7,
+    category_id: 1,
+    name: "Nike Air Force 1 Low Cactus Jack",
+    price: 2800,
+    rating: 4.3,
+    sold: 18700,
+    image:
+      "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+    in_stock: true,
+  },
+  {
+    id: 8,
+    category_id: 1,
+    name: "Nike Air Force 1 React White Ice",
+    price: 5800,
+    original_price: 6800,
+    rating: 4.8,
+    sold: 7200,
+    image:
+      "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+    in_stock: true,
+  },
+  {
+    id: 9,
+    category_id: 1,
+    name: "Nike Air Force 1 Low Off-White",
+    price: 8900,
+    original_price: 10000,
+    rating: 5.0,
+    sold: 3400,
+    image:
+      "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+    in_stock: false,
+  },
+  {
+    id: 10,
+    category_id: 1,
+    name: "Nike Air Force 1 Low Pink Foam",
+    price: 3900,
+    rating: 4.6,
+    sold: 11200,
+    image:
+      "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+    in_stock: true,
+  },
+];
 
-    if (!product.id) {
-      console.error("Product ID is missing")
-      return
-    }
-
-    try {
-      setIsAdding(true)
-
-      // Create animation element
-      const button = event.currentTarget as HTMLElement
-      const rect = button.getBoundingClientRect()
-      const cartIcon = document.querySelector("[data-cart-icon]")
-      const cartRect = cartIcon?.getBoundingClientRect()
-
-      if (cartRect) {
-        const animationEl = document.createElement("div")
-        animationEl.className = "fixed w-8 h-8 bg-orange-500 rounded-full z-50 pointer-events-none"
-        animationEl.style.left = `${rect.left + rect.width / 2 - 16}px`
-        animationEl.style.top = `${rect.top + rect.height / 2 - 16}px`
-        animationEl.style.transition = "all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)"
-
-        document.body.appendChild(animationEl)
-
-        // Trigger animation
-        setTimeout(() => {
-          animationEl.style.left = `${cartRect.left + cartRect.width / 2 - 16}px`
-          animationEl.style.top = `${cartRect.top + cartRect.height / 2 - 16}px`
-          animationEl.style.transform = "scale(0.5)"
-          animationEl.style.opacity = "0"
-        }, 100)
-
-        // Clean up
-        setTimeout(() => {
-          document.body.removeChild(animationEl)
-        }, 900)
-      }
-
-      // Convert string ID to number if needed
-      const productId = typeof product.id === "string" ? Number.parseInt(product.id) : product.id
-      await addToCart(productId, 1)
-      
-      // Show success toast
-      toast.cartAdded(product.name)
-      
-      console.log("Added to cart successfully!")
-    } catch (error) {
-      console.error("Error adding to cart:", error)
-      toast.error("Failed to Add", "Could not add item to cart. Please try again.")
-    } finally {
-      setIsAdding(false)
-    }
-  }
-
-  const handleCardClick = () => {
-    router.push(`/products/${product.id}`)
-  }
-
-  const handleWishlistClick = (event: React.MouseEvent) => {
-    // Prevent card click when clicking wishlist button
-    event.stopPropagation()
-    // Add wishlist functionality here
-  }
-
-  const discountPercentage = product.original_price
-    ? Math.round(((product.original_price - product.price) / product.original_price) * 100)
-    : 0
+export default function ProductCard({ product, onClick }: ProductCardProps) {
+  const discountPercent = product.original_price
+    ? Math.round(
+        ((product.original_price - product.price) / product.original_price) *
+          100
+      )
+    : 0;
 
   return (
     <div
-      onClick={handleCardClick}
-      className="group bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden border border-orange-100 hover:border-orange-300 cursor-pointer"
+      onClick={() => {
+        window.location.href = `/products/${product.id}`;
+      }}
+      className="cursor-pointer"
     >
-      {/* Image Container - Fixed aspect ratio with better image handling */}
-      <div className="relative h-64 overflow-hidden bg-gradient-to-br from-orange-50 to-orange-100">
-        <Image
-          src={product.images?.[0] || "/placeholder.svg?height=256&width=320"}
-          alt={product.name}
-          fill
-          className={`object-contain p-4 group-hover:scale-150 transition-transform duration-400 ${
-            imageError ? "object-cover" : ""
-          }`}
-          onError={() => setImageError(true)}
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        />
-
-        {/* Enhanced Badges */}
-        <div className="absolute top-4 left-4 flex flex-row gap-2">
-          {product.original_price && discountPercentage > 0 && (
-            <Badge className="bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold text-sm px-3 py-1 shadow-lg">
-              -{discountPercentage}%
-            </Badge>
-          )}
-          {product.featured && (
-            <Badge className="bg-gradient-to-r from-orange-400 to-orange-500 text-white font-bold text-sm px-3 py-1 shadow-lg">
-              ⭐ Featured
-            </Badge>
-          )}
-        </div>
-
-        {/* Stock Status Overlay */}
-        {!product.in_stock && (
-          <div className="absolute inset-0 bg-black/60 flex items-center justify-center backdrop-blur-sm">
-            <Badge variant="destructive" className="text-white font-bold px-4 py-2 text-base shadow-lg">
-              Out of Stock
-            </Badge>
-          </div>
-        )}
-      </div>
-
-      {/* Content Section */}
-      <div className="p-6">
-        {/* Category Badge */}
-        <Badge
-          variant="outline"
-          className="mb-3 text-xs font-semibold bg-orange-50 text-orange-700 border-orange-200 hover:bg-orange-100 transition-colors"
-        >
-          {product.category}
-        </Badge>
-
-        {/* Product Name */}
-        <h3 className="font-bold text-lg text-gray-900 mb-2 line-clamp-2 group-hover:text-orange-600 transition-colors duration-300 leading-tight">
-          {product.name}
-        </h3>
-
-        {/* Model */}
-        {product.model && (
-          <p className="text-sm text-gray-500 mb-2 font-medium">
-            Model: <span className="text-gray-700">{product.model}</span>
-          </p>
-        )}
-
-        {/* Rating */}
-        <div className="flex items-center gap-2 mb-4">
-          <div className="flex">
-            {[...Array(5)].map((_, i) => (
-              <Star key={i} className="w-4 h-4 text-orange-400 fill-current drop-shadow-sm" />
-            ))}
-          </div>
-          <span className="text-sm text-gray-500 font-medium">(5.0)</span>
-        </div>
-
-        {/* Price Section */}
-        <div className="flex items-center justify-between mb-5">
-          <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-bold text-gray-900">₱{product.price.toLocaleString()}</span>
-            {product.original_price && product.original_price > product.price && (
-              <span className="text-sm text-gray-500 line-through font-medium">
-                ₱{product.original_price.toLocaleString()}
+      {" "}
+      <Card className="group h-full w-full cursor-pointer border border-gray-200 shadow hover:shadow-lg transition-all hover:-translate-y-1">
+        <div className="relative">
+          <Badge className="absolute bg-red-400 text-white text-xs text-red-700 text-center w-12 px-2 py-1 top-0 right-0 rounded-bl-lg rounded-r-none border-l-red-200 shadow-sm hover:bg-orange-300">
+            -10%
+          </Badge>
+          {!product.in_stock && (
+            <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10 rounded-t-lg">
+              <span className="text-white font-semibold text-sm">
+                Out of Stock
               </span>
-            )}
-          </div>
-          {discountPercentage > 0 && (
-            <div className="text-sm font-bold text-orange-600 bg-orange-50 px-2 py-1 rounded-full">
-              Save ₱{(product.original_price! - product.price).toLocaleString()}
             </div>
-          )}
+          )}{" "}
+          <img
+            src={product.image}
+            alt={product.name}
+            className="w-full aspect-square object-cover rounded-t-lg"
+          />{" "}
+          {/* Find Similar Button Overlay */}
+          <div className="absolute h-full w-full  inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all duration-300 flex items-end justify-center opacity-0 group-hover:opacity-100 z-20">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                window.location.href = `/products/similar/${product.id}`;
+              }}
+              className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 text-sm transition-colors duration-200"
+            >
+              Find Similar
+            </button>
+          </div>
         </div>
+        <div className="p-3 flex flex-col space-y-2">
+          {/* Title and Price on same line */}
+          <div className="flex items-start justify-between gap-2 mb-2">
+            <p className="text-sm text-gray-900 font-medium line-clamp-1 flex-1">
+              {product.name}
+            </p>
+          </div>
 
-        {/* Enhanced Add to Cart Button */}
-        <Button
-          onClick={handleAddToCart}
-          disabled={!product.in_stock || isAdding}
-          className={`w-full h-12 font-bold text-base shadow-lg transition-all duration-300 ${
-            product.in_stock
-              ? "bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 shadow-lg font-semibold hover:shadow-xl"
-              : "bg-gray-400 cursor-not-allowed"
-          }`}
-        >
-          <ShoppingCart className="w-5 h-5 mr-2" />
-          {isAdding ? (
-            <span className="flex items-center">
-              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-              Adding...
-            </span>
-          ) : product.in_stock ? (
-            "Add to Cart"
-          ) : (
-            "Out of Stock"
-          )}
-        </Button>
-      </div>
+          {/* Discount + Rating */}
+          <div className="flex flex-wrap gap-1">
+            <Badge className="bg-blue-100 text-blue-600 rounded-none border border-blue-600 text-xs">
+              ₱{discountPercent} OFF
+            </Badge>
+            <Badge className="bg-yellow-100 text-yellow-600 rounded-none border border-blue-500 text-xs">
+              ★ {product.rating.toFixed(1)}
+            </Badge>
+          </div>
+
+          {/* Sold Count */}
+          <div className="flex items-center justify-between">
+            <p className="text-sm font-bold text-blue-600">₽{product.price}</p>
+            <p className="text-xs text-gray-500">
+              {" "}
+              {product.sold >= 1000
+                ? `${Math.floor(product.sold / 1000)}k`
+                : product.sold}{" "}
+              Sold
+            </p>
+          </div>
+        </div>
+      </Card>
     </div>
-  )
+  );
 }
-
-export default ProductCard

@@ -1,6 +1,6 @@
 import type React from "react"
 import type { Metadata } from "next"
-import "./globals.css"
+import "@/styles/globals.css"
 // import ChatbotWrapper from "@/components/chatbot-wrapper"
 // import SocialMediaFloat from "@/components/social-media-float"
 import { CartProvider } from "@/contexts/cart-context"
@@ -9,6 +9,8 @@ import { ToastProvider } from "@/components/ui/toast-container"
 import NotificationToastBridge from "@/components/notification-toast-bridge"
 import PWAInstallPrompt from "@/components/pwa-install-prompt"
 import { Inter } from "next/font/google"
+import 'swiper/css';
+import "swiper/css/navigation";
 
 const inter = Inter({ subsets: ["latin"] })
 

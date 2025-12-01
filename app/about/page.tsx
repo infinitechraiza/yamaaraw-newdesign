@@ -257,7 +257,7 @@ export default function AboutPage() {
 
               <div className="grid md:grid-cols-1 lg:grid-cols-2 max-w-8xl mx-auto gap-8">
                 {/* Mission */}
-                <Card className="bg-card bg-gradient-to-br from-blue-600 to-violet-600 text-white border-0 hover:shadow-lg transition-all duration-500 p-4 md:p-6">
+                <Card className="bg-card bg-gradient-to-br from-blue-500 to-violet-600 text-white border-0 hover:shadow-lg transition-all duration-500 p-4 md:p-6">
                   <CardContent className="relative p-10">
                     <div className="mb-8 pl-2 inline-flex items-center justify-center w-16 h-16 rounded-xl backdrop-blur-sm bg-white/20">
                       <Target className="w-full h-8 mr-3 text-orange-200" />
@@ -274,7 +274,7 @@ export default function AboutPage() {
                 </Card>
 
                 {/* Vision */}
-                <Card className="bg-card bg-gradient-to-br from-blue-600 to-violet-600 text-white border-0 hover:shadow-lg transition-all duration-500 p-4 md:p-6">
+                <Card className="bg-card bg-gradient-to-br from-blue-500 to-violet-600 text-white border-0 hover:shadow-lg transition-all duration-500 p-4 md:p-6">
                   <CardContent className="relative p-10">
                     <div className="mb-8 pl-2 inline-flex items-center justify-center w-16 h-16 rounded-xl backdrop-blur-sm bg-white/20">
                       <Globe className="w-full h-8 mr-3 text-orange-200" />

@@ -890,29 +890,30 @@ export default function Header() {
                   <>
                     <Link
                       href="/products"
-                      className={`${linkBase} ${productsActive ? "text-green-300" : "text-gray-400 hover:text-green-00"}`}
+                      className={`${linkBase} ${productsActive ? "bg-clip-text text-transparent bg-gradient-to-r text-blue-800 from-blue-700 to-violet-700" : "text-gray-400 hover:bg-clip-text hover:text-transparent hover:bg-gradient-to-r hover:text-blue-800 hover:from-blue-700 hover:to-violet-700"}`}
                     >
                       Products
                       <span
-                        className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-green-400 to-green-200 transition-all duration-300 ${productsActive ? "w-full" : "w-0 group-hover:w-full"}`}
+                        className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-blue-700 to-violet-700 transition-all duration-300 ${productsActive ? "w-full" : "w-0 group-hover:w-full"}`}
                       ></span>
                     </Link>
+                  {/* bg-gradient-to-r from-blue-600 to-violet-700 - bg-clip-text text-transparent bg-gradient-to-r text-blue-500 from-blue-600 to-violet-600 */}
                     <Link
                       href="/about"
-                      className={`${linkBase} ${aboutActive ? "text-green-300" : "text-gray-400 hover:text-green-00"}`}
+                      className={`${linkBase} ${aboutActive ? "bg-clip-text text-transparent bg-gradient-to-r text-blue-800 from-blue-700 to-violet-700" : "text-gray-400 hover:bg-clip-text hover:text-transparent hover:bg-gradient-to-r hover:text-blue-800 hover:from-blue-700 hover:to-violet-700"}`}
                     >
                       About Us
                       <span
-                        className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-green-400 to-green-200 transition-all duration-300 ${aboutActive ? "w-full" : "w-0 group-hover:w-full"}`}
+                        className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-blue-700 to-violet-700 transition-all duration-300 ${aboutActive ? "w-full" : "w-0 group-hover:w-full"}`}
                       ></span>
                     </Link>
                     <Link
                       href="/contact"
-                      className={`${linkBase} ${contactActive ? "text-green-300" : "text-gray-400  hover:text-green-00"}`}
+                      className={`${linkBase} ${contactActive ? "bg-clip-text text-transparent bg-gradient-to-r text-blue-800 from-blue-700 to-violet-700" : "text-gray-400 hover:bg-clip-text hover:text-transparent hover:bg-gradient-to-r hover:text-blue-800 hover:from-blue-700 hover:to-violet-700"}`}
                     >
                       Contact
                       <span
-                        className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-green-400 to-green-200 transition-all duration-300 ${contactActive ? "w-full" : "w-0 group-hover:w-full"}`}
+                        className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-blue-700 to-violet-700 transition-all duration-300 ${contactActive ? "w-full" : "w-0 group-hover:w-full"}`}
                       ></span>
                     </Link>
                   </>
@@ -1117,7 +1118,7 @@ export default function Header() {
                             setShowMobileSuggestions(false);
                           }
                         }}
-                        className="pl-12 pr-12 w-full h-12 rounded-l-xl rounded-r-none border-2 border-gray-200 focus:border-orange-500 bg-gray-50 focus:bg-white transition-all"
+                        className="pl-12 pr-12 w-full h-12 rounded-l-xl rounded-r-none border-2 border-gray-200 focus:border-blue-500 bg-gray-50 focus:bg-white transition-all"
                         aria-label="Search for products..."
                         aria-describedby="mobile-search-suggestions"
                         aria-expanded={showMobileSuggestions}
@@ -1168,7 +1169,7 @@ export default function Header() {
                     <PopoverTrigger asChild>
                       <Button
                         variant="outline"
-                        className="w-full mt-2 h-10 rounded-full border-2 border-gray-200 hover:border-orange-500 relative"
+                        className="w-full mt-2 h-10 rounded-full border-2 border-gray-200 hover:border-blue-500 relative"
                         aria-label={`Mobile search filters${hasActiveFilters ? " (active)" : ""}`}
                         aria-expanded={false}
                         aria-haspopup="dialog"
