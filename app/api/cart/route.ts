@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from "next/server"
 
 const NEXT_PUBLIC_LARAVEL_API_URL = process.env.NEXT_PUBLIC_LARAVEL_API_URL
 
+// Cart GET Request
 export async function GET(request: NextRequest) {
   try {
     console.log("Cart GET request received")
@@ -61,6 +62,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
+// Cart POST Request
 export async function POST(request: NextRequest) {
   try {
     console.log("=== Cart POST request received ===")
@@ -155,6 +157,7 @@ export async function POST(request: NextRequest) {
   }
 }
 
+// Cart PUT Request
 export async function PUT(request: NextRequest) {
   try {
     console.log("Cart PUT request received")
@@ -206,6 +209,7 @@ export async function PUT(request: NextRequest) {
   }
 }
 
+// Cart Delete Request
 export async function DELETE(request: NextRequest) {
   try {
     console.log("Cart DELETE request received")

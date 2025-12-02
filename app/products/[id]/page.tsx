@@ -61,8 +61,6 @@ export default function ProductDetailPage() {
   const { refreshCart } = useCart();
   const { triggerAnimation, AnimationContainer } = useFlyingETrike();
 
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
-  const [filteredProducts, setFilteredProducts] = useState<ProductData[]>([]);
   const [product, setProduct] = useState<ProductData | null>(null);
   const [selectedColorIndex, setSelectedColorIndex] = useState(0);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);

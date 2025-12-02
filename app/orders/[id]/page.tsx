@@ -17,6 +17,9 @@ import {
   Share2,
   ChevronDown,
   ChevronUp,
+  Minus,
+  Plus,
+  Trash2,
 } from "lucide-react";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
@@ -117,6 +120,7 @@ function ExpandableDescription({
 }
 
 export default function OrderDetailPage() {
+ 
   const router = useRouter();
   const params = useParams();
   const orderId = params.id as string;
@@ -329,6 +333,7 @@ export default function OrderDetailPage() {
           <Breadcrumb
             items={[
               { label: "Home", href: "/" },
+              { label: "Orders", href: "/orders" },
               ...order.items.map((item) => ({
                 label: `View Orders - ${item.product.name}`,
               })),
