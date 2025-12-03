@@ -81,6 +81,11 @@ export default function ProductManagementPage() {
     setShowForm(true);
   };
 
+  const handleCreateCategory = () => {
+    setEditingProduct(null);
+    setShowForm(true);
+  };
+
   const handleEditProduct = (product: ProductData) => {
     setEditingProduct(product);
     setShowForm(true);
@@ -182,7 +187,7 @@ export default function ProductManagementPage() {
               <Button
                 variant="outline"
                 className="p-2 border-blue-500 text-xs text-blue-500 hover:text-blue-700  hover:bg-blue-50"
-                onClick={handleCreateProduct}
+                onClick={handleCreateCategory}
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Add Category

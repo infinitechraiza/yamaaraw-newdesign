@@ -40,6 +40,7 @@ import {
 } from "@/components/ui/hover-card";
 import ProductCard, { Product } from "@/components/product/product-card";
 import Breadcrumb from "@/components/layout/Breadcrumb";
+import CartItem from "@/components/cart/cart-item";
 
 interface FeaturedProduct {
   id: number;
@@ -289,6 +290,7 @@ export default function ProductDetailPage() {
     );
   }
 
+  // if (error || !product) {
   if (error || !product) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-orange-50 to-red-50">
@@ -341,7 +343,7 @@ export default function ProductDetailPage() {
       </div>
 
       {/* Product Details Section */}
-      <section className="py-2">
+      <section className="max-w-7xl mx-auto px-4 py-4">
         <div className="max-w-7xl mx-auto">
           <div className="bg-background grid grid-cols-1 lg:grid-cols-3 gap-3 my-2">
             {/* 1st Column */}
@@ -518,76 +520,6 @@ export default function ProductDetailPage() {
 
                 {/* Model, Location Manufacturer, Delivery Date */}
                 <div className="grid gap-4 my-5">
-                  {/* Shop Vouchers */}
-
-                  <HoverCard>
-                    <HoverCardTrigger className="flex flex-row items-center text-xs text-muted-foreground">
-                      <p className="font-medium">Shop Vouchers:</p>
-                      <div className="flex gap-2 ml-2">
-                        <span className="px-2 py-1 bg-blue-300 text-white rounded text-[11px]">
-                          ₽5 OFF
-                        </span>
-                        <span className="px-2 py-1 bg-blue-300 text-white rounded text-[11px]">
-                          ₽5 OFF
-                        </span>
-                      </div>
-                    </HoverCardTrigger>
-                    <HoverCardContent className="items-center w-full max-w-xl bg-white border border-gray-200 rounded-lg p-4 space-y-4 shadow-sm">
-                      <h3 className="text-sm font-semibold text-gray-800 mb-2">
-                        Shop Vouchers
-                      </h3>
-
-                      {/* Voucher 1 */}
-                      <div className="flex items-center justify-between border border-blue-200 rounded-md gap-3 px-2 py-3 bg-blue-50">
-                        <img
-                          src="https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg"
-                          alt="Shoe Angle 1"
-                          className="h-24 w-24 object-cover transition group-hover:scale-[1.02] mx-3"
-                        />
-                        <div className="text-sm text-gray-700">
-                          <p className="font-semibold text-blue-600">₱5 OFF</p>
-                          <p>
-                            Min. spend ₱200 ·{" "}
-                            <span className="text-xs text-gray-500">
-                              Second Order Voucher
-                            </span>
-                          </p>
-                          <p className="text-xs text-gray-500">
-                            Valid Till: 24.01.2026
-                          </p>
-                        </div>
-                        <button className="px-3 py-1 text-xs font-medium text-white bg-blue-600 rounded hover:bg-blue-700">
-                          Claim
-                        </button>
-                      </div>
-
-                      {/* Voucher 2 */}
-                      <div className="flex items-center justify-between border border-blue-200 rounded-md gap-3 px-2 py-3 bg-blue-50">
-                        {" "}
-                        <img
-                          src="https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg"
-                          alt="Shoe Angle 1"
-                          className="h-24 w-24 object-cover transition group-hover:scale-[1.02] m-3"
-                        />
-                        <div className="text-sm text-gray-700">
-                          <p className="font-semibold text-blue-600">₱5 OFF</p>
-                          <p>
-                            Min. spend ₱200 ·{" "}
-                            <span className="text-xs text-gray-500">
-                              Shop Welcome Voucher
-                            </span>
-                          </p>
-                          <p className="text-xs text-gray-500">
-                            Valid Till: 24.01.2026
-                          </p>
-                        </div>
-                        <button className="px-3 py-1 text-xs font-medium text-white bg-blue-600 rounded hover:bg-blue-700">
-                          Claim
-                        </button>
-                      </div>
-                    </HoverCardContent>
-                  </HoverCard>
-
                   {/* Shipping Section */}
                   <HoverCard>
                     <HoverCardTrigger className="flex flex-row items-center text-xs text-muted-foreground">
@@ -824,7 +756,7 @@ export default function ProductDetailPage() {
                   <Button
                     variant="ghost"
                     size="sm"
-                    // onClick={() => }
+                    // onClick={() => handleAddToCart(e)}
                     className="h-11 flex-1 flex items-center justify-center gap-2 text-sm font-semibold text-blue-600 bg-blue-100 border-2 border-blue-300 rounded-lg hover:bg-blue-200 transition-all duration-200"
                   >
                     <ShoppingCart className="w-4 h-4" /> Add to Cart
@@ -845,14 +777,14 @@ export default function ProductDetailPage() {
       </section>
 
       {/* Shop and Vouchers Section */}
-      <section className="py-2">
+      <section className="max-w-7xl mx-auto px-4 py-4">
         <div className="max-w-7xl mx-auto">
           {/* Product Details Tabs */}
           <div className="h-auto grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch h-100vh">
-            <div className="bg-background lg:col-span-2 space-y-6">
+            <div className="bg-background lg:col-span-2">
               <div className=" p-6">
                 <Tabs defaultValue="productSpecification">
-                  <TabsList className="grid w-auto h-auto grid-cols-6 mb-6 gap-1">
+                  <TabsList className="grid w-auto h-auto grid-cols-6 gap-1">
                     <TabsTrigger
                       value="productSpecification"
                       className="h-10 
@@ -895,7 +827,7 @@ export default function ProductDetailPage() {
                     </TabsTrigger>
                   </TabsList>
 
-                  <div className="min-h-[300px]">
+                  <div className="min-h-full">
                     <TabsContent value="productSpecification">
                       <Card className="border-none shadow-none">
                         <CardHeader>
@@ -905,7 +837,7 @@ export default function ProductDetailPage() {
                         </CardHeader>
                         <CardContent>
                           <div className="space-y-3 text-sm">
-                            <div className="flex gap-5 my-2">
+                            <div className="flex gap-5 ">
                               <span className="text-xs text-muted-foreground text-gray-600 w-32">
                                 Stock:
                               </span>
@@ -913,7 +845,7 @@ export default function ProductDetailPage() {
                                 IN STOCK
                               </span>
                             </div>
-                            <div className="flex gap-5 my-5">
+                            <div className="flex gap-5">
                               <span className="text-xs text-muted-foreground text-gray-600 w-32">
                                 Made In:
                               </span>
@@ -921,7 +853,7 @@ export default function ProductDetailPage() {
                                 Vietnam
                               </span>
                             </div>
-                            <div className="flex gap-5 my-5">
+                            <div className="flex gap-5">
                               <span className="text-xs text-muted-foreground text-gray-600 w-32">
                                 Brand:
                               </span>
@@ -929,7 +861,7 @@ export default function ProductDetailPage() {
                                 Nike
                               </span>
                             </div>
-                            <div className="flex gap-5 my-5">
+                            <div className="flex gap-5">
                               <span className="text-xs text-muted-foreground text-gray-600 w-32">
                                 Weight:
                               </span>
@@ -937,7 +869,7 @@ export default function ProductDetailPage() {
                                 1kg
                               </span>
                             </div>
-                            <div className="flex gap-5 my-5">
+                            <div className="flex gap-5">
                               <span className="text-xs text-muted-foreground text-gray-600 w-32">
                                 Height:
                               </span>
@@ -945,7 +877,7 @@ export default function ProductDetailPage() {
                                 23cm
                               </span>
                             </div>
-                            <div className="flex gap-5 my-5">
+                            <div className="flex gap-5">
                               <span className="text-xs text-muted-foreground text-gray-600 w-32">
                                 Features:
                               </span>
@@ -1040,57 +972,31 @@ export default function ProductDetailPage() {
             {/* Seller Info */}
             <div className="lg:col-span-1 space-y-6 h-full">
               <div className="bg-background shadow-sm p-6">
-                <div className="flex flex-col items-center gap-4">
-                  <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center text-white text-xl font-bold">
+                <div className="flex flex-col items-center gap-4 m-5">
+                  <div className="w-32 h-32 rounded-full bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center text-white text-xl font-bold">
                     SHOP
                   </div>
-                  <span className="text-sm font-semibold text-gray-900">
+                  <span className="text-2xl font-semibold text-gray-900">
                     caq_mall
                   </span>
+
+                  <span className="text-sm font-semibold text-center text-gray-900">
+                    DRT Highway, Brgy. Cutcot, Pulilan, Bulacan, Philippines
+                  </span>
                   <div className="flex flex-col sm:flex-row gap-3 w-full">
-                    <Link
+                    {/* <Link
                       href="/login"
                       className="flex-1 px-4 py-2 bg-blue-100 text-center text-blue-600 border-2 border-blue-600 rounded-lg font-semibold hover:bg-blue-200 transition-all duration-200 active:scale-95"
                     >
                       Chat Now
-                    </Link>
+                    </Link> */}
                     <Link
                       href="/login"
                       className="flex-1 px-4 py-2 text-gray-700 text-center border-2 border-gray-300 rounded-lg font-semibold hover:bg-gray-50 transition-all duration-200 active:scale-95"
                     >
-                      Chat Now
+                      View Shop
                     </Link>
                   </div>
-                </div>
-              </div>
-
-              {/* Vouchers */}
-              <div className="bg-background shadow-sm p-6">
-                <h3 className="text-sm font-semibold mb-4">Shop Vouchers</h3>
-                <div className="space-y-3">
-                  {[1, 2].map((i) => (
-                    <div
-                      key={i}
-                      className="border border-blue-300 rounded-lg bg-blue-50 p-3"
-                    >
-                      <div className="flex items-center justify-center gap-3">
-                        <div className="flex-1">
-                          <p className="text-blue-600 font-bold text-base">
-                            ₽5 OFF
-                          </p>
-                          <p className="text-xs text-gray-600">
-                            Min. Spend ₽200
-                          </p>
-                          <p className="text-xs text-gray-500 mt-1">
-                            Valid: 24.01.2026
-                          </p>
-                        </div>
-                        <button className="px-3 py-1 text-xs font-medium text-white bg-blue-600 rounded hover:bg-blue-700 transition">
-                          Claim
-                        </button>
-                      </div>
-                    </div>
-                  ))}
                 </div>
               </div>
             </div>
@@ -1099,8 +1005,8 @@ export default function ProductDetailPage() {
       </section>
 
       {/* From The Same Shope */}
-      <section className="py-2">
-        <div className="mx-24 px-4 sm:px-6 lg:px-8 relative z-10">
+      <section className="max-w-7xl mx-auto px-4 py-4">
+        <div className="px-4 sm:px-6 lg:px-8 relative z-10">
           <h2 className="text-md text-muted-foreground text-gray-500 text-start uppercase mb-2 rounded-t-xl">
             From The Same Shop
           </h2>
@@ -1136,10 +1042,10 @@ export default function ProductDetailPage() {
       </section>
 
       {/* You May Also Like */}
-      <section className="py-5">
-        <div className="mx-24 px-4 sm:px-6 lg:px-8 relative z-10">
+      <section className="max-w-7xl mx-auto px-4 py-4">
+        <div className="px-4 sm:px-6 lg:px-8 relative z-10">
           <h2 className="text-md text-muted-foreground text-gray-500 text-start uppercase mb-2 rounded-t-xl">
-            From The Same Shop
+            You May Also Like
           </h2>
 
           <div className="min-h-full text-card-foreground h-auto">

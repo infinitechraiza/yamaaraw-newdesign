@@ -6,7 +6,7 @@ export async function POST(request: NextRequest) {
 
     // Simple AI responses for demo - replace with actual OpenAI integration
     const responses = {
-      greeting: "Hello! I'm Darlene, your YAMAARAW assistant. How can I help you today?",
+      greeting: "Hello! I'm Darlene, your INFINITRADE assistant. How can I help you today?",
       products: "We offer a wide range of electric trikes. Would you like to see our current models and prices?",
       location: "We're located at DRT Highway, Brgy. Cutcot, Pulilan, Bulacan. Would you like directions?",
       hours: "We're open Monday-Saturday 8AM-6PM, Sunday 9AM-5PM. How can I assist you?",
@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
       warranty:
         "All our E-Trikes come with a 2-year comprehensive warranty. What specific warranty information do you need?",
       default:
-        "I'd be happy to help! I can assist with product information, store location, financing options, or any other questions about YAMAARAW E-Trikes.",
+        "I'd be happy to help! I can assist with product information, store location, financing options, or any other questions about INFINITRADE E-Trikes.",
     }
 
     let response = responses.default

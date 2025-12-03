@@ -18,6 +18,7 @@ import {
   User,
   ChevronDown,
   ChevronUp,
+  House,
 } from "lucide-react";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
@@ -520,20 +521,7 @@ export default function CartPage() {
                   onChange={() => toggleSelectShop(shop.id)}
                   className="w-5 h-5 accent-blue-500 cursor-pointer"
                 />
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-6 h-6 text-blue-400"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M3 9.75L12 3l9 6.75V21a1 1 0 01-1 1h-5v-6H10v6H5a1 1 0 01-1-1V9.75z"
-                  />
-                </svg>
+                <House className="w-4 h-4 sm:w-5 sm:h-5" />
                 <span className="text-lg font-semibold text-gray-800">
                   {shop.name}
                 </span>
@@ -568,9 +556,9 @@ export default function CartPage() {
                               <p className="font-medium text-xs text-gray-600 mb-1">
                                 {item.category}
                               </p>
-                                <ExpandableDescription
-                                  description={item.description}
-                                />
+                              <ExpandableDescription
+                                description={item.description}
+                              />
                               <p className="text-xs text-gray-500">
                                 Color: {item.color}
                               </p>

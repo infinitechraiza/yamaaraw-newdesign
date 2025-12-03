@@ -1,8 +1,8 @@
 import type React from "react"
 import type { Metadata } from "next"
 import "@/styles/globals.css"
-// import ChatbotWrapper from "@/components/chatbot-wrapper"
-// import SocialMediaFloat from "@/components/social-media-float"
+import ChatbotWrapper from "@/components/chatbot-wrapper"
+import SocialMediaFloat from "@/components/social-media-float"
 import { CartProvider } from "@/contexts/cart-context"
 import { NotificationProvider } from "@/contexts/notification-context"
 import { ToastProvider } from "@/components/ui/toast-container"
@@ -15,8 +15,8 @@ import "swiper/css/navigation";
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "YAMAARAW",
-  description: "YAMAARAW PWA",
+  title: "INFINITRADE",
+  description: "INFINITRADE PWA",
   manifest: "/manifest.json",
   generator: "PWA",
   themeColor: "#FFFFFF",
@@ -34,7 +34,7 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="YAMAARAW" />
+        <meta name="apple-mobile-web-app-title" content="INFINITRADE" />
         <link rel="apple-touch-icon" href="/icon512_rounded.png" />
         <link rel="icon" href="/icon512_rounded.png" />
       </head>
@@ -45,8 +45,8 @@ export default function RootLayout({
               <NotificationToastBridge />
               {children}
               <PWAInstallPrompt />
-              {/* <SocialMediaFloat /> */}
-              {/* <ChatbotWrapper /> */}
+              <SocialMediaFloat />
+              <ChatbotWrapper />
             </NotificationProvider>
           </CartProvider>
         </ToastProvider>

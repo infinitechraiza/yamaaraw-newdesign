@@ -58,103 +58,118 @@ export const topProductsByCategory = {
       monthly_sales: "Sold 8259",
       image:
         "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
-    }, {
+    },
+    {
       id: 7,
       name: "Wireless Smart CCTV Camera with Motion Detection",
       price: 420,
       monthly_sales: "Sold 3780",
-      image: "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      image:
+        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
     },
     {
       id: 8,
       name: "Outdoor Waterproof CCTV Camera 1080P Night Vision",
       price: 560,
       monthly_sales: "Sold 4890",
-      image: "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      image:
+        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
     },
     {
       id: 9,
       name: "Mini Spy Camera with Audio Recording",
       price: 310,
       monthly_sales: "Sold 6120",
-      image: "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      image:
+        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
     },
     {
       id: 10,
       name: "360° Panoramic CCTV Bulb Camera",
       price: 450,
       monthly_sales: "Sold 7320",
-      image: "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      image:
+        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
     },
     {
       id: 11,
       name: "Dual Antenna Wi-Fi CCTV Camera HD",
       price: 395,
       monthly_sales: "Sold 4980",
-      image: "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      image:
+        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
     },
     {
       id: 12,
       name: "TP-Link Tapo C310 Outdoor Security Camera",
       price: 899,
       monthly_sales: "Sold 3420",
-      image: "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      image:
+        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
     },
     {
       id: 13,
       name: "V380 Pro Dome Camera 5MP",
       price: 470,
       monthly_sales: "Sold 2890",
-      image: "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      image:
+        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
     },
     {
       id: 14,
       name: "Solar Powered Wireless CCTV Camera",
       price: 990,
       monthly_sales: "Sold 2150",
-      image: "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      image:
+        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
     },
     {
       id: 15,
       name: "Indoor Smart CCTV Camera with App Control",
       price: 360,
       monthly_sales: "Sold 6720",
-      image: "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      image:
+        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
     },
     {
       id: 16,
       name: "Night Vision CCTV Camera with Infrared Sensor",
       price: 520,
       monthly_sales: "Sold 4380",
-      image: "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      image:
+        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
     },
     {
       id: 17,
       name: "Compact Wireless CCTV for Home Use",
       price: 285,
       monthly_sales: "Sold 5890",
-      image: "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      image:
+        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
     },
     {
       id: 18,
       name: "HD CCTV Camera with Cloud Storage",
       price: 610,
       monthly_sales: "Sold 3210",
-      image: "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      image:
+        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
     },
     {
       id: 19,
       name: "V380 Pro Bullet Camera 2K Resolution",
       price: 730,
       monthly_sales: "Sold 2780",
-      image: "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      image:
+        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
     },
     {
       id: 20,
       name: "Smart CCTV Camera with Facial Recognition",
       price: 1050,
       monthly_sales: "Sold 1980",
-      image: "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
+      image:
+        "https://i.pinimg.com/736x/3d/f5/d8/3df5d840b4106aea13c62471a11e15f7.jpg",
     },
   ],
   flipflop: [
@@ -420,8 +435,10 @@ export default function TopProductCard({
 }: TopProductCardProps) {
   return (
     <div
-      onClick={onClick}
-      className="cursor-pointer group w-full max-w-xs"
+      onClick={() => {
+        window.location.href = `/products/${product.id}`;
+      }}
+      className="flex cursor-pointer group w-full h-full max-w-xs"
     >
       <div className="relative bg-white border border-gray-200 rounded-lg overflow-hidden transition-shadow hover:shadow-md transition-all hover:-translate-y-1">
         <Badge className="absolute top-3 left-3 bg-blue-300 text-white text-xs font-semibold px-2 py-1 rounded">
@@ -444,4 +461,3 @@ export default function TopProductCard({
     </div>
   );
 }
-

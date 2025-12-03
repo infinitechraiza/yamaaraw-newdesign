@@ -52,7 +52,7 @@ export default function SocialMediaFloat() {
   return (
     <>
       {/* Desktop View - Always visible on right side */}
-    <div className="hidden lg:block fixed right-6 top-1/2 transform -translate-y-1/2 z-[9997]">
+    <div className="hidden lg:block fixed right-6 bottom-2 transform -translate-y-1/2 z-[9997]">
   <div className="flex flex-col space-y-4">
     {socialLinks.map((social, index) => {
       const IconComponent = social.icon

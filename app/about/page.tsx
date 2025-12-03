@@ -138,7 +138,7 @@ export default function AboutPage() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
               <div className="text-center max-w-4xl mx-auto">
                 <Badge className="mb-4 bg-white/30 text-white border-white/30 hover:bg-white/40 backdrop-blur-sm px-2 py-1.5">
-                  About YAMAARAW
+                  About INFINITRADE
                 </Badge>
                 <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
                   Leading the
@@ -394,7 +394,7 @@ export default function AboutPage() {
           </section>
 
           {/* CTA Section */}
-          <section className="py-20 bg-gradient-to-r from-slate-900 via-orange-900 to-red-900">
+          <section className="py-20 relative bg-gradient-to-b from-blue-600 to-blue-200">
             <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
               <Star className="w-12 h-12 text-yellow-400 mx-auto mb-6" />
               <h2 className="text-4xl font-bold text-white mb-6">
@@ -408,7 +408,7 @@ export default function AboutPage() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button
                   size="lg"
-                  className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 shadow-2xl"
+                  className="bg-gradient-to-l from-blue-600 to-violet-600 hover:from-blue-500 hover:to-violet-500 rounded-full"
                 >
                   <Link href="/products" className="flex items-center">
                     <Zap className="mr-2 w-5 h-5" />
@@ -419,7 +419,7 @@ export default function AboutPage() {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="border-white/30 text-white hover:border-orange-300 hover:text-orange-500 hover:bg-white/10 bg-transparent"
+                  className="border border-2 border-white/30 text-white hover:border-transparent hover:text-white hover:bg-gradient-to-r hover:from-blue-600 hover:to-violet-600 bg-transparent rounded-full"
                 >
                   <Link href="/contact" className="flex items-center">
                     <Users className="mr-2 w-5 h-5" />

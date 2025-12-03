@@ -20,11 +20,15 @@ import "swiper/css/pagination";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import { FilterState } from "@/components/product/filter-sidebar";
 import ProductCard, { allProducts } from "@/components/product/product-card";
-import AutoScrollCard, {
+import AutoScrollProductCard, {
   row1Products,
   row2Products,
   row3Products,
-} from "@/components/product/auto-scroll-card";
+} from "@/components/product/product-auto-scroll-card";
+import AutoScrollBannerCard, {
+  bannerCard,
+} from "@/components/product/banner-auto-scroll-card";
+
 
 interface FeaturedProduct {
   id: number;
@@ -58,7 +62,7 @@ export default function HomePage({ params }: { params: { id: string } }) {
   const [visibleRows, setVisibleRows] = useState(1);
 
   // each row = 5 products (since md:grid-cols-5)
-  const productsPerRow = 2;
+  const productsPerRow = 3;
   const visibleCount = visibleRows * productsPerRow;
 
   // Top Products data by category
@@ -416,6 +420,7 @@ export default function HomePage({ params }: { params: { id: string } }) {
   const [featuredProducts, setFeaturedProducts] = useState<FeaturedProduct[]>(
     []
   );
+
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [loading, setLoading] = useState(true);
   const [showTestimonialForm, setShowTestimonialForm] = useState(false);
@@ -529,9 +534,7 @@ export default function HomePage({ params }: { params: { id: string } }) {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
-
       {/* Hero Section */}
-
       <section>
         <div className="relative w-full h-full">
           <Swiper
@@ -629,11 +632,16 @@ export default function HomePage({ params }: { params: { id: string } }) {
               background-color: white;
               border-radius: 9999px;
               opacity: 0.7;
+              transform: scale(1.2); /* bigger by default */
+              transition:
+                transform 0.3s ease,
+                opacity 0.3s ease;
             }
+
             .swiper-pagination-bullet-active {
-              background-color: #ef4444;
+              background-color: #5168c2ff;
               opacity: 1;
-              transform: scale(1.1);
+              transform: scale(0.8); /* smaller when active */
             }
           `}</style>
 
@@ -652,21 +660,18 @@ export default function HomePage({ params }: { params: { id: string } }) {
             <ChevronRightIcon className="h-6 w-6 text-white group-hover:text-black" />
           </button>
         </div>
+      </section>
 
-        {/* Add Banner For Promos */}
-        <div className="bg-gradient-to-r from-orange-600 to-red-600 flex items-center justify-center space-x-4 text-white py-4">
-          <Gift className="w-6 h-6 animate-bounce" />
-          <span className="font-bold text-lg">MEGA SALE</span>
-          <span className="text-orange-200">•</span>
-          <span>Free Shipping on Orders Over ₱50,000</span>
-          <span className="text-orange-200">•</span>
-          <span>2-Year Warranty Included</span>
+      {/* Banner For Promos/Announcements */}
+      <section>
+        <div className=" mx-auto">
+          <AutoScrollBannerCard direction="left" products={bannerCard} />
         </div>
       </section>
 
       {/* Categories Section */}
       <section className="py-20">
-        <div className="mx-24 px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="max-w-7xl mx-auto my-8">
           <h2 className="bg-white border-b border-gray-200 text-lg font-bold text-gray-500 text-center uppercase p-5 mb-2 rounded-t-xl">
             Categories
           </h2>
@@ -685,18 +690,16 @@ export default function HomePage({ params }: { params: { id: string } }) {
           </Carousel>
         </div>
       </section>
-
       {/* Product Section */}
       <section className="relative py-2 bg-gradient-to-br from-slate-200 via-blue-100 to-orange-100 text-white overflow-hidden">
         {/* Blurred Background Rows */}
-        <AutoScrollCard direction="right" products={row1Products} />
-        <AutoScrollCard direction="left" products={row2Products} />
-        <AutoScrollCard direction="right" products={row3Products} />
+        <AutoScrollProductCard direction="right" products={row1Products} />
+        <AutoScrollProductCard direction="left" products={row2Products} />
+        <AutoScrollProductCard direction="right" products={row3Products} />
       </section>
-
       {/* Top Products Section */}
       <section className="py-20">
-        <div className="mx-24 px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="max-w-7xl mx-auto my-8">
           <h2 className="bg-white border-b border-gray-200 text-lg font-bold text-gray-500 text-center uppercase p-5 mb-2 rounded-t-xl">
             Top Products
           </h2>
@@ -721,10 +724,9 @@ export default function HomePage({ params }: { params: { id: string } }) {
           </Carousel>
         </div>
       </section>
-
       {/* Daily Discover Section */}
       <section className="py-20">
-        <div className="mx-24 px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="max-w-7xl mx-auto my-8">
           <h2 className="bg-white border-b border-gray-200 text-lg font-bold text-gray-500 text-center uppercase p-5 mb-2 rounded-t-xl">
             Daily Discover
           </h2>
@@ -757,7 +759,6 @@ export default function HomePage({ params }: { params: { id: string } }) {
           </div>
         </div>
       </section>
-
       {/* To See More Product Section */}
       <section className="py-20">
         <div className="max-w-7xl mx-auto my-8">
@@ -787,7 +788,6 @@ export default function HomePage({ params }: { params: { id: string } }) {
           </div>
         </div>
       </section>
-
       <Footer />
     </div>
   );

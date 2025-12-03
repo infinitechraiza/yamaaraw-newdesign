@@ -85,7 +85,7 @@ export default function LoginPage() {
             Power Your Future
           </h1>
           <p className="text-md tracking-wide font-semibold blur-[0.5px]">
-            Visit our YAMAARAW store today.
+            Visit our INFINITRADE store today.
             <br />
             <span className="font-normal">
               Discover our latest products, accessories, and innovations in our

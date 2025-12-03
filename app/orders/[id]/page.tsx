@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Image from "next/image";
 import {
   Package,
+  House,
   Truck,
   MapPin,
   ArrowLeft,
@@ -19,7 +20,9 @@ import {
   ChevronUp,
   Minus,
   Plus,
+  X,
   Trash2,
+  Calendar,
 } from "lucide-react";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
@@ -76,7 +79,7 @@ interface TrackingEvent {
 // Component for expandable description
 function ExpandableDescription({
   description,
-  maxLength = 150,
+  maxLength = 80,
 }: {
   description: string;
   maxLength?: number;
@@ -120,7 +123,70 @@ function ExpandableDescription({
 }
 
 export default function OrderDetailPage() {
- 
+  const [isOpen, setIsOpen] = useState(true);
+  const [shouldRender, setShouldRender] = useState(true);
+
+  const handleToggle = () => {
+    if (isOpen) {
+      setIsOpen(false);
+      setTimeout(() => setShouldRender(false), 500);
+    } else {
+      setShouldRender(true);
+      setTimeout(() => setIsOpen(true), 10);
+    }
+  };
+
+  const steps = [
+    {
+      id: 1,
+      title: "Order Placed",
+      description: "We have received your order",
+      icon: Package,
+      status: "completed",
+      color: "bg-orange-500",
+    },
+    {
+      id: 2,
+      title: "Order Confirmed",
+      description: "Your order has been confirmed",
+      icon: Package,
+      status: "completed",
+      color: "bg-orange-500",
+    },
+    {
+      id: 3,
+      title: "Order Processed",
+      description: "We are preparing your order",
+      icon: CheckCircle,
+      status: "active",
+      color: "bg-green-500",
+    },
+    {
+      id: 4,
+      title: "Ready to Ship",
+      description: "Your order is ready",
+      icon: Truck,
+      status: "pending",
+      color: "bg-gray-300",
+    },
+    {
+      id: 5,
+      title: "Out for Delivery",
+      description: "Your order is on the way",
+      icon: MapPin,
+      status: "pending",
+      color: "bg-gray-300",
+    },
+    {
+      id: 6,
+      title: "Order Cancelled",
+      description: "We are preparing your order",
+      icon: X,
+      status: "cancelled",
+      color: "bg-red-500",
+    },
+  ];
+
   const router = useRouter();
   const params = useParams();
   const orderId = params.id as string;
@@ -346,198 +412,346 @@ export default function OrderDetailPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-4 sm:space-y-6">
-            {/* Order Items */}
-            <Card>
-              <CardHeader className="pb-3 sm:pb-6">
-                <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
-                  <Package className="w-4 h-4 sm:w-5 sm:h-5" />
-                  <span>Order Items ({order.items.length})</span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="pt-0">
-                <div className="space-y-3 sm:space-y-4">
-                  {order.items.map((item) => (
-                    <div
-                      key={item.id}
-                      className="flex flex-col sm:flex-row gap-3 sm:gap-4 p-3 sm:p-4 border border-gray-200 rounded-lg bg-white"
-                    >
-                      {/* Product Image */}
-                      <div className="relative w-full h-48 sm:w-20 sm:h-20 lg:w-24 lg:h-24 flex-shrink-0 mx-auto sm:mx-0">
-                        <Image
-                          src={item.product.images[0] || "/placeholder.svg"}
-                          alt={item.product.name}
-                          fill
-                          className="object-contain rounded-lg"
-                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80px, 96px"
-                        />
-                      </div>
-
-                      {/* Product Details */}
-                      <div className="flex-1 min-w-0">
-                        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 sm:gap-4">
-                          <div className="min-w-0 flex-1">
-                            <h3 className="font-semibold text-gray-900 text-base sm:text-lg leading-tight">
-                              {item.product.name}
-                            </h3>
-                            {item.product.model && (
-                              <p className="text-sm text-gray-600 mt-1">
-                                {item.product.model}
-                              </p>
-                            )}
-
-                            {/* Expandable Description */}
-                            <ExpandableDescription
-                              description={item.product.description}
-                            />
-
-                            {item.color && (
-                              <p className="text-xs text-gray-500 mt-1">
-                                Color: {item.color}
-                              </p>
-                            )}
-                          </div>
-
-                          {/* Share Button */}
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleShare(item)}
-                            className="self-start sm:self-center p-2 rounded-full bg-blue-500 hover:bg-blue-600 text-white"
-                          >
-                            <Share2 className="w-4 h-4" />
-                          </Button>
-                        </div>
-
-                        {/* Quantity and Price */}
-                        <div className="flex items-center justify-between mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-gray-100">
-                          <div className="flex items-center gap-4">
-                            <span className="text-sm text-gray-600 bg-gray-100 px-2 py-1 rounded">
-                              Qty: {item.quantity}
-                            </span>
-                          </div>
-                          <span className="font-bold text-blue-600 text-lg sm:text-xl">
-                            {formatPrice(item.price)}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Tracking Information */}
-            {tracking.length > 0 && (
-              <Card>
+              {/* Order Items */}
+              <Card className="rounded-lg">
                 <CardHeader className="pb-3 sm:pb-6">
-                  <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
-                    <Truck className="w-4 h-4 sm:w-5 sm:h-5" />
-                    Order Tracking
+                  <CardTitle className="flex items-center justify-between gap-2 text-lg sm:text-xl">
+                    <div className="flex items-center justify-between gap-2">
+                      <Package className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400" />
+                      <span>Order Items ({order.items.length})</span>
+                    </div>
+                    <div className="flex items-center justify-between gap-2">
+                      <House className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400" />
+                      <span>Shop Name</span>
+                    </div>
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="pt-0">
-                  <div className="space-y-4 sm:space-y-6">
-                    {tracking.map((event, index) => (
-                      <div key={event.id} className="relative">
-                        <div className="flex items-start gap-3 sm:gap-4">
-                          <div className="flex-shrink-0 mt-1">
-                            {getTrackingIcon(event.status)}
+                <CardContent className="w-full pt-0">
+                  <div className="space-y-3 sm:space-y-4">
+                    {order.items.map((item) => (
+                      <div
+                        key={item.id}
+                        className="flex flex-col sm:flex-row gap-3 sm:gap-4 p-3 sm:p-4 border border-gray-200 rounded-lg bg-white"
+                      >
+                        {/* Product Image */}
+                        <div className="relative w-full h-48 sm:w-20 sm:h-20 lg:w-24 lg:h-24 flex-shrink-0 mx-auto sm:mx-0">
+                          <Image
+                            src={item.product.images[0] || "/placeholder.svg"}
+                            alt={item.product.name}
+                            fill
+                            className="object-contain rounded-lg"
+                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80px, 96px"
+                          />
+                        </div>
+
+                        {/* Product Details */}
+                        <div className="flex-1 min-w-0">
+                          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 sm:gap-4">
+                            <div className="min-w-0 flex-1">
+                              <h3 className="font-semibold text-gray-900 text-base sm:text-lg leading-tight">
+                                {item.product.name}
+                              </h3>
+                              {item.product.model && (
+                                <p className="text-sm text-gray-600 mt-1">
+                                  {item.product.model}
+                                </p>
+                              )}
+
+                              {/* Expandable Description */}
+                              <ExpandableDescription
+                                description={item.product.description}
+                              />
+
+                              {item.color && (
+                                <p className="text-xs text-gray-500 mt-1">
+                                  Color: {item.color}
+                                </p>
+                              )}
+                            </div>
+
+                            {/* Share Button */}
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleShare(item)}
+                              className="self-start sm:self-center p-2 rounded-full bg-blue-500 hover:bg-blue-600 text-white"
+                            >
+                              <Share2 className="w-4 h-4" />
+                            </Button>
                           </div>
-                          <div className="flex-1 min-w-0">
-                            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-4">
-                              <h4 className="font-semibold text-gray-900 text-sm sm:text-base">
-                                {event.description}
-                              </h4>
-                              <span className="text-xs sm:text-sm text-gray-500 flex-shrink-0">
-                                {new Date(event.timestamp).toLocaleDateString(
-                                  "en-PH",
-                                  {
-                                    month: "short",
-                                    day: "numeric",
-                                    hour: "2-digit",
-                                    minute: "2-digit",
-                                  }
-                                )}
+
+                          {/* Quantity and Price */}
+                          <div className="flex items-center justify-between mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-gray-100">
+                            <div className="flex items-center gap-4">
+                              <span className="text-sm text-gray-600 bg-gray-100 px-2 py-1 rounded-lg">
+                                Qty: {item.quantity}
                               </span>
                             </div>
-                            <p className="text-xs sm:text-sm text-gray-600 flex items-center gap-1 mt-1">
-                              <MapPin className="w-3 h-3 flex-shrink-0" />
-                              <span>{event.location}</span>
-                            </p>
-                            {event.admin_notes && (
-                              <p className="text-xs sm:text-sm text-blue-600 mt-2 bg-blue-50 p-2 sm:p-3 rounded">
-                                <strong>Admin Note:</strong> {event.admin_notes}
-                              </p>
-                            )}
+                            <span className="font-bold text-blue-600 text-lg sm:text-xl">
+                              {formatPrice(item.price)}
+                            </span>
                           </div>
                         </div>
-                        {index < tracking.length - 1 && (
-                          <div className="absolute left-2 sm:left-2.5 mt-2 w-px h-6 sm:h-8 bg-gray-300"></div>
-                        )}
                       </div>
                     ))}
                   </div>
                 </CardContent>
               </Card>
-            )}
+              
+              {/* Sample only tracking order design */}
+              <div className="bg-card rounded-lg shadow-lg p-8 w-full text-card-foreground shadow-sm rounded-lg border border-2 border-gray-300">
+                <button
+                  onClick={handleToggle}
+                  className="flex items-center justify-between w-full mb-8 text-left"
+                >
+                  <span className="flex items-center justify-between  text-xl font-bold text-gray-800">
+                    <Package className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-blue-400" />
+                    Track Order
+                  </span>
+                  <div
+                    className="text-gray-400 hover:text-gray-600 transition-transform duration-300"
+                    style={{
+                      transform: isOpen ? "rotate(0deg)" : "rotate(180deg)",
+                    }}
+                  >
+                    <svg
+                      className="w-6 h-6"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 15l7-7 7 7"
+                      />
+                    </svg>
+                  </div>
+                </button>
+
+                {shouldRender && (
+                  <div
+                    className="relative transition-all duration-500 ease-in-out origin-top"
+                    style={{
+                      maxHeight: isOpen ? "1000px" : "0px",
+                      opacity: isOpen ? 1 : 0,
+                      overflow: "hidden",
+                      transform: isOpen ? "scaleY(1)" : "scaleY(0)",
+                      transformOrigin: "top",
+                    }}
+                  >
+                    {" "}
+                    {steps.map((step, index) => {
+                      const Icon = step.icon;
+                      const isLast = index === steps.length - 1;
+
+                      return (
+                        <div key={step.id} className="relative flex gap-4 pb-8">
+                          {/* Timeline Line */}
+                          {!isLast && (
+                            <div
+                              className={`absolute left-6 top-12 w-0.5 h-full ${
+                                step.status === "completed"
+                                  ? "bg-orange-500"
+                                  : step.status === "active"
+                                    ? "bg-green-500"
+                                    : "bg-gray-300"
+                              }`}
+                            />
+                          )}
+
+                          {/* Icon Circle */}
+                          <div
+                            className={`relative z-10 flex items-center justify-center w-12 h-12 rounded-full ${step.color} flex-shrink-0`}
+                          >
+                            <Icon className="w-6 h-6 text-white" />
+                          </div>
+
+                          {/* Content */}
+                          <div className="flex-1 pt-1">
+                            <h3
+                              className={`font-semibold text-lg ${
+                                step.status === "pending"
+                                  ? "text-gray-400"
+                                  : "text-gray-800"
+                              }`}
+                            >
+                              {step.title}
+                            </h3>
+                            <p
+                              className={`text-sm mt-1 ${
+                                step.status === "pending"
+                                  ? "text-gray-400"
+                                  : "text-gray-500"
+                              }`}
+                            >
+                              {step.description}
+                            </p>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+
+              {/* Tracking Information */}
+              {tracking.length > 0 && (
+                <Card className="bg-card rounded-lg shadow-lg p-8 w-full text-card-foreground shadow-sm rounded-lg border border-2 border-gray-300">
+                  <CardHeader className="pb-3 sm:pb-6">
+                    <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
+                      <Truck className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400" />
+                      Order Tracking
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="pt-0">
+                    <div className="space-y-4 sm:space-y-6">
+                      {tracking.map((event, index) => (
+                        <div key={event.id} className="relative">
+                          <div className="flex items-start gap-3 sm:gap-4">
+                            <div className="flex-shrink-0 mt-1">
+                              Asas{getTrackingIcon(event.status)}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-4">
+                                <h4 className="font-semibold text-gray-900 text-sm sm:text-base">
+                                  {event.description}
+                                </h4>
+                                <span className="text-xs sm:text-sm text-gray-500 flex-shrink-0">
+                                  {new Date(event.timestamp).toLocaleDateString(
+                                    "en-PH",
+                                    {
+                                      month: "short",
+                                      day: "numeric",
+                                      hour: "2-digit",
+                                      minute: "2-digit",
+                                    }
+                                  )}
+                                </span>
+                              </div>
+                              <p className="text-xs sm:text-sm text-gray-600 flex items-center gap-1 mt-1">
+                                <MapPin className="w-3 h-3 flex-shrink-0 text-blue-400" />
+                                <span>{event.location}</span>
+                              </p>
+                              {event.admin_notes && (
+                                <p className="text-xs sm:text-sm text-blue-600 mt-2 bg-blue-50 p-2 sm:p-3 rounded-lg">
+                                  <strong>Admin Note:</strong> {event.admin_notes}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                          {index < tracking.length - 1 && (
+                            <div className="absolute left-2 sm:left-2.5 mt-2 w-px h-6 sm:h-8 bg-gray-300"></div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
           </div>
 
           {/* Sidebar */}
           <div className="space-y-4 sm:space-y-6">
+            <div className="mb-6">
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+                Order Details
+              </h1>
+              <p className="text-gray-600">
+                Review your order information below
+              </p>
+            </div>
+
             {/* Order Summary */}
-            <Card>
-              <CardHeader className="pb-3 sm:pb-6">
-                <CardTitle className="text-lg sm:text-xl">
+            <Card className="lg:col-span-2 border-2 border-blue-200 shadow-lg bg-gradient-to-br from-white to-blue-50">
+              <CardHeader className="pb-4">
+                <CardTitle className="flex items-center gap-2 text-xl sm:text-2xl text-blue-900">
+                  <Package className="w-6 h-6 text-blue-600" />
                   Order Summary
                 </CardTitle>
               </CardHeader>
-              <CardContent className="pt-0 space-y-3 sm:space-y-4">
-                <div className="flex justify-between text-sm sm:text-base">
-                  <span>Subtotal:</span>
-                  <span>{formatPrice(order.total * 0.9)}</span>
+              <CardContent className="space-y-4">
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center text-base sm:text-lg">
+                    <span className="text-gray-700">Subtotal</span>
+                    <span className="font-medium text-gray-900">
+                      {formatPrice(order.total * 0.9)}
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center text-base sm:text-lg">
+                    <span className="text-gray-700">Shipping Fee</span>
+                    <span className="font-medium text-gray-900">
+                      {formatPrice(order.total * 0.1)}
+                    </span>
+                  </div>
                 </div>
-                <div className="flex justify-between text-sm sm:text-base">
-                  <span>Shipping:</span>
-                  <span>{formatPrice(order.total * 0.1)}</span>
-                </div>
-                <hr className="my-3 sm:my-4" />
-                <div className="flex justify-between font-semibold text-base sm:text-lg">
-                  <span>Total:</span>
-                  <span className="text-blue-600">
-                    {formatPrice(order.total)}
-                  </span>
+
+                <div className="border-t-2 border-blue-200 pt-4">
+                  <div className="flex justify-between items-center">
+                    <span className="text-xl sm:text-2xl font-bold text-gray-900">
+                      Total
+                    </span>
+                    <span className="text-2xl sm:text-3xl font-bold text-blue-600">
+                      {formatPrice(order.total)}
+                    </span>
+                  </div>
                 </div>
               </CardContent>
             </Card>
 
             {/* Customer Information */}
-            <Card>
-              <CardHeader className="pb-3 sm:pb-6">
-                <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
-                  <User className="w-4 h-4 sm:w-5 sm:h-5" />
-                  Customer Info
+            <Card className="shadow-md hover:shadow-lg transition-shadow duration-200">
+              <CardHeader className="pb-4 bg-gradient-to-r from-blue-50 to-transparent">
+                <CardTitle className="flex items-center gap-2 text-lg sm:text-xl text-gray-900">
+                  <User className="w-5 h-5 text-blue-600" />
+                  Customer Information
                 </CardTitle>
               </CardHeader>
-              <CardContent className="pt-0 space-y-3">
-                <div className="flex items-center gap-2 text-sm sm:text-base">
-                  <User className="w-4 h-4 text-gray-500 flex-shrink-0" />
-                  <span className="truncate">
-                    {order.first_name} {order.last_name}
-                  </span>
-                </div>
-                <div className="flex items-center gap-2 text-sm sm:text-base">
-                  <Mail className="w-4 h-4 text-gray-500 flex-shrink-0" />
-                  <span className="truncate">{order.email}</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm sm:text-base">
-                  <Phone className="w-4 h-4 text-gray-500 flex-shrink-0" />
-                  <span>{order.phone}</span>
-                </div>
-                <div className="flex items-start gap-2 text-sm sm:text-base">
-                  <MapPin className="w-4 h-4 text-gray-500 flex-shrink-0 mt-0.5" />
+              <CardContent className="space-y-4 pt-4">
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
+                  <User className="w-5 h-5 text-blue-600 flex-shrink-0" />
                   <div className="min-w-0">
-                    <p className="break-words">{order.address}</p>
-                    <p className="break-words">
+                    <p className="text-xs text-gray-500 uppercase tracking-wide">
+                      Full Name
+                    </p>
+                    <p className="font-medium text-gray-900 truncate">
+                      {order.first_name} {order.last_name}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
+                  <Mail className="w-5 h-5 text-blue-600 flex-shrink-0" />
+                  <div className="min-w-0">
+                    <p className="text-xs text-gray-500 uppercase tracking-wide">
+                      Email
+                    </p>
+                    <p className="font-medium text-gray-900 truncate">
+                      {order.email}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
+                  <Phone className="w-5 h-5 text-blue-600 flex-shrink-0" />
+                  <div className="min-w-0">
+                    <p className="text-xs text-gray-500 uppercase tracking-wide">
+                      Phone
+                    </p>
+                    <p className="font-medium text-gray-900">{order.phone}</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3 p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
+                  <MapPin className="w-5 h-5 text-blue-600 flex-shrink-0 mt-1" />
+                  <div className="min-w-0">
+                    <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">
+                      Delivery Address
+                    </p>
+                    <p className="font-medium text-gray-900 break-words leading-relaxed">
+                      {order.address}
+                      <br />
                       {order.city}, {order.postal_code}
                     </p>
                   </div>
@@ -546,40 +760,55 @@ export default function OrderDetailPage() {
             </Card>
 
             {/* Payment Information */}
-            <Card>
-              <CardHeader className="pb-3 sm:pb-6">
-                <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
-                  <CreditCard className="w-4 h-4 sm:w-5 sm:h-5" />
-                  Payment Info
+            <Card className="shadow-md hover:shadow-lg transition-shadow duration-200">
+              <CardHeader className="pb-4 bg-gradient-to-r from-blue-50 to-transparent">
+                <CardTitle className="flex items-center gap-2 text-lg sm:text-xl text-gray-900">
+                  <CreditCard className="w-5 h-5 text-blue-600" />
+                  Payment Details
                 </CardTitle>
               </CardHeader>
-              <CardContent className="pt-0">
-                <div className="space-y-2 sm:space-y-3 text-sm sm:text-base">
-                  <div className="flex justify-between">
-                    <span>Method:</span>
-                    <span className="capitalize font-medium">
+              <CardContent className="space-y-4 pt-4">
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-gray-50">
+                  <CreditCard className="w-5 h-5 text-blue-600 flex-shrink-0" />
+                  <div className="flex-1">
+                    <p className="text-xs text-gray-500 uppercase tracking-wide">
+                      Payment Method
+                    </p>
+                    <p className="font-semibold text-gray-900 capitalize">
                       {order.payment_method}
-                    </span>
+                    </p>
                   </div>
-                  <div className="flex justify-between">
-                    <span>Order Date:</span>
-                    <span className="font-medium">
+                </div>
+
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-gray-50">
+                  <Calendar className="w-5 h-5 text-blue-600 flex-shrink-0" />
+                  <div className="flex-1">
+                    <p className="text-xs text-gray-500 uppercase tracking-wide">
+                      Order Date
+                    </p>
+                    <p className="font-semibold text-gray-900">
                       {new Date(order.created_at).toLocaleDateString("en-PH", {
                         year: "numeric",
-                        month: "short",
+                        month: "long",
                         day: "numeric",
                       })}
-                    </span>
+                    </p>
                   </div>
-                  {order.tracking_number && (
-                    <div className="flex flex-col sm:flex-row sm:justify-between gap-1">
-                      <span>Tracking #:</span>
-                      <span className="font-mono text-xs sm:text-sm font-medium break-all">
-                        {order.tracking_number}
-                      </span>
-                    </div>
-                  )}
                 </div>
+
+                {order.tracking_number && (
+                  <div className="flex items-start gap-3 p-3 rounded-lg bg-gradient-to-r from-blue-50 to-blue-100 border border-blue-200">
+                    <Truck className="w-5 h-5 text-blue-600 flex-shrink-0 mt-1" />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs text-blue-700 uppercase tracking-wide font-medium mb-1">
+                        Tracking Number
+                      </p>
+                      <p className="font-mono text-sm font-bold text-blue-900 break-all">
+                        {order.tracking_number}
+                      </p>
+                    </div>
+                  </div>
+                )}
               </CardContent>
             </Card>
 

@@ -148,19 +148,21 @@ export default function AdminCustomers() {
               </h1>
               <p className="text-orange-100">Manage Users details</p>
             </div>
-            <Button
-              variant="outline"
-              className="p-2 border-blue-500 text-xs text-blue-500 hover:text-blue-700  hover:bg-blue-50"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Add Category
-            </Button>
-            <div className="flex items-center space-x-4 text-blue-500 rounded-lg border-none">
+
+            <div className="flex items-center gap-2 text-blue-500 rounded-lg border-none">
+              <Button
+                variant="outline"
+                // onClick={handleCreateUsers}
+                className="p-2 border-blue-500 text-xs text-blue-500 hover:text-blue-700  hover:bg-blue-50"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Add Users
+              </Button>
               <Button
                 variant="outline"
                 className="p-2 border-blue-500 text-xs text-blue-500 hover:text-blue-700  hover:bg-blue-50"
               >
-                <Download className="w-4 h-4" />
+                <Download className="w-4 h-4 mr-2" />
                 Export
               </Button>
             </div>
