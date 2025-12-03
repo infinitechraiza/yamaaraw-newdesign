@@ -42,7 +42,7 @@ import Breadcrumb from "@/components/layout/Breadcrumb";
 // Component for expandable description
 function ExpandableDescription({
   description,
-  maxLength = 50,
+  maxLength = 30,
 }: {
   description: string;
   maxLength?: number;
@@ -548,7 +548,7 @@ export default function CartPage() {
                         key={item.id}
                         className="border-b last:border-0 hover:bg-gray-50"
                       >
-                        <td className="px-4 py-4">
+                        <td className="pl-4 py-4">
                           <div className="flex items-start gap-3">
                             <input
                               type="checkbox"
@@ -561,18 +561,16 @@ export default function CartPage() {
                               alt={item.name}
                               className="w-20 h-20 object-cover rounded bg-gray-100 flex-shrink-0"
                             />
-                            <div className="flex-1 min-w-0">
+                            <div className="flex-1 w-full">
                               <h3 className="font-bold text-base text-gray-900 mb-1">
                                 {item.name}
                               </h3>
                               <p className="font-medium text-xs text-gray-600 mb-1">
                                 {item.category}
                               </p>
-                              <p className="w-64 text-xs text-gray-600 mb-2 leading-relaxed">
                                 <ExpandableDescription
                                   description={item.description}
                                 />
-                              </p>
                               <p className="text-xs text-gray-500">
                                 Color: {item.color}
                               </p>
@@ -582,7 +580,7 @@ export default function CartPage() {
                             </div>
                           </div>
                         </td>
-                        <td className="px-4 py-4 align-top">
+                        <td className="px-s py-4 align-top">
                           <span className="text-base font-semibold text-gray-900">
                             ${item.price.toFixed(2)}
                           </span>

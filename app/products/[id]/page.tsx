@@ -821,12 +821,22 @@ export default function ProductDetailPage() {
 
                 {/* Action Buttons */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <button className="h-11 flex-1 flex items-center justify-center gap-2 text-sm font-semibold text-blue-600 bg-blue-100 border-2 border-blue-300 rounded-lg hover:bg-blue-200 transition-all duration-200">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    // onClick={() => }
+                    className="h-11 flex-1 flex items-center justify-center gap-2 text-sm font-semibold text-blue-600 bg-blue-100 border-2 border-blue-300 rounded-lg hover:bg-blue-200 transition-all duration-200"
+                  >
                     <ShoppingCart className="w-4 h-4" /> Add to Cart
-                  </button>
-                  <button className="h-11 flex-1 flex items-center justify-center gap-2 text-sm font-semibold text-white bg-blue-600 border-2 border-blue-700 rounded-lg hover:bg-blue-700 transition-all duration-200 active:scale-95">
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    // onClick={() => }
+                    className="h-11 flex-1 flex items-center justify-center gap-2 text-sm font-semibold text-white bg-blue-600 border-2 border-blue-700 rounded-lg hover:bg-blue-700 transition-all duration-200 active:scale-95"
+                  >
                     Buy Now
-                  </button>
+                  </Button>
                 </div>
               </div>
             </div>

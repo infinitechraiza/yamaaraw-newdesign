@@ -1,9 +1,9 @@
 import Link from "next/link";
 
-interface Crumb {
-  label: string;
+type Crumb = {
+  label: React.ReactNode;
   href?: string;
-}
+};
 
 export default function Breadcrumb({ items }: { items: Crumb[] }) {
   return (
@@ -11,11 +11,20 @@ export default function Breadcrumb({ items }: { items: Crumb[] }) {
       {items.map((it, idx) => (
         <span key={idx} className="flex items-center">
           {it.href ? (
-            <Link href={it.href} className="text-gray-500 hover:text-blue-700 font-medium">
+            <Link
+              href={it.href}
+              className="flex w-100% mx-auto text-gray-500 hover:text-blue-700 font-medium"
+            >
               {it.label}
             </Link>
           ) : (
-            <span className={idx === items.length - 1 ? "text-blue-600 font-bold" : "text-gray-900 font-bold"}>
+            <span
+              className={
+                idx === items.length - 1
+                  ? "text-blue-600 font-bold"
+                  : "text-gray-900 font-bold"
+              }
+            >
               {it.label}
             </span>
           )}
